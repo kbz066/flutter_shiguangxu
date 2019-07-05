@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shiguangxun/welcome_page/welcome_page.dart';
+import 'package:flutter_shiguangxun/page/login_page/LoginPage.dart';
+import 'package:flutter_shiguangxun/page/welcome_page/welcome_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,8 +15,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: SafeArea(
-            child: WelcomePage(),
+            child: LoginPage(),
           ),
         ));
   }
