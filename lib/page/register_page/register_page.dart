@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,6 +28,10 @@ class RegisterPage extends StatelessWidget {
                       Divider(
                         height: 1,
                       ),
+                      _buildVerificationCode(),
+                      Divider(
+                        height: 1,
+                      ),
                       _buildPasswordWidget(),
                       Divider(
                         height: 1,
@@ -47,7 +49,6 @@ class RegisterPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(25)),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -74,14 +75,19 @@ _buildUserWidget() {
     child: Row(
       children: <Widget>[
         Text(
-          '账号',
+          '+86',
           style: TextStyle(fontSize: 16),
+        ),
+        Container(
+          width: 1,
+          height: 30,
+          color: Colors.black12,
+          margin: EdgeInsets.symmetric(horizontal: 20),
         ),
         SizedBox(
           width: 200,
           child: TextFormField(
             decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(left: 20),
                 border: InputBorder.none,
                 hintText: "请输入您的手机号/邮箱",
                 hintStyle: TextStyle(color: Colors.black26),
@@ -90,5 +96,22 @@ _buildUserWidget() {
         ),
       ],
     ),
+  );
+}
+
+_buildVerificationCode() {
+  return Row(
+    children: <Widget>[
+      SizedBox(
+        width: 200,
+        child: TextFormField(
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: "请输入验证码",
+              hintStyle: TextStyle(color: Colors.black26),
+              prefixStyle: TextStyle(color: Colors.black)),
+        ),
+      ),
+    ],
   );
 }
