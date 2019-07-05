@@ -6,10 +6,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-
-
-
-
         Align(
           alignment: Alignment.topCenter,
           child: Image.asset(
@@ -116,15 +112,16 @@ class LoginPage extends StatelessWidget {
             ),
             Align(
               alignment: Alignment(0, 0.8),
-              child:Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ClipOval(
                     child: Image.asset("assets/images/qq.png"),
                   ),
-                  SizedBox(width: 30,),
+                  SizedBox(
+                    width: 30,
+                  ),
                   ClipOval(
-
                     child: Image.asset("assets/images/wechat.png"),
                   )
                 ],
@@ -132,13 +129,23 @@ class LoginPage extends StatelessWidget {
             ),
             Positioned(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Icon(Icons.close,color: Colors.white70,size: 20,),
-                    Text("登录",style: TextStyle(color: Colors.white70,fontSize: 18),),
-                    Text("注册",style: TextStyle(color: Colors.white70,fontSize: 18),)
+                    Icon(
+                      Icons.close,
+                      color: Colors.white70,
+                      size: 20,
+                    ),
+                    Text(
+                      "登录",
+                      style: TextStyle(color: Colors.white70, fontSize: 18),
+                    ),
+                    Text(
+                      "注册",
+                      style: TextStyle(color: Colors.white70, fontSize: 18),
+                    )
                   ],
                 ),
               ),
