@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_shiguangxun/common/ImageMoveWidget.dart';
 import 'package:flutter_shiguangxun/page/login_page/LoginPage.dart';
 

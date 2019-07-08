@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
-          resizeToAvoidBottomInset: false,
+
           body: SafeArea(
             child: RegisterPage(),
           ),

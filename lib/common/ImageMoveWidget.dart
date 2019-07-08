@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' hide Action;
 
 class ImageMoveWidget extends StatefulWidget {
   var time;
