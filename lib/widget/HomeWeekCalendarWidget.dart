@@ -18,6 +18,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
   var _currentWeekIndex;
   PageController _transController;
 
+
   void initState() {
     super.initState();
     _time = DateTime.now();
@@ -26,6 +27,10 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
     _duration = DateTime.now().difference(DateTime(2020, 12, 31));
     _currentPageIndex = 0;
     _currentWeekIndex =  DateTime.now().weekday-1;
+    _transController.addListener((){
+      print("addListener     ${_transController.position}");
+
+    });
   }
 
   @override

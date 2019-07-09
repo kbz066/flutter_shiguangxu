@@ -28,7 +28,8 @@ class _ToDayPageState extends State<ToDayPage> {
               width: 60,
               child: Image.asset("assets/images/home_bg.png",),
             )
-          )
+          ),
+
         ],
       ),
     );
