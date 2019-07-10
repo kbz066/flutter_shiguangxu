@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shiguangxun/page/home_page/today_page.dart';
+import 'package:flutter_shiguangxu/page/home_page/today_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
