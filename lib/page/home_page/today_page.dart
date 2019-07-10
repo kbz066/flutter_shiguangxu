@@ -60,30 +60,13 @@ class _ToDayPageState extends State<ToDayPage>
         children: <Widget>[
           _buildTopWidget(),
           HomeWeekCalendarWidget(this.moveIndex),
-//          AnimatedBuilder(
-//            animation: _animation,
-//            builder: (BuildContext context, Widget child) {
-//              return Container(
-//                  padding: EdgeInsets.only(left: _animation.value.left),
-//                  transform: Matrix4.translationValues(
-//                      0, -_getWeekItemWidthDP() / 6, 0),
-//                  child: SizedBox(
-//                    width: _getWeekItemWidthDP(),
-//                    child: Image.asset(
-//                      "assets/images/home_bg.png",
-//                    ),
-//                  ));
-//            },
-//          ),
+
         ],
       ),
     );
   }
 }
 
-double _getWeekItemWidthDP() {
-  return window.physicalSize.width / window.devicePixelRatio / 7;
-}
 
 _buildTopWidget() {
   return Container(
@@ -127,4 +110,8 @@ _buildTopWidget() {
       ],
     ),
   );
+}
+
+_buildContentWIdget(){
+
 }

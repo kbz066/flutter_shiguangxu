@@ -23,7 +23,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
   var _duration;
   var _currentPageIndex;
   var _currentWeekIndex;
-  var _lastCurrentWeekIndex;
+
   Function(int index) moveIndex;
 
   PageController _transController;
@@ -38,7 +38,6 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
     _duration = DateTime.now().difference(DateTime(2020, 12, 31));
     _currentPageIndex = 0;
     _currentWeekIndex = DateTime.now().weekday - 1;
-    _lastCurrentWeekIndex=_currentWeekIndex;
   }
 
   @override
@@ -48,11 +47,9 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    print("日期控件 biuld");
     return Container(
       color: ColorUtils.mainColor,
-      height: 60,
+      height: 55,
       child: Listener(
         onPointerUp: (e) {
           print("抬起手指    ${_transController.page}");
@@ -90,12 +87,8 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
                 ),
                 Positioned(
                   bottom: 0,
-                  child: HomeMoveTriangleWidget(
-                      EdgeInsets.only(
-                          left: _lastCurrentWeekIndex * _getWeekItemWidth()),
-                      EdgeInsets.only(
-                          left: (_currentWeekIndex - _lastCurrentWeekIndex) *
-                              _getWeekItemWidth())),
+                  child: HomeMoveTriangleWidget(EdgeInsets.only(
+                      left: _currentWeekIndex * _getWeekItemWidth())),
                 )
               ],
             );
@@ -106,7 +99,6 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
     );
   }
 
-  _startAni() {}
   _onPageChanged(index) {
     print("_onPageChanged    " + index.toString());
     setState(() {
@@ -130,6 +122,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
         _time.add(Duration(days: pageIndex * 7 + index - (_time.weekday - 1)));
     return _time.compareTo(_nowDuration) == 0
         ? Container(
+            height: 25,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: isCheckIndex(index, pageIndex) ? Colors.white : null,
@@ -146,8 +139,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
             height: 25,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color:
-                    isCheckIndex(index, pageIndex) ? Colors.white : Colors.red,
+                color: isCheckIndex(index, pageIndex) ? Colors.white : null,
                 shape: BoxShape.circle),
             child: Text("${(_nowDuration.day.toString())}",
                 style: TextStyle(
