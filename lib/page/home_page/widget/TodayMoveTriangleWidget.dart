@@ -56,7 +56,7 @@ class HomeMoveTriangleWidgetState extends State<HomeMoveTriangleWidget>
     super.initState();
 
     startMoveAnimation(null);
-}
+  }
 
   @override
   void dispose() {
