@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -5,50 +6,65 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
+import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
+import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayMoveTriangleWidget.dart';
 
 class HomeWeekCalendarWidget extends StatefulWidget {
-  Function(int index) moveIndex;
-
   WeekCalendarInfo _weekCalendarInfo;
 
-  HomeWeekCalendarWidget(this.moveIndex, this._weekCalendarInfo);
+  HomeWeekCalendarWidget(this._weekCalendarInfo);
 
   @override
   HomeWeekCalendarWidgetState createState() =>
-      HomeWeekCalendarWidgetState(moveIndex, _weekCalendarInfo);
+      HomeWeekCalendarWidgetState(_weekCalendarInfo);
 }
 
 class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
+  bool _isTouch = false;
   WeekCalendarInfo _weekCalendarInfo;
-
-  Function(int index) moveIndex;
 
   PageController _transController;
 
-  HomeWeekCalendarWidgetState(this.moveIndex, this._weekCalendarInfo);
+  StreamSubscription<TodayWeekCalendarIndexEvent> _eventStream;
+
+  HomeWeekCalendarWidgetState(this._weekCalendarInfo);
 
   void initState() {
     super.initState();
 
     _transController = new PageController();
+
+    ///eventbus 通信
+    _eventStream = EventBusUtils.instance.eventBus
+        .on<TodayWeekCalendarIndexEvent>()
+        .listen((event) {
+
+      setState(() {
+        this._weekCalendarInfo.currentWeekIndex = event.weekIndex;
+        this._weekCalendarInfo.currentPageIndex = event.pageIndex;
+        _transController.animateToPage(event.pageIndex,
+            duration: Duration(milliseconds: 300), curve: Curves.linear);
+      });
+    });
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void dispose() {
+    _eventStream.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorUtils.mainColor,
-      height: 55,
-      child: Listener(
-        onPointerUp: (e) {
-          print("抬起手指    ${_transController.page}");
-        },
+    return Listener(
+      onPointerDown: (PointerDownEvent event) {
+        _isTouch = true;
+      },
+      child: Container(
+        color: ColorUtils.mainColor,
+        height: 55,
         child: PageView.builder(
           controller: _transController,
           itemCount: (_weekCalendarInfo._dateTotalSize / 7).ceil(),
@@ -69,11 +85,11 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
                           onTap: () {
                             print("点击的 index   ${index}    ${pageIndex}   ");
                             setState(() {
-
                               _weekCalendarInfo._currentWeekIndex = index;
                               _weekCalendarInfo.currentPageIndex = pageIndex;
-                              moveIndex(_weekCalendarInfo._currentWeekIndex);
-                              EventBusUtils.instance.eventBus.fire(TodayContentIndexEvent(pageIndex*7+index));
+                              EventBusUtils.instance.eventBus.fire(
+                                  TodayContentIndexEvent(
+                                      pageIndex * 7 + index));
                             });
                           },
                           child: _getTimeWidget(
@@ -99,22 +115,27 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
   }
 
   _onPageChanged(index) {
-    print("_onPageChanged    " + index.toString());
-    setState(() {
-      if (_weekCalendarInfo.currentPageIndex < index) {
-        _weekCalendarInfo._currentWeekIndex = 0;
-      } else {
-        _weekCalendarInfo._currentWeekIndex = 6;
+    if (_isTouch) {
+      print("_onPageChanged    " + index.toString());
+
+      if (index == _weekCalendarInfo.currentPageIndex) {
+        return;
       }
+      setState(() {
+        if (_weekCalendarInfo.currentPageIndex < index) {
+          _weekCalendarInfo._currentWeekIndex = 0;
+        } else {
+          _weekCalendarInfo._currentWeekIndex = 6;
+        }
 
+        _weekCalendarInfo.currentPageIndex = index;
+        EventBusUtils.instance.eventBus.fire(TodayContentIndexEvent(
+            index * 7 + _weekCalendarInfo.currentWeekIndex));
+      });
 
-      _weekCalendarInfo.currentPageIndex = index;
-      EventBusUtils.instance.eventBus.fire(TodayContentIndexEvent(index*7+_weekCalendarInfo.currentWeekIndex));
-
-    });
-    moveIndex(_weekCalendarInfo._currentWeekIndex);
-
-    print("index      " + index.toString());
+      print("index      " + index.toString());
+      _isTouch = false;
+    }
   }
 
   _getTimeWidget(_time, index, pageIndex) {
@@ -170,9 +191,6 @@ class WeekCalendarInfo {
 
   var _currentWeekIndex;
 
-
-
-
   WeekCalendarInfo(
       this._currentTime, this._dateTotalSize, this._currentWeekIndex,
       {this.weekTitles = const ["一", "二", "三", "四", "五", "六", "日"],
@@ -181,4 +199,8 @@ class WeekCalendarInfo {
   get dateTotalSize => _dateTotalSize;
 
   get currentWeekIndex => _currentWeekIndex;
+
+  set currentWeekIndex(value) {
+    _currentWeekIndex = value;
+  }
 }

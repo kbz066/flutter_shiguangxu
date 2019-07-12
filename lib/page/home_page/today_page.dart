@@ -17,7 +17,7 @@ class ToDayPage extends StatefulWidget {
 
 
 class _ToDayPageState extends State<ToDayPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin,AutomaticKeepAliveClientMixin {
   EdgeInsetsTween _tween;
 
   Animation<EdgeInsets> _animation;
@@ -30,8 +30,9 @@ class _ToDayPageState extends State<ToDayPage>
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
+
 
     _controller = new AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
@@ -49,12 +50,11 @@ class _ToDayPageState extends State<ToDayPage>
 
   }
 
-  moveIndex(int index) {}
 
   @override
   Widget build(BuildContext context) {
-    print("屏幕宽度  ${window.devicePixelRatio}  ${_weekCalendarInfo}");
 
+    super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtils.mainColor,
@@ -66,7 +66,7 @@ class _ToDayPageState extends State<ToDayPage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTopWidget(),
-          HomeWeekCalendarWidget(this.moveIndex,this._weekCalendarInfo),
+          HomeWeekCalendarWidget(this._weekCalendarInfo),
           Expanded(
             child: TodayContentWidget(this._weekCalendarInfo.currentPageIndex*7+this._weekCalendarInfo.currentWeekIndex),
           )
@@ -119,6 +119,10 @@ class _ToDayPageState extends State<ToDayPage>
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shiguangxu/page/config_page/config_page.dart';
 import 'package:flutter_shiguangxu/page/home_page/today_page.dart';
+import 'package:flutter_shiguangxu/page/home_page/plan_list_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _currentIndex;
 
+  PageController _pageController;
   List<Widget> pageLists;
 
   @override
@@ -16,13 +19,20 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     _currentIndex = 0;
-    pageLists = [ToDayPage(), ToDayPage(), ToDayPage()];
+
+    _pageController = PageController(initialPage: _currentIndex);
+    pageLists = [ToDayPage(), PlanListPage(), ConfigPage()];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pageLists[_currentIndex],
+      body: PageView(
+        controller: _pageController,
+        children: pageLists,
+        onPageChanged: this.onPageChanged,
+        physics: new NeverScrollableScrollPhysics(),//禁止滑动
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: Colors.blue,
@@ -44,12 +54,24 @@ class _HomePageState extends State<HomePage> {
             activeIcon: Image.asset("assets/images/tab_icon_my_sel.png"),
           )
         ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+        onTap: this.onTap,
       ),
     );
   }
+
+  void onTap(int index) {
+
+    _pageController.animateToPage(index,
+        duration: Duration(milliseconds: 300), curve: Curves.linear);
+
+  }
+
+  void onPageChanged(int index) {
+
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+
 }
