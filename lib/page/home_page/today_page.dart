@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
@@ -68,7 +69,12 @@ class _ToDayPageState extends State<ToDayPage>
           _buildTopWidget(),
           HomeWeekCalendarWidget(this._weekCalendarInfo),
           Expanded(
-            child: TodayContentWidget(this._weekCalendarInfo.currentPageIndex*7+this._weekCalendarInfo.currentWeekIndex),
+            child: Listener(
+                onPointerMove: (PointerMoveEvent details){
+
+                },
+              child: TodayContentWidget(this._weekCalendarInfo.currentPageIndex*7+this._weekCalendarInfo.currentWeekIndex),
+            ),
           )
         ],
       ),

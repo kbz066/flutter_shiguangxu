@@ -22,12 +22,16 @@ class _HomePageState extends State<HomePage> {
 
     _pageController = PageController(initialPage: _currentIndex);
     pageLists = [ToDayPage(), PlanListPage(), ConfigPage()];
+
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: PageView(
+
         controller: _pageController,
         children: pageLists,
         onPageChanged: this.onPageChanged,
