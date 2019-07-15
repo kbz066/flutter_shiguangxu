@@ -16,9 +16,7 @@ class  TodayCircleWidget extends StatefulWidget {
   double _percent=1.0;
 
 
-  TodayCircleWidget(this._percent){
-    println("出入的   ${_percent}");
-  }
+  TodayCircleWidget(this._percent);
 
   @override
   TodayCircleWidgetState createState() => new TodayCircleWidgetState();
@@ -43,10 +41,7 @@ class TodayCircleWidgetState extends State<TodayCircleWidget> {
     super.initState();
   }
 
-  @override
-  void didUpdateWidget(TodayCircleWidget oldWidget) {
-    println("didUpdateWidget   ${widget._percent}");
-  }
+
 
 }
 

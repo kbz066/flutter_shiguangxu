@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
@@ -93,11 +94,11 @@ class _TodayContentWidgetState extends State<TodayContentWidget> {
       });
     });
     _headerController.addListener(() {
-      print("offset    ${_headerController.offset }   ${_headerOffset/(_handerScrollSize/2)}");
 
-      if((_headerController.offset-_handerScrollSize).abs()<=_handerScrollSize/2){
 
-        _headerOffset=(_headerController.offset-_handerScrollSize).abs();
+      if((_headerController.offset-_handerScrollSize).abs()<=_handerScrollSize){
+
+
 
         setState(() {
 
@@ -133,30 +134,32 @@ class _TodayContentWidgetState extends State<TodayContentWidget> {
 
   ///头部移动
   _headerTranslationY(){
-
-
+    _headerOffset=(_headerController.offset-_handerScrollSize).abs();
+    double moreOffset = _headerOffset- _handerScrollSize/2;
     double percent = _headerOffset / (_handerScrollSize/2);
     if (percent <= 1.0) {
 
-     // _headerListTranslationY=_handerMaxContainerHeight/2;
-      //_headerCircleTranslationY=-_headerOffset / 2 - 15 / 2;
+      _headerListTranslationY=_handerScrollSize/2;
+      _headerCircleTranslationY= -_headerOffset / 2 - 15 / 2;
 
      // print("_headerController      ${_headerCircleTranslationY}  ${_headerListTranslationY}");
     }
-//    else {
-//      float subPercent = (moreOffset) / (listHeight - containerHeight);
-//
-//      subPercent = Math.min(1.0f, subPercent);
-//      mExpendPoint.setTranslationY((int) containerHeight / 2 - mExpendPoint.getHeight() / 2 - (int) containerHeight * subPercent / 2);
-//    mExpendPoint.setPercent(1.0f);
-//
-//
-//    float alpha = (1 - subPercent * 2);
-//    mExpendPoint.setAlpha(Math.max(alpha, 0));
-//
-//    Log.e("subPercent   ",""+subPercent+"        "+Math.max(alpha, 0));
-//    mRecyclerView.setTranslationY((1 - subPercent) * containerHeight);
-//  }
+    else {
+      double subPercent = (moreOffset) / (_handerScrollSize - _handerScrollSize/2);
+
+
+      subPercent = min(1.0, subPercent);
+      _headerCircleTranslationY=_handerScrollSize/2 / 2 - 15/ 2 - _handerScrollSize/2 * subPercent / 2;
+    //mExpendPoint.setPercent(1.0f);
+
+
+    //float alpha = (1 - subPercent * 2);
+   // mExpendPoint.setAlpha(Math.max(alpha, 0));
+
+
+
+    _headerListTranslationY=(1 - subPercent) * _handerScrollSize/2;
+  }
 //  }
   }
 
@@ -166,7 +169,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget> {
 
 
 
-    print("build   ${_headerOffset/(_handerScrollSize/2)}    ${_headerOffset}");
+
 
     return Container(
       width: double.infinity,
@@ -219,7 +222,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget> {
                           opacity: 0.5,
                           child: Transform(
                             transform: Matrix4.translationValues(0, _headerCircleTranslationY, 0),
-                            child: TodayCircleWidget(_headerOffset/(_handerScrollSize/2)),
+                            child: TodayCircleWidget(_headerOffset/(_handerScrollSize/2)<=1.0?_headerOffset/(_handerScrollSize/2):1.0),
                           ),
                         )
                       ],
