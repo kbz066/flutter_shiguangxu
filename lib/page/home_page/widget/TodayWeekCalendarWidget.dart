@@ -41,6 +41,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
         .on<TodayWeekCalendarIndexEvent>()
         .listen((event) {
 
+          print("TodayWeekCalendarIndexEvent      $event");
       setState(() {
         this._weekCalendarInfo.currentWeekIndex = event.weekIndex;
         this._weekCalendarInfo.currentPageIndex = event.pageIndex;

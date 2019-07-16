@@ -66,7 +66,7 @@ class TodayCirclePainter extends CustomPainter{
     _maxRadius = size.height / 2;
     double centerX = size.width / 2;
     double centerY = size.height / 2;
-    print("radius      ${_percent}"  );
+    //print("radius      ${_percent}"  );
     if(_percent<= 0.5){
       double radius = _percent * 2 * _maxRadius;
       canvas.drawCircle(Offset(centerX, centerY), radius, _paint);
