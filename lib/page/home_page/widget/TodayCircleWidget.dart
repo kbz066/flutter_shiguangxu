@@ -58,7 +58,7 @@ class TodayCirclePainter extends CustomPainter{
 
 
   TodayCirclePainter(this._percent){
-    _paint=Paint()..color=Colors.green;
+    _paint=Paint()..color=Colors.orange;
   }
 
   @override

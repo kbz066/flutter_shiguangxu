@@ -58,7 +58,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
 
     _headerListTranslationY = 0;
     _headerCircleTranslationY = 0;
-    _handerScrollSize = 100;
+    _handerScrollSize = 200;
     _handerContainerHeight = 100;
     _headerOffset = 0;
     _contentTranslationY=0;
@@ -179,20 +179,27 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
 
   ///头部移动
   _headerTranslationY(double overscroll) {
-//    _headerOffset=(_headerOffset-=overscroll).abs();
+    _headerOffset-=overscroll;
+    double percent = _headerOffset.abs()/ (_handerScrollSize/2);
 
-    //滑动的处理
+    double moreOffset = _headerOffset.abs() - _handerScrollSize/2;
 
-    if (_headerListTranslationY.abs() <= _handerScrollSize/2) {
-      _headerListTranslationY-=overscroll*2;
-      _contentTranslationY-=overscroll*2;
-    //  _headerCircleTranslationY = _handerScrollSize / 4;
-    } else {
 
-      _headerListTranslationY-=overscroll/_offsetRadio;
-      _contentTranslationY-=overscroll;
+    if (percent <= 1.0) {
+//      mExpendPoint.setPercent(percent);
+//      mExpendPoint.setTranslationY(-_headerOffset.abs()/ 2 + mExpendPoint.getHeight() / 2);
+     _headerListTranslationY= _handerScrollSize/2;
+    }else {
+      double subPercent = (moreOffset) / (_handerScrollSize - _handerScrollSize/2);
 
+      print("subPercent            $subPercent    $moreOffset");
+      subPercent = min(1.0, subPercent);
+
+      double alpha = (1 - subPercent * 2);
+
+      _headerListTranslationY =(1 - subPercent) * _handerScrollSize/2;
     }
+
   }
 
   _startAni() {
@@ -282,7 +289,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
                         ),
                       ),
                       Positioned(
-                        top: _headerListTranslationY-_handerScrollSize,
+                        top: _headerListTranslationY-_handerScrollSize/2,
                         left: 0,
                         right: 0,
                         child: Container(
