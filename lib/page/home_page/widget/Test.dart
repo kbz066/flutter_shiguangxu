@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fish_redux/fish_redux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,61 +7,94 @@ import 'package:flutter/material.dart';
 import 'DemoHeader.dart';
 
 class Test extends StatelessWidget {
-  final List<Color> colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.pink
-  ];
+  final List<Color> colors = [Colors.red, Colors.green, Colors.blue, Colors.pink];
 
   @override
   Widget build(BuildContext context) {
-    var list = List.generate(200, (int index) {
-      return Text("$index");
-    });
+
+
     return Scaffold(
-      body: NotificationListener(
-        onNotification: (notification) {
-          //print(notification);
+        body: CustomScrollView(
 
 
-          switch (notification.runtimeType) {
-            case ScrollStartNotification:
-              print("开始滚动");
-              break;
-            case ScrollUpdateNotification:
-              ScrollUpdateNotification scrollUpdateNotification=notification;
+          physics: RefreshScrollPhysics(),
+            slivers: <Widget>[
+          SliverPersistentHeader(delegate: DemoHeader(), pinned: false,floating: false,),
 
-              print("正在滚动");
-              break;
-            case ScrollEndNotification:
-              ScrollEndNotification endNotification =notification;
-              //下滑到最底部
-              if (notification.metrics.extentAfter == 0.0) {
-               // print('======下滑到最底部======');
-
-              }
-              //滑动到最顶部
-              if (notification.metrics.extentBefore == 0.0) {
-               // print('======滑动到最顶部======');
-
-              }
-              print("滚动停止  ${ endNotification.metrics }");
-              break;
-            case OverscrollNotification:
-              OverscrollNotification overscrollNotification=notification;
-
-              print("滚动到边界  ${overscrollNotification.velocity}");
-              break;
+          // 这个部件一般用于最后填充用的，会占有一个屏幕的高度，
+          // 可以在 child 属性加入需要展示的部件
+         NotificationListener(
+           onNotification: (notification){
+             print(notification);
+             switch (notification.runtimeType){
+               case ScrollStartNotification: print("开始滚动"); break;
+               case ScrollUpdateNotification: print("正在滚动"); break;
+               case ScrollEndNotification: print("滚动停止"); break;
+               case OverscrollNotification: print("滚动到边界"); break;
+             }
+             return true;
+           },
+           child:  SliverList(
 
 
-          }
-          return true;
-        },
-        child: ListView(
-          children: list,
-        ),
-      ),
+             delegate: new SliverChildBuilderDelegate(
+                     (BuildContext context, int index) {
+                   return Text("$index");
+                 },
+                 childCount: 200
+             ),
+           ),
+         )
+        ]
+        )
     );
   }
 }
+
+
+class RefreshScrollPhysics extends ScrollPhysics{
+  const RefreshScrollPhysics({ ScrollPhysics parent }) : super(parent: parent);
+  @override
+  RefreshScrollPhysics applyTo(ScrollPhysics ancestor) {
+    return new RefreshScrollPhysics(parent: buildParent(ancestor));
+  }
+
+  //此处返回null时为了取消惯性滑动
+//  @override
+//  Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
+//
+//
+//    return  null;
+//  }
+
+  @override
+  Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
+    final Tolerance tolerance = this.tolerance;
+    print("velocity    ${position}     ${velocity}");
+    if (position.pixels<120) {
+
+
+      return ScrollSpringSimulation(
+        spring,
+        position.pixels,
+        120,
+        min(0.0, velocity),
+        tolerance: tolerance,
+      );
+    }
+    if (velocity.abs() < tolerance.velocity)
+      return null;
+    if (velocity > 0.0 && position.pixels >= position.maxScrollExtent)
+      return null;
+    if (velocity < 0.0 && position.pixels <= position.minScrollExtent)
+      return null;
+    return ClampingScrollSimulation(
+      position: position.pixels,
+      velocity: velocity,
+      tolerance: tolerance,
+    );
+  }
+
+
+}
+

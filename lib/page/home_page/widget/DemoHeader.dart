@@ -4,7 +4,7 @@ class DemoHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
 
-    print("滑动距离   ${shrinkOffset}");
+   // print("滑动距离   ${shrinkOffset}");
     return Container(
         color: Colors.pink,
         alignment: Alignment.center,
@@ -12,7 +12,7 @@ class DemoHeader extends SliverPersistentHeaderDelegate {
   } // 头部展示内容
 
   @override
-  double get maxExtent => 500.0; // 最大高度
+  double get maxExtent => 300.0; // 最大高度
 
   @override
   double get minExtent => 100.0; // 最小高度
