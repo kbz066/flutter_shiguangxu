@@ -49,7 +49,7 @@ class TodayCirclePainter extends CustomPainter{
 
   double _percent=1;
   double _maxRadius = 4;
-  double _maxDist = 15;
+  double _maxDist = 20;
 
 
   Paint _paint;
