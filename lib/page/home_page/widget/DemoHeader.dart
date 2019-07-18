@@ -4,7 +4,7 @@ class DemoHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
 
-   // print("滑动距离   ${shrinkOffset}");
+    print("滑动距离   ${shrinkOffset}");
     return Container(
         color: Colors.pink,
         alignment: Alignment.center,

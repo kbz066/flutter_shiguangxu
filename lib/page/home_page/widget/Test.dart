@@ -58,7 +58,16 @@ class RefreshScrollPhysics extends ScrollPhysics{
   RefreshScrollPhysics applyTo(ScrollPhysics ancestor) {
     return new RefreshScrollPhysics(parent: buildParent(ancestor));
   }
+  @override
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    // TODO: implement applyPhysicsToUserOffset
 
+    print("applyPhysicsToUserOffset                   ${offset}");
+    if(offset<0){
+      return 100;
+    }
+    return offset;
+  }
   //此处返回null时为了取消惯性滑动
 //  @override
 //  Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
@@ -71,17 +80,17 @@ class RefreshScrollPhysics extends ScrollPhysics{
   Simulation createBallisticSimulation(ScrollMetrics position, double velocity) {
     final Tolerance tolerance = this.tolerance;
     print("velocity    ${position}     ${velocity}");
-    if (position.pixels<120) {
-
-
-      return ScrollSpringSimulation(
-        spring,
-        position.pixels,
-        120,
-        min(0.0, velocity),
-        tolerance: tolerance,
-      );
-    }
+//    if (position.pixels<120) {
+//
+//
+//      return ScrollSpringSimulation(
+//        spring,
+//        position.pixels,
+//        120,
+//        min(0.0, velocity),
+//        tolerance: tolerance,
+//      );
+//    }
     if (velocity.abs() < tolerance.velocity)
       return null;
     if (velocity > 0.0 && position.pixels >= position.maxScrollExtent)
