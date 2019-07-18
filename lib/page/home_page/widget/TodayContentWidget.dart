@@ -11,7 +11,6 @@ import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.d
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/widget/RefreshScrollPhysics.dart';
 
-
 import 'TodayCircleWidget.dart';
 
 class TodayContentWidget extends StatefulWidget {
@@ -24,12 +23,13 @@ class TodayContentWidget extends StatefulWidget {
       _TodayContentWidgetState(this._initialPage);
 }
 
-class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerProviderStateMixin{
+class _TodayContentWidgetState extends State<TodayContentWidget>
+    with TickerProviderStateMixin {
   var _initialPage;
 
   bool _isTouch = false;
 
-  bool _isRunscrollAnimation=false;
+  bool _isRunscrollAnimation = false;
   List _headerTitleList;
 
   List _headerImageList;
@@ -56,8 +56,8 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
   Tween<double> _scrollTween;
   _TodayContentWidgetState(this._initialPage);
 
-  bool isReset=false;
-  bool isPulling=false;
+  bool isReset = false;
+  bool isPulling = false;
 
   @override
   void initState() {
@@ -67,11 +67,11 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
     _circleOpacity = 1;
     _headerOffset = 0;
     _circlePercent = 0;
-    _shrinkTranslationY=0;
+    _shrinkTranslationY = 0;
     _contentTranslationY = 0;
     _headerCircleTranslationY = 0;
-    _handerScrollSize = 120;
-    _handerContainerHeight = 120;
+    _handerScrollSize = 100;
+    _handerContainerHeight = 100;
     _headerListTranslationY = -_handerScrollSize;
     _pageController = PageController(initialPage: this._initialPage);
     _headerController = ScrollController(initialScrollOffset: 0);
@@ -146,69 +146,69 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
 
   ///头部移动
   _headerTranslationY(double offset) {
+//    print("_headerOffset         ${_headerOffset}");
 
-    print("_headerOffset         ${_headerOffset}");
-
-
-
-
-    if(_headerOffset+offset>=0&&_headerOffset+offset <= _handerScrollSize+_handerScrollSize / 2 ){
+    if (_headerOffset + offset <= _handerScrollSize * 2) {
       setState(() {
         _headerOffset += offset;
 
-        double moreOffset = _headerOffset - _handerScrollSize / 2;
+        double moreOffset = _headerOffset - _handerScrollSize;
         double percent = _headerOffset / (_handerScrollSize / 2);
-        if (_headerOffset <= _handerScrollSize / 2) {
 
-          _circlePercent=percent;
-          _circleOpacity=1-percent/6;
-          _headerCircleTranslationY += offset / 2;
+        _handerContainerHeight-=offset/7;
+        if (percent <= 1.0) {
+          //  _headerListTranslationY = -_handerScrollSize / 2;
+          _headerCircleTranslationY = _headerOffset;
+          _circlePercent = percent;
+          _circleOpacity =  1-percent * 0.8;
+          print("  $_headerCircleTranslationY");
+        } else {
+          _circleOpacity = 0;
+          double subPercent = (moreOffset) / (_handerScrollSize - _handerScrollSize / 2);
 
-        }else{
-          _circleOpacity=0;
-          _headerListTranslationY+=offset;
+          subPercent = min(1.0, subPercent);
+//      _headerCircleTranslationY = _handerScrollSize / 2 / 2 -
+//          15 / 2 -
+//          _handerScrollSize / 2 * subPercent / 2;
+          //mExpendPoint.setPercent(1.0f);
+
+          //float alpha = (1 - subPercent * 2);
+          // mExpendPoint.setAlpha(Math.max(alpha, 0));
+
+          _headerListTranslationY = -(1 - subPercent) * _handerScrollSize / 2;
+         // print("_headerTranslationY      ${subPercent}  ${_headerListTranslationY}  $_headerOffset    $moreOffset   $offset");
         }
-        _contentTranslationY=_headerListTranslationY+_handerScrollSize;
+
+//        if (percent<=1) {
+//
+//          _circlePercent=percent;
+//          _circleOpacity=1-percent/6;
+//          _headerCircleTranslationY += offset / 2;
+//
+//        }else{
+//          double subPercent = (moreOffset) / (_handerScrollSize - _handerScrollSize / 2);
+//          _circleOpacity=0;
+//          _headerListTranslationY+=offset;
+//        }
+        _contentTranslationY = _headerListTranslationY + _handerScrollSize;
       });
     }
-
-//    if (percent <= 1.0) {
-//      _headerListTranslationY = -_handerScrollSize / 2;
-//      // _headerCircleTranslationY = -_headerOffset / 2 - 15 / 2;
-//      _circlePercent = percent;
-//    } else {
-//      double subPercent =
-//          (moreOffset) / (_handerScrollSize - _handerScrollSize / 2);
-//
-//      subPercent = min(1.0, subPercent);
-////      _headerCircleTranslationY = _handerScrollSize / 2 / 2 -
-////          15 / 2 -
-////          _handerScrollSize / 2 * subPercent / 2;
-//      //mExpendPoint.setPercent(1.0f);
-//
-//      //float alpha = (1 - subPercent * 2);
-//      // mExpendPoint.setAlpha(Math.max(alpha, 0));
-//
-//      _headerListTranslationY = -(1 - subPercent) * _handerScrollSize / 2;
-//    //  print("_headerTranslationY      ${subPercent}  ${_headerListTranslationY}  $_headerOffset ");
-//    }
-//    _contentTranslationY=_headerListTranslationY+_handerScrollSize;
   }
 
   void _handleOverscrollNotification(OverscrollNotification notification) {
     // print("notification                         ${notification.runtimeType}");
-     if (notification.dragDetails == null) {
-       return;
-     }
+    if (notification.dragDetails == null) {
+      return;
+    }
     if (notification.overscroll < 0.0) {
       _headerTranslationY(notification.dragDetails.delta.dy);
-
     }
   }
 
   void _handleUserScrollNotification(UserScrollNotification notification) {
-
-    if (_headerListTranslationY.abs()<_handerScrollSize  && notification.direction == ScrollDirection.reverse&&!_isRunscrollAnimation) {
+    if (_headerListTranslationY.abs() < _handerScrollSize &&
+        notification.direction == ScrollDirection.reverse &&
+        !_isRunscrollAnimation) {
       //头部刷新布局出现反向滑动时（由下向上）
       print(" ////头部刷新布局出现反向滑动时（由下向上    ");
       scrollPhysicsChanged(new RefreshScrollPhysics());
@@ -216,101 +216,92 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
   }
 
   void _handleScrollUpdateNotification(ScrollUpdateNotification notification) {
-
     //当上拉加载时，不知道什么原因，dragDetails可能会为空，导致抛出异常，会发生很明显的卡顿，所以这里必须判空
-    if(notification.dragDetails==null){
+    if (notification.dragDetails == null) {
       return;
     }
     //Header刷新的布局可见时，且当手指反方向拖动（由下向上），notification 为 ScrollUpdateNotification，这个时候让头部刷新布局的高度+delta.dy(此时dy为负数)
     // 来缩小头部刷新布局的高度，当完全看不见时，将scrollPhysics设置为RefreshAlwaysScrollPhysics，来保持ListView的正常滑动
 
-    print("ScrollUpdateNotification     ${_headerListTranslationY}   ${-_handerScrollSize}");
+ //   print("ScrollUpdateNotification     ${_headerListTranslationY}   ${-_handerScrollSize}");
 
-    if(_headerListTranslationY>-_handerScrollSize){
-      setState(() {
-        //  如果头部的布局高度<0时，将topItemHeight=0；并恢复ListView的滑动
-        if(_headerListTranslationY+notification.dragDetails.delta.dy<-_handerScrollSize){
-
-          _headerListTranslationY=-_handerScrollSize;
-          _contentScrollPhysics=AlwaysScrollableScrollPhysics();
-        }else {
-          //当刷新布局可见时，让头部刷新布局的高度+delta.dy(此时dy为负数)，来缩小头部刷新布局的高度
-          _headerListTranslationY +=notification.dragDetails.delta.dy ;
-          _contentTranslationY+= notification.dragDetails.delta.dy;
-          _headerOffset+=notification.dragDetails.delta.dy;
-        }
-      });
+    if (_headerListTranslationY > -_handerScrollSize) {
+      //  如果头部的布局高度<0时，将topItemHeight=0；并恢复ListView的滑动
+      if (_headerListTranslationY + notification.dragDetails.delta.dy <
+          -_handerScrollSize) {
+        setState(() {
+          _headerListTranslationY = -_handerScrollSize;
+          _contentScrollPhysics = AlwaysScrollableScrollPhysics();
+        });
+      } else {
+        //当刷新布局可见时，让头部刷新布局的高度+delta.dy(此时dy为负数)，来缩小头部刷新布局的高度
+        _headerTranslationY(notification.dragDetails.delta.dy);
+      }
     }
-
   }
 
   ///滑动结束
   void _handleScrollEndNotification(ScrollEndNotification notification) {
     print("_handleScrollEndNotification 结束");
-    startScrollAanimation();
+    startScrollAnimation();
   }
-  startScrollAanimation(){
 
-
-    if(_headerListTranslationY.abs()==0|| _headerListTranslationY.abs()==_handerScrollSize)return;
+  startScrollAnimation() {
+    if (_headerListTranslationY.abs() == 0 ||
+        _headerListTranslationY.abs() == _handerScrollSize) return;
     scrollPhysicsChanged(new NeverScrollableScrollPhysics());
-    if(_headerListTranslationY.abs()>_handerScrollSize/2){
+    if (_headerListTranslationY.abs() > _handerScrollSize / 2) {
+      _scrollTween.begin = _headerListTranslationY;
 
+      _scrollTween.end = -_handerScrollSize;
+      _headerOffset = 0;
+    } else {
+      _scrollTween.begin = _headerListTranslationY;
 
-      _scrollTween.begin=_headerListTranslationY;
-
-      _scrollTween.end=-_handerScrollSize;
-      _headerOffset=0;
-    }else{
-
-      _scrollTween.begin=_headerListTranslationY;
-
-      _scrollTween.end=0;
-      _headerOffset=_handerScrollSize;
-
+      _scrollTween.end = 0;
+      _headerOffset = _handerScrollSize;
     }
 
     _scrollAnimationController.forward();
-
   }
+
   void initAanimation() {
-    _scrollAnimationController = new AnimationController(duration: const Duration(milliseconds: 200), vsync: this);
+    _scrollAnimationController = new AnimationController(
+        duration: const Duration(milliseconds: 200), vsync: this);
 
     _scrollTween = Tween(begin: 0.0, end: 1.0);
     _scrollAnimation = _scrollTween.animate(_scrollAnimationController)
-    ..addStatusListener((state){
-      if(state==AnimationStatus.completed){//动画结束
-        isReset=true;
-        _scrollAnimationController.reset();
-        isReset=false;
-        _isRunscrollAnimation=false;
-        scrollPhysicsChanged(AlwaysScrollableScrollPhysics());
+      ..addStatusListener((state) {
+        if (state == AnimationStatus.completed) {
+          //动画结束
+          isReset = true;
+          _scrollAnimationController.reset();
+          isReset = false;
+          _isRunscrollAnimation = false;
+          scrollPhysicsChanged(AlwaysScrollableScrollPhysics());
+        } else if (state == AnimationStatus.forward) {
+          _isRunscrollAnimation = true;
+        }
+        // print("动画-----》 $state     ${_shrinkTranslationY}   $_headerListTranslationY" );
+      })
+      ..addListener(() {
+        //因为animationController reset()后，addListener会收到监听，导致再执行一遍,会异常 所以用此标记
+        //判断是reset的话就返回避免异常
+        if (isReset) {
+          return;
+        }
+        setState(() {
+          // print("动画---addListener  --》 ${_scrollAnimation.value}" );
 
-
-      }else if(state==AnimationStatus.forward){
-        _isRunscrollAnimation=true;
-      }
-     // print("动画-----》 $state     ${_shrinkTranslationY}   $_headerListTranslationY" );
-    })
-    ..addListener((){
-
-      //因为animationController reset()后，addListener会收到监听，导致再执行一遍,会异常 所以用此标记
-      //判断是reset的话就返回避免异常
-      if(isReset){
-        return;
-      }
-      setState(() {
-       // print("动画---addListener  --》 ${_scrollAnimation.value}" );
-
-        _headerListTranslationY=_scrollAnimation.value;
-        _contentTranslationY=_headerListTranslationY+_handerScrollSize;
+          _headerListTranslationY = _scrollAnimation.value;
+          _contentTranslationY = _headerListTranslationY + _handerScrollSize;
+        });
       });
-    });
   }
 
-  scrollPhysicsChanged(Physics){
+  scrollPhysicsChanged(Physics) {
     setState(() {
-      _contentScrollPhysics=Physics;
+      _contentScrollPhysics = Physics;
     });
   }
 
@@ -318,7 +309,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
   Widget build(BuildContext context) {
     // print("build      ${_headerListTranslationY}");
 
-   // print(" build    ${_headerListTranslationY}     ${_contentTranslationY}    ${_contentScrollPhysics}");
+    // print(" build    ${_headerListTranslationY}     ${_contentTranslationY}    ${_contentScrollPhysics}");
     return Container(
       width: double.infinity,
       child: PageView.builder(
@@ -335,9 +326,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: Container(
-                      color: Colors.green,
-                    ),
+                    child: Container(),
                   ),
                   Positioned(
                     top: _contentTranslationY,
@@ -349,13 +338,12 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
                         ScrollMetrics metrics = notification.metrics;
                         if (notification is ScrollUpdateNotification) {
                           _handleScrollUpdateNotification(notification);
-
                         } else if (notification is ScrollEndNotification) {
-                           _handleScrollEndNotification(notification);
-
+                          _handleScrollEndNotification(notification);
                         } else if (notification is UserScrollNotification) {
                           _handleUserScrollNotification(notification);
-                        } else if (metrics.atEdge && notification is OverscrollNotification) {
+                        } else if (metrics.atEdge &&
+                            notification is OverscrollNotification) {
                           _handleOverscrollNotification(notification);
                         }
                         return true;
@@ -381,7 +369,6 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
                             Expanded(
                               child: Container(
                                 child: ListView.builder(
-
                                     scrollDirection: Axis.horizontal,
                                     itemCount: 11,
                                     itemBuilder:
@@ -407,18 +394,20 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
                                     }),
                               ),
                             ),
+                            Opacity(
+                              opacity: _circleOpacity,
+                              child: TodayCircleWidget(_circlePercent),
+                            )
                           ],
                         ),
                       )),
-                  Positioned(
-                    top: _headerCircleTranslationY,
-                    left: 0,
-                    right: 0,
-                    child: Opacity(
-                      opacity: _circleOpacity,
-                      child: TodayCircleWidget(_circlePercent),
-                    ),
-                  )
+//                  Positioned(
+//                    top: _headerCircleTranslationY,
+//                    left: 0,
+//                    right: 0,
+//                    child:
+//             ,
+//                  )
                 ],
               ));
         },
@@ -453,8 +442,4 @@ class _TodayContentWidgetState extends State<TodayContentWidget>  with TickerPro
       ),
     );
   }
-
 }
-
-
-
