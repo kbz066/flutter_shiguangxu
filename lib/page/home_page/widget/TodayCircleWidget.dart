@@ -1,4 +1,4 @@
-import 'package:fish_redux/fish_redux.dart';
+
 import 'package:flutter/material.dart';
 
 
@@ -13,10 +13,11 @@ import 'package:flutter/material.dart';
 class  TodayCircleWidget extends StatefulWidget {
 
 
-  double _percent=1.0;
+  double _percent;
+  double _height;
 
 
-  TodayCircleWidget(this._percent);
+  TodayCircleWidget(this._percent, this._height);
 
   @override
   TodayCircleWidgetState createState() => new TodayCircleWidgetState();

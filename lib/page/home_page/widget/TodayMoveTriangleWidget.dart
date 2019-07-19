@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class HomeMoveTriangleWidget extends StatefulWidget {
@@ -28,7 +28,7 @@ class HomeMoveTriangleWidgetState extends State<HomeMoveTriangleWidget>
       animation: _animation,
       builder: (BuildContext context, Widget child) {
         return Container(
-            transform: Matrix4.translationValues(_animation.value.left, 0, 0),
+            transform: Matrix4 .translationValues(_animation.value.left, 0, 0),
             child: SizedBox(
               width: _getWeekItemWidth(),
               child: Image.asset(

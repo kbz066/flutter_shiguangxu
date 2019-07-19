@@ -29,10 +29,12 @@ class ImageMoveWidgetState extends State<ImageMoveWidget>
 
   @override
   Widget build(BuildContext context) {
+
     return AnimatedBuilder(
       builder: (BuildContext context, Widget child) {
         return Container(
-          transform: new Matrix4.translationValues(_animation.value.left, 0, 0),
+
+          transform:   Matrix4.translationValues(_animation.value.left, 0, 0),
           child: Image.asset(path),
         );
       },
