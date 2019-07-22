@@ -29,36 +29,42 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: PageView(
+    return MaterialApp(
+      home: SafeArea(
+        child: Scaffold(
+          body: Scaffold(
+            body: PageView(
 
-        controller: _pageController,
-        children: pageLists,
-        onPageChanged: this.onPageChanged,
-        physics: new NeverScrollableScrollPhysics(),//禁止滑动
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black12,
-        items: [
-          BottomNavigationBarItem(
-            title: Text("今日", style: TextStyle(fontSize: 12)),
-            icon: Image.asset("assets/images/tab_icon_rc_def.png"),
-            activeIcon: Image.asset("assets/images/tab_icon_rc_sel.png"),
+              controller: _pageController,
+              children: pageLists,
+              onPageChanged: this.onPageChanged,
+              physics: new NeverScrollableScrollPhysics(),//禁止滑动
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              selectedItemColor: Colors.blue,
+              unselectedItemColor: Colors.black12,
+              items: [
+                BottomNavigationBarItem(
+                  title: Text("今日", style: TextStyle(fontSize: 12)),
+                  icon: Image.asset("assets/images/tab_icon_rc_def.png"),
+                  activeIcon: Image.asset("assets/images/tab_icon_rc_sel.png"),
+                ),
+                BottomNavigationBarItem(
+                  title: Text("清单", style: TextStyle(fontSize: 12)),
+                  icon: Image.asset("assets/images/tab_icon_plan_sel.png"),
+                  activeIcon: Image.asset("assets/images/tab_icon_plan_def.png"),
+                ),
+                BottomNavigationBarItem(
+                  title: Text("我的", style: TextStyle(fontSize: 12)),
+                  icon: Image.asset("assets/images/tab_icon_my_def.png"),
+                  activeIcon: Image.asset("assets/images/tab_icon_my_sel.png"),
+                )
+              ],
+              onTap: this.onTap,
+            ),
           ),
-          BottomNavigationBarItem(
-            title: Text("清单", style: TextStyle(fontSize: 12)),
-            icon: Image.asset("assets/images/tab_icon_plan_sel.png"),
-            activeIcon: Image.asset("assets/images/tab_icon_plan_def.png"),
-          ),
-          BottomNavigationBarItem(
-            title: Text("我的", style: TextStyle(fontSize: 12)),
-            icon: Image.asset("assets/images/tab_icon_my_def.png"),
-            activeIcon: Image.asset("assets/images/tab_icon_my_sel.png"),
-          )
-        ],
-        onTap: this.onTap,
+        ),
       ),
     );
   }

@@ -77,17 +77,32 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
   @override
   void dispose() {
     _eventStream.cancel();
+
     super.dispose();
   }
 
   /// page滑动事件
   _onPageChanged(index) {
-    print("index    _onPageChanged      $index    ${_isTouch}");
+    //  print("index    _onPageChanged      $index    ${_isTouch}");
     if (_isTouch) {
       EventBusUtils.instance.eventBus
           .fire(TodayWeekCalendarIndexEvent((index / 7).floor(), index % 7));
       _isTouch = false;
     }
+
+    ///重置
+
+    setState(() {
+      _isTouch = false;
+
+      _isRunscrollAnimation = false;
+      _handerContainerHeight = 100; //头部高度
+
+      _arrivedListHeight = false;
+      _offsetRadio = 1.0; //阻尼值
+
+      _headerOffset = 0;
+    });
   }
 
   ///外部监听 下拉事件
@@ -231,13 +246,14 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "build            ${_headerOffset}         ${_handerContainerHeight}");
     return Container(
         width: double.infinity,
         child: Listener(
           onPointerDown: (event) {
             _isTouch = true;
           },
-
           onPointerMove: this._onPointerMove,
           child: PageView.builder(
             controller: _pageController,
@@ -304,10 +320,10 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset("assets/images/today_empty.png"),
-          Text(
-            "${index}",
-            style: TextStyle(color: Colors.red, fontSize: 16),
-          ),
+//          Text(
+//            "${index}",
+//            style: TextStyle(color: Colors.red, fontSize: 16),
+//          ),
           SizedBox(
             height: 20,
           ),

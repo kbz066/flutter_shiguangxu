@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/home_page/home_page.dart';
-import 'package:flutter_shiguangxu/page/home_page/widget/Test.dart';
+import 'package:flutter_shiguangxu/page/login_page/LoginPage.dart';
+import 'package:flutter_shiguangxu/page/welcome_page/welcome_page.dart';
+
 
 
 
