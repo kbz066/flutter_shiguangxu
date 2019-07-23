@@ -454,6 +454,8 @@ class _TabBarScrollController extends ScrollController {
 ///
 ///  * [TabBarView], which displays page views that correspond to each tab.
 class TextPagerIndexBar extends StatefulWidget implements PreferredSizeWidget {
+  double circular;
+
   /// Creates a material design tab bar.
   ///
   /// The [tabs] argument must not be null and its length must match the [controller]'s
@@ -468,7 +470,7 @@ class TextPagerIndexBar extends StatefulWidget implements PreferredSizeWidget {
   ///
   /// If [indicator] is not null, then [indicatorWeight], [indicatorPadding], and
   /// [indicatorColor] are ignored.
-  const TextPagerIndexBar({
+   TextPagerIndexBar({
     Key key,
     @required this.tabs,
     this.controller,
@@ -480,6 +482,7 @@ class TextPagerIndexBar extends StatefulWidget implements PreferredSizeWidget {
     this.indicatorSize,
     this.labelColor,
     this.labelStyle,
+    this.circular,
     this.labelPadding,
     this.unselectedLabelColor,
     this.unselectedLabelStyle,
@@ -677,7 +680,7 @@ class _TextPagerIndexBarState extends State<TextPagerIndexBar> {
     return BoxDecoration(
       color: color,
 
-      borderRadius: BorderRadius.all(Radius.circular(10)),
+      borderRadius: BorderRadius.all(Radius.circular(widget.circular)),
     );
   }
 
@@ -952,8 +955,11 @@ class _TextPagerIndexBarState extends State<TextPagerIndexBar> {
           ),
         ),
       );
-      if (!widget.isScrollable)
+      if (!widget.isScrollable){
+        print("11111111111111");
         wrappedTabs[index] = Expanded(child: wrappedTabs[index]);
+      }
+
     }
 
     Widget tabBar = CustomPaint(
@@ -973,6 +979,8 @@ class _TextPagerIndexBarState extends State<TextPagerIndexBar> {
     );
 
     if (widget.isScrollable) {
+
+      print("33333333333333333333");
       _scrollController ??= _TabBarScrollController(this);
       tabBar = SingleChildScrollView(
         dragStartBehavior: widget.dragStartBehavior,

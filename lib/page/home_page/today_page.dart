@@ -1,10 +1,6 @@
 import 'dart:ui';
 
-
 import 'package:flutter/material.dart';
-
-
-
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
@@ -134,17 +130,13 @@ class _ToDayPageState extends State<ToDayPage>
                                 width: 30,
                               ),
                               InkWellImageWidget(
-                                  "icon_add_category_nor", () {
-
-                              }),
+                                  "icon_add_category_nor", () {}),
 
                               SizedBox(
                                 width: 30,
                               ),
                               InkWellImageWidget(
-                                  "icon_add_important_nor", () {
-
-                              }),
+                                  "icon_add_important_nor", () {}),
 
                               //
                             ],
@@ -162,35 +154,50 @@ class _ToDayPageState extends State<ToDayPage>
 
   _showTimeDialog() {
 
-    var tabs=["时间点","时间段","全天"];
-    var _tabController=TabController(length: 3,vsync: this);
+
+    var tabs = ["时间点", "时间段", "全天"];
+    var _tabController = TabController(length: 3, vsync: this);
     showDialog(
       context: context,
       builder: (ctx) {
         return Scaffold(
-          body: SizedBox(
-            width: 250,
-            child: Column(
-              children: <Widget>[
-                TextPagerIndexBar(
-                  indicatorWeight: 10,
+          backgroundColor: Colors.black12,
+          body: Center(
+            child: Container(
+              width: 300,
+              height: 400,
+              padding: EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: Colors.white, // 底色
 
+                borderRadius: BorderRadius.circular((15.0)), // 圆角度
+              ), //
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    height: 30,
+                    width: 250,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black12), // 边色与边宽度
 
-                  indicatorColor: Colors.green,
-                  unselectedLabelColor: Colors.blue,
-
-
-                  controller: _tabController,
-                  tabs: <Widget>[
-                    Text("11111",style: TextStyle(color: Colors.red),),
-                    SizedBox(child: Text("2222"),height: 200,),
-                    Text("3333")
-                  ],
-                )
-              ],
+                        //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(15))), // 也可控件一边圆角大小
+                    child: TextPagerIndexBar(
+                      indicatorWeight: 10,
+                      circular: 15,
+                      unselectedLabelColor: Colors.black,
+                      indicatorColor: Colors.blue,
+                      indicatorPadding: EdgeInsets.all(50),
+                      controller: _tabController,
+                      tabs: <Widget>[Text("11111"), Text("2222"), Text("3333")],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-
         );
       },
     );
