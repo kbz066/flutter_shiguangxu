@@ -1,0 +1,21 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_shiguangxu/common/Constant.dart';
+
+class InkWellImageWidget extends StatelessWidget{
+
+  String _imageName;
+  VoidCallback _callback;
+
+
+  InkWellImageWidget(this._imageName, this._callback);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return InkWell(
+      child: Image.asset(Constant.IMAGE_PATH +"$_imageName.png"),
+      onTap: _callback
+    );
+  }
+
+}

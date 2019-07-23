@@ -1,14 +1,19 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
-import 'package:flutter/widgets.dart';
+
+
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayContentWidget.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayWeekCalendarWidget.dart';
+import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
+import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
+import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart';
 
 class ToDayPage extends StatefulWidget {
   @override
@@ -16,7 +21,7 @@ class ToDayPage extends StatefulWidget {
 }
 
 class _ToDayPageState extends State<ToDayPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   EdgeInsetsTween _tween;
 
   Animation<EdgeInsets> _animation;
@@ -26,7 +31,6 @@ class _ToDayPageState extends State<ToDayPage>
   double lastMoveIndex = 0;
 
   WeekCalendarInfo _weekCalendarInfo;
-
 
   @override
   void initState() {
@@ -47,9 +51,8 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-
-
   _showAddPlanDialog() {
+    var contentKey = GlobalKey();
     var labels = ["今天", "明天", "后天", "大后天", "下周"].map((item) {
       return Container(
         width: item.length * 25.toDouble(),
@@ -65,97 +68,136 @@ class _ToDayPageState extends State<ToDayPage>
       );
     }).toList();
 
-Scaffold.of(context).showBottomSheet((BuildContext context) {
+    Navigator.push(
+        context,
+        BottomPopupRoute(
+            child: GestureDetector(
+          onTapDown: (down) {
+            if (down.globalPosition.dy <
+                WindowUtils.getHeightDP() -
+                    contentKey.currentContext.size.height) {
+              Navigator.pop(context);
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.black12,
+            body: Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                key: contentKey,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: labels,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10))),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "写点什么,吧事情记录下来....",
+                                    hintStyle: TextStyle(color: Colors.black26),
+                                  ),
+                                ),
+                              ),
+                              Image.asset(Constant.IMAGE_PATH +
+                                  "icon_add_voice_nor.png")
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          color: Color.fromARGB(255, 250, 250, 250),
+                          child: Row(
+                            children: <Widget>[
+                              InkWellImageWidget("plant_icon_time", () {
+                                _showTimeDialog();
+                              }),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              InkWellImageWidget(
+                                  "icon_add_category_nor", () {
 
-      return    Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: labels,
+                              }),
+
+                              SizedBox(
+                                width: 30,
+                              ),
+                              InkWellImageWidget(
+                                  "icon_add_important_nor", () {
+
+                              }),
+
+                              //
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10))),
+        )));
+  }
+
+  _showTimeDialog() {
+
+    var tabs=["时间点","时间段","全天"];
+    var _tabController=TabController(length: 3,vsync: this);
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return Scaffold(
+          body: SizedBox(
+            width: 250,
             child: Column(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "写点什么,吧事情记录下来....",
-                          hintStyle: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    Image.asset(
-                        Constant.IMAGE_PATH + "icon_add_voice_nor.png")
+                TextPagerIndexBar(
+                  indicatorWeight: 10,
+
+
+                  indicatorColor: Colors.green,
+                  unselectedLabelColor: Colors.blue,
+
+
+                  controller: _tabController,
+                  tabs: <Widget>[
+                    Text("11111",style: TextStyle(color: Colors.red),),
+                    SizedBox(child: Text("2222"),height: 200,),
+                    Text("3333")
                   ],
                 )
               ],
             ),
-          )
-        ],
-      );
-    }, backgroundColor: Colors.black12);
-//    showModalBottomSheet(
-//      context: context,
-//      backgroundColor: Colors.transparent,
-//
-//      builder: (BuildContext context) {
-//        return  Column(
-//          mainAxisSize: MainAxisSize.max,
-//          mainAxisAlignment: MainAxisAlignment.end,
-//          children: <Widget>[
-//            Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: labels,
-//            ),
-//            SizedBox(
-//              height: 20,
-//            ),
-//            Container(
-//              padding: EdgeInsets.symmetric(horizontal: 20),
-//              decoration: BoxDecoration(
-//                  color: Colors.white,
-//                  borderRadius: BorderRadius.only(
-//                      topLeft: Radius.circular(10),
-//                      topRight: Radius.circular(10))),
-//              child: Column(
-//                children: <Widget>[
-//                  Row(
-//
-//                    children: <Widget>[
-//
-//                      Expanded(
-//                        child: TextField(
-//                          decoration: InputDecoration(
-//                            hintText: "写点什么,吧事情记录下来....",
-//                            hintStyle: TextStyle(color: Colors.white),
-//                          ),
-//                        ),
-//                      ),
-//
-//                      Image.asset(
-//                          Constant.IMAGE_PATH + "icon_add_voice_nor.png")
-//                    ],
-//                  )
-//                ],
-//              ),
-//            )
-//          ],
-//        );
-//      },
-//    );
+          ),
+
+        );
+      },
+    );
+
+//    showDialog( context: context,builder:(BuildContext context){
+//      return ;
+//    } );
   }
 
   @override
