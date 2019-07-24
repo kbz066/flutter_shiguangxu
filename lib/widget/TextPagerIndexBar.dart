@@ -956,7 +956,7 @@ class _TextPagerIndexBarState extends State<TextPagerIndexBar> {
         ),
       );
       if (!widget.isScrollable){
-        print("11111111111111");
+
         wrappedTabs[index] = Expanded(child: wrappedTabs[index]);
       }
 
@@ -980,7 +980,6 @@ class _TextPagerIndexBarState extends State<TextPagerIndexBar> {
 
     if (widget.isScrollable) {
 
-      print("33333333333333333333");
       _scrollController ??= _TabBarScrollController(this);
       tabBar = SingleChildScrollView(
         dragStartBehavior: widget.dragStartBehavior,

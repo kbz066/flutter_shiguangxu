@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
@@ -9,7 +11,10 @@ import 'package:flutter_shiguangxu/page/home_page/widget/TodayContentWidget.dart
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayWeekCalendarWidget.dart';
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
-import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart';
+import 'package:flutter_shiguangxu/widget/NumberPicker.dart';
+
+import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart'
+    hide TabBarView;
 
 class ToDayPage extends StatefulWidget {
   @override
@@ -153,10 +158,9 @@ class _ToDayPageState extends State<ToDayPage>
   }
 
   _showTimeDialog() {
-
-
     var tabs = ["时间点", "时间段", "全天"];
     var _tabController = TabController(length: 3, vsync: this);
+
     showDialog(
       context: context,
       builder: (ctx) {
@@ -164,9 +168,10 @@ class _ToDayPageState extends State<ToDayPage>
           backgroundColor: Colors.black12,
           body: Center(
             child: Container(
-              width: 300,
-              height: 400,
+              width: WindowUtils.getWidthDP() * 0.9,
+              height: WindowUtils.getHeightDP() * 0.65,
               padding: EdgeInsets.only(top: 20),
+
               decoration: BoxDecoration(
                 color: Colors.white, // 底色
 
@@ -176,22 +181,67 @@ class _ToDayPageState extends State<ToDayPage>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    height: 30,
+                    height: 34,
                     width: 250,
                     decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black12), // 边色与边宽度
+                        border: Border.all(color: Color(0xffdddddd)), // 边色与边宽度
 
                         //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
                         borderRadius: BorderRadius.all(
-                            Radius.circular(15))), // 也可控件一边圆角大小
+                            Radius.circular(17))), // 也可控件一边圆角大小
                     child: TextPagerIndexBar(
                       indicatorWeight: 10,
                       circular: 15,
-                      unselectedLabelColor: Colors.black,
-                      indicatorColor: Colors.blue,
+                      unselectedLabelColor: Color(0xffdddddd),
+                      indicatorColor: Color(0xff6495ED),
                       indicatorPadding: EdgeInsets.all(50),
                       controller: _tabController,
-                      tabs: <Widget>[Text("11111"), Text("2222"), Text("3333")],
+                      tabs: tabs.map((item) {
+                        return Text(item);
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: <Widget>[
+                        _timePointPage(),
+                        _timePointPage(),
+                        _timePointPage(),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+                      border: Border(
+                          top: BorderSide(color: Colors.black12, width: 1)),
+                    ),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: FlatButton(
+                            onPressed: () {},
+
+                            padding: EdgeInsets.all(0),
+                            child: Text("修改日期",style: TextStyle(color: Colors.blue,fontSize: 16)),
+                          ),
+                        ),
+                        Container(
+                          color: Colors.black12,
+                          width: 1,
+                          height:50,
+                        ),
+                        Expanded(
+                          child: FlatButton(
+                            onPressed: () {},
+
+                            child: Text("保存",style: TextStyle(color: Colors.blue,fontSize: 16)),
+                          ),
+                        )
+                      ],
                     ),
                   )
                 ],
@@ -201,10 +251,43 @@ class _ToDayPageState extends State<ToDayPage>
         );
       },
     );
+  }
 
-//    showDialog( context: context,builder:(BuildContext context){
-//      return ;
-//    } );
+  _timePointPage() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: 100,
+                height: 40,
+                decoration: BoxDecoration(),
+                child: Text("我是第一个页面"),
+              ),
+              Picker(
+                  itemExtent: 40,
+                  height: 200,
+                  looping: true,
+                  adapter: NumberPickerAdapter(data: [
+                    NumberPickerColumn(begin: 0, end: 0),
+                    NumberPickerColumn(begin: 0, end: 23),
+                    NumberPickerColumn(begin: 0, end: 55, jump: 5),
+                    NumberPickerColumn(begin: 0, end: 0),
+                  ]),
+                  hideHeader: true,
+                  title: Text("Please Select"),
+                  selectedTextStyle:
+                      TextStyle(color: Colors.blue, fontSize: 30),
+                  onConfirm: (Picker picker, List value) {
+                    print(value.toString());
+                    print(picker.getSelectedValues());
+                  }).makePicker(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
