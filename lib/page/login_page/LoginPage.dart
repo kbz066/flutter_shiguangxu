@@ -30,6 +30,7 @@ class LoginPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Form(
                           child: Column(
+
                             children: <Widget>[
                               _buildUserWidget(),
                               Divider(

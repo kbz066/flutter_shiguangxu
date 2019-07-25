@@ -302,6 +302,7 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
   Widget build(BuildContext context) {
     var v = Column(
       mainAxisSize: MainAxisSize.min,
+
       children: <Widget>[
         (picker.hideHeader)
             ? SizedBox()
@@ -449,7 +450,8 @@ class PickerWidgetState<T> extends State<_PickerWidget> {
                     picker.onSelect(picker, i, picker.selecteds);
                 });
               },
-              children: _length == 1
+
+              children: _length == 1&& (adapter is NumberPickerAdapter)
                   ? []
                   : List<Widget>.generate(_length, (int index) {
                       return adapter.buildItem(context, index);
@@ -709,7 +711,7 @@ class PickerDataAdapter<T> extends PickerAdapter<T> {
   Widget buildItem(BuildContext context, int index) {
     final PickerItem item = _datas[index];
     if (item.text != null) {
-      return item.text;
+      return Center(child: item.text,);
     }
     return makeText(item.text, item.text != null ? null : item.value.toString(),
         index == picker.selecteds[_col]);

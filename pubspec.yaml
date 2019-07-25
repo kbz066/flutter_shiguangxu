@@ -26,8 +26,14 @@ dependencies:
 #  fish_redux: ^0.2.3
   flutter_screenutil: ^0.5.3
   event_bus: ^1.1.0
+  flustars: ^0.2.6+1
 
-#  flutter_picker : ^1.0.13
+  provider: ^3.0.0+1
+
+  flutter_custom_calendar:
+    git:
+      url: https://github.com/LXD312569496/flutter_custom_calendar.git
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
