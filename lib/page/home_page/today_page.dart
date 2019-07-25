@@ -163,9 +163,6 @@ class _ToDayPageState extends State<ToDayPage>
   }
 
   _showTimeDialog() {
-    var tabs = ["时间点", "时间段", "全天"];
-    var _tabController = TabController(length: 3, vsync: this);
-
     showDialog(
       context: context,
       builder: (ctx) {
@@ -183,85 +180,85 @@ class _ToDayPageState extends State<ToDayPage>
 
                     borderRadius: BorderRadius.circular((15.0)), // 圆角度
                   ), //
-                  child: _calendarPage()
-
-//                Column(
-//                  mainAxisSize: MainAxisSize.min,
-//                  children: <Widget>[
-//                    Container(
-//                      height: 34,
-//                      width: 250,
-//                      decoration: BoxDecoration(
-//                          border:
-//                              Border.all(color: Color(0xffdddddd)), // 边色与边宽度
-//
-//                          //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
-//                          borderRadius: BorderRadius.all(
-//                              Radius.circular(17))), // 也可控件一边圆角大小
-//                      child: TextPagerIndexBar(
-//                        indicatorWeight: 10,
-//                        circular: 15,
-//                        unselectedLabelColor: Color(0xffdddddd),
-//                        indicatorColor: Color(0xff6495ED),
-//                        indicatorPadding: EdgeInsets.all(50),
-//                        controller: _tabController,
-//                        tabs: tabs.map((item) {
-//                          return Text(item);
-//                        }).toList(),
-//                      ),
-//                    ),
-//                    SizedBox(height: 30),
-//                    Expanded(
-//                      child: TabBarView(
-//                        controller: _tabController,
-//                        children: <Widget>[
-//                          _timePointPage(),
-//                          _timeDistancePage(),
-//                          _timeAllpage(),
-//                        ],
-//                      ),
-//                    ),
-//                    Container(
-//                      height: 50,
-//                      decoration: BoxDecoration(
-//                        //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
-//                        border: Border(
-//                            top: BorderSide(color: Colors.black12, width: 1)),
-//                      ),
-//                      child: Row(
-//                        children: <Widget>[
-//                          Expanded(
-//                            child: FlatButton(
-//                              onPressed: () {},
-//                              padding: EdgeInsets.all(0),
-//                              child: Text("修改日期",
-//                                  style: TextStyle(
-//                                      color: Colors.blue, fontSize: 16)),
-//                            ),
-//                          ),
-//                          Container(
-//                            color: Colors.black12,
-//                            width: 1,
-//                            height: 50,
-//                          ),
-//                          Expanded(
-//                            child: FlatButton(
-//                              onPressed: () {},
-//                              child: Text("保存",
-//                                  style: TextStyle(
-//                                      color: Colors.blue, fontSize: 16)),
-//                            ),
-//                          )
-//                        ],
-//                      ),
-//                    )
-//                  ],
-//                ),
-                  ),
+                  child: _contentPage()),
             ),
           ),
         );
       },
+    );
+  }
+
+  _contentPage() {
+    var tabs = ["时间点", "时间段", "全天"];
+    var _tabController = TabController(length: 3, vsync: this);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          height: 34,
+          width: 250,
+          decoration: BoxDecoration(
+              border: Border.all(color: Color(0xffdddddd)), // 边色与边宽度
+
+              //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+              borderRadius:
+                  BorderRadius.all(Radius.circular(17))), // 也可控件一边圆角大小
+          child: TextPagerIndexBar(
+            indicatorWeight: 10,
+            circular: 15,
+            unselectedLabelColor: Color(0xffdddddd),
+            indicatorColor: Color(0xff6495ED),
+            indicatorPadding: EdgeInsets.all(50),
+            controller: _tabController,
+            tabs: tabs.map((item) {
+              return Text(item);
+            }).toList(),
+          ),
+        ),
+        SizedBox(height: 30),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: <Widget>[
+              _timePointPage(),
+              _timeDistancePage(),
+              _timeAllpage(),
+            ],
+          ),
+        ),
+        Container(
+          height: 50,
+          decoration: BoxDecoration(
+            //        borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+            border: Border(top: BorderSide(color: Colors.black12, width: 1)),
+          ),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                child: FlatButton(
+                  onPressed: () {},
+                  padding: EdgeInsets.all(0),
+                  child: Text("修改日期",
+                      style: TextStyle(color: Colors.blue, fontSize: 16)),
+                ),
+              ),
+              Container(
+                color: Colors.black12,
+                width: 1,
+                height: 50,
+              ),
+              Expanded(
+                child: FlatButton(
+                  onPressed: () {},
+
+                  child: Text("保存",
+                      style: TextStyle(color: Colors.blue, fontSize: 16)),
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -314,7 +311,53 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
+
+
   _timeDistancePage() {
+
+    Picker startPicker;
+    Picker endPicker;
+
+
+     startPicker=Picker(
+
+        itemExtent: 40,
+        height: 200,
+        looping: true,
+
+        adapter: NumberPickerAdapter(data: [
+          NumberPickerColumn(begin: 0, end: 0),
+          NumberPickerColumn(begin: 0, end: 23),
+          NumberPickerColumn(begin: 0, end: 55, jump: 5),
+        ]),
+        hideHeader: true,
+        selectedTextStyle:
+        TextStyle(color: Colors.blue, fontSize: 25),
+        onConfirm: (Picker picker, List value) {
+
+        },
+      onSelect: (Picker picker, int index, List<int> selecteds){
+        print("startPicker            $index   "+selecteds.toString()  +"        ");
+
+        print(startPicker.getSelectedValues());
+      }
+    );
+
+     endPicker=Picker(
+      itemExtent: 40,
+      height: 200,
+      adapter: PickerDataAdapter(data: [
+        PickerItem(
+            text: Text("至",
+                style: TextStyle(
+                    color: Colors.blue, fontSize: 16))),
+      ]),
+      hideHeader: true,
+      onConfirm: (Picker picker, List value) {
+        print(value.toString());
+        print(picker.getSelectedValues());
+      },
+    );
     return Column(
       children: <Widget>[
         Expanded(
@@ -346,41 +389,13 @@ class _ToDayPageState extends State<ToDayPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
+
                     flex: 2,
-                    child: Picker(
-                        itemExtent: 40,
-                        height: 200,
-                        looping: true,
-                        adapter: NumberPickerAdapter(data: [
-                          NumberPickerColumn(begin: 0, end: 0),
-                          NumberPickerColumn(begin: 0, end: 23),
-                          NumberPickerColumn(begin: 0, end: 55, jump: 5),
-                        ]),
-                        hideHeader: true,
-                        selectedTextStyle:
-                            TextStyle(color: Colors.blue, fontSize: 25),
-                        onConfirm: (Picker picker, List value) {
-                          print(value.toString());
-                          print(picker.getSelectedValues());
-                        }).makePicker(),
+                    child: startPicker.makePicker(),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Picker(
-                      itemExtent: 40,
-                      height: 200,
-                      adapter: PickerDataAdapter(data: [
-                        PickerItem(
-                            text: Text("至",
-                                style: TextStyle(
-                                    color: Colors.blue, fontSize: 16))),
-                      ]),
-                      hideHeader: true,
-                      onConfirm: (Picker picker, List value) {
-                        print(value.toString());
-                        print(picker.getSelectedValues());
-                      },
-                    ).makePicker(),
+                    child: endPicker.makePicker(),
                   ),
                   Expanded(
                     flex: 2,
@@ -582,7 +597,6 @@ class CustomStyleDayWidget extends BaseCombineDayWidget {
   Widget getNormalWidget(DateModel dateModel) {
     // TODO: implement getNormalWidget
     return Container(
-
       child: Text("${dateModel.lunarString}"),
     );
   }
