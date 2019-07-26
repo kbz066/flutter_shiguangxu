@@ -190,7 +190,7 @@ class _ToDayPageState extends State<ToDayPage>
                 ), //
                 child: Consumer<DialogPageModel>(
                   builder: (context, model, child) {
-                    LogUtil.e("Consumer  打印 build 了  --------->  $context");
+                    LogUtil.e("Consumer  打印 build 了  ---DialogPageModel------>  $context");
 
                     return model.showCalendar
                         ? _calendarPage(context)
@@ -278,13 +278,18 @@ class _ToDayPageState extends State<ToDayPage>
                 width: 1,
                 height: 50,
               ),
-              Expanded(
-                child: FlatButton(
-                  onPressed: () {},
-                  child: Text("保存",
-                      style: TextStyle(color: Colors.blue, fontSize: 16)),
-                ),
-              )
+              Expanded(child: Consumer<DialogTipsModel>(
+                builder: (context, model, child) {
+                  LogUtil.e("Consumer  打印 build 了  -保存-------->  ${ model.disabled}");
+
+                  return FlatButton(
+                    onPressed: model.disabled ? null : () {},
+                    disabledTextColor: Colors.black12,
+                    child: Text("保存",
+                        style: TextStyle(color:  model.disabled ? null:Colors.blue, fontSize: 16)),
+                  );
+                },
+              ))
             ],
           ),
         )
@@ -372,11 +377,9 @@ class _ToDayPageState extends State<ToDayPage>
         onSelect: (Picker picker, int index, List<int> selecteds) {
           Provider.of<DialogTipsModel>(context, listen: false).updateTips(
               picker.getSelectedValues(), endPicker.getSelectedValues());
-
-
         });
 
-     endPicker = Picker(
+    endPicker = Picker(
       itemExtent: 40,
       height: 200,
       looping: true,
