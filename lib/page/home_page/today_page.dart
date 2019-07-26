@@ -2,24 +2,28 @@ import 'dart:ui';
 
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
-import 'package:flutter_custom_calendar/flutter_custom_calendar.dart';
-import 'package:flutter_custom_calendar/widget/base_day_view.dart';
+import 'package:flutter_calendar/constants/constants.dart';
+
+import 'package:flutter_calendar/controller.dart';
+import 'package:flutter_calendar/model/date_model.dart';
+import 'package:flutter_calendar/widget/base_day_view.dart';
+import 'package:flutter_calendar/widget/base_week_bar.dart';
+import 'package:flutter_calendar/widget/calendar_view.dart';
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
+import 'package:flutter_shiguangxu/page/home_page/model/DialogStateModel.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayContentWidget.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayWeekCalendarWidget.dart';
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
+import 'package:flutter_shiguangxu/widget/CustomStyleWeekBarItem.dart';
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 import 'package:flutter_shiguangxu/widget/NumberPicker.dart';
 
 import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart'
     hide TabBarView;
 import 'package:provider/provider.dart';
-
-import 'model/DialogDateModel.dart';
 
 class ToDayPage extends StatefulWidget {
   @override
@@ -166,21 +170,34 @@ class _ToDayPageState extends State<ToDayPage>
     showDialog(
       context: context,
       builder: (ctx) {
+        LogUtil.e("顶级    bulid     --------->  $context");
         return Scaffold(
           backgroundColor: Colors.black12,
-          body: ChangeNotifierProvider(
-            builder: (context) => DialogDateModel(),
+          body: MultiProvider(
+            providers: [
+              ChangeNotifierProvider(builder: (context) => DialogPageModel()),
+              ChangeNotifierProvider(builder: (context) => DialogTipsModel()),
+            ],
             child: Center(
               child: Container(
-                  width: WindowUtils.getWidthDP() * 0.9,
-                  height: WindowUtils.getHeightDP() * 0.65,
-                  padding: EdgeInsets.only(top: 20, left: 30, right: 30),
-                  decoration: BoxDecoration(
-                    color: Colors.white, // 底色
+                width: WindowUtils.getWidthDP() * 0.9,
+                height: WindowUtils.getHeightDP() * 0.65,
 
-                    borderRadius: BorderRadius.circular((15.0)), // 圆角度
-                  ), //
-                  child: _contentPage()),
+                decoration: BoxDecoration(
+                  color: Colors.white, // 底色
+
+                  borderRadius: BorderRadius.circular((15.0)), // 圆角度
+                ), //
+                child: Consumer<DialogPageModel>(
+                  builder: (context, model, child) {
+                    LogUtil.e("Consumer  打印 build 了  --------->  $context");
+
+                    return model.showCalendar
+                        ? _calendarPage(context)
+                        : _contentPage(context);
+                  },
+                ),
+              ),
             ),
           ),
         );
@@ -188,15 +205,26 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _contentPage() {
+  _contentPage(context) {
     var tabs = ["时间点", "时间段", "全天"];
-    var _tabController = TabController(length: 3, vsync: this);
+    var _tabController = TabController(
+        length: 3,
+        vsync: this,
+        initialIndex:
+            Provider.of<DialogPageModel>(context, listen: false).initialIndex);
+
+    _tabController.addListener(() {
+      Provider.of<DialogPageModel>(context, listen: false)
+          .setInitialIndex(_tabController.index);
+    });
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
           height: 34,
           width: 250,
+          margin: EdgeInsets.only(top: 20),
           decoration: BoxDecoration(
               border: Border.all(color: Color(0xffdddddd)), // 边色与边宽度
 
@@ -220,8 +248,8 @@ class _ToDayPageState extends State<ToDayPage>
           child: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              _timePointPage(),
-              _timeDistancePage(),
+              _timePointPage(context),
+              _timeDistancePage(context),
               _timeAllpage(),
             ],
           ),
@@ -236,7 +264,10 @@ class _ToDayPageState extends State<ToDayPage>
             children: <Widget>[
               Expanded(
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<DialogPageModel>(context, listen: false)
+                        .setShowCalendar(true);
+                  },
                   padding: EdgeInsets.all(0),
                   child: Text("修改日期",
                       style: TextStyle(color: Colors.blue, fontSize: 16)),
@@ -250,7 +281,6 @@ class _ToDayPageState extends State<ToDayPage>
               Expanded(
                 child: FlatButton(
                   onPressed: () {},
-
                   child: Text("保存",
                       style: TextStyle(color: Colors.blue, fontSize: 16)),
                 ),
@@ -262,14 +292,24 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _timePointPage() {
+  _onDatePressed(context) {
+    LogUtil.e("   _onDatePressed     --------->  $context");
+    Provider.of<DialogPageModel>(context, listen: false).setShowCalendar(true);
+  }
+
+  _timePointPage(context) {
+    var _model = Provider.of<DialogPageModel>(context, listen: false);
+
+    LogUtil.e("_timePointPage           ${_model.initTimePoint}");
+
     return Column(
       children: <Widget>[
         Expanded(
           child: Column(
             children: <Widget>[
-              Consumer<DialogDateModel>(
+              Consumer<DialogPageModel>(
                 builder: (context, model, child) {
+                  LogUtil.e("  _timePointPage  Consumer");
                   return Container(
                     width: 150,
                     height: 30,
@@ -279,9 +319,9 @@ class _ToDayPageState extends State<ToDayPage>
                     child: FlatButton(
                       child: Text(
                         "${model.timeTxt}",
-                        style: prefix0.TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Colors.blue),
                       ),
-                      onPressed: () {},
+                      onPressed: () => this._onDatePressed(context),
                     ),
                   );
                 },
@@ -290,6 +330,7 @@ class _ToDayPageState extends State<ToDayPage>
                   itemExtent: 40,
                   height: 200,
                   looping: true,
+                  selecteds: _model.initTimePoint,
                   adapter: NumberPickerAdapter(data: [
                     NumberPickerColumn(begin: 0, end: 0),
                     NumberPickerColumn(begin: 0, end: 23),
@@ -300,9 +341,8 @@ class _ToDayPageState extends State<ToDayPage>
                   title: Text("Please Select"),
                   selectedTextStyle:
                       TextStyle(color: Colors.blue, fontSize: 30),
-                  onConfirm: (Picker picker, List value) {
-                    print(value.toString());
-                    print(picker.getSelectedValues());
+                  onSelect: (Picker picker, int index, List<int> selecteds) {
+                    LogUtil.e("$selecteds");
                   }).makePicker(),
             ],
           ),
@@ -311,60 +351,57 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
+  _timeDistancePage(context) {
+    var startPicker;
+    var endPicker;
+    var _model = Provider.of<DialogPageModel>(context, listen: false);
 
-
-  _timeDistancePage() {
-
-    Picker startPicker;
-    Picker endPicker;
-
-
-     startPicker=Picker(
-
+    startPicker = Picker(
         itemExtent: 40,
         height: 200,
         looping: true,
-
+        selecteds: _model.initTimeDistanceStart,
         adapter: NumberPickerAdapter(data: [
           NumberPickerColumn(begin: 0, end: 0),
           NumberPickerColumn(begin: 0, end: 23),
           NumberPickerColumn(begin: 0, end: 55, jump: 5),
         ]),
         hideHeader: true,
-        selectedTextStyle:
-        TextStyle(color: Colors.blue, fontSize: 25),
-        onConfirm: (Picker picker, List value) {
+        selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 25),
+        onConfirm: (Picker picker, List value) {},
+        onSelect: (Picker picker, int index, List<int> selecteds) {
+          Provider.of<DialogTipsModel>(context, listen: false).updateTips(
+              picker.getSelectedValues(), endPicker.getSelectedValues());
 
-        },
-      onSelect: (Picker picker, int index, List<int> selecteds){
-        print("startPicker            $index   "+selecteds.toString()  +"        ");
 
-        print(startPicker.getSelectedValues());
-      }
-    );
+        });
 
-     endPicker=Picker(
+     endPicker = Picker(
       itemExtent: 40,
       height: 200,
-      adapter: PickerDataAdapter(data: [
-        PickerItem(
-            text: Text("至",
-                style: TextStyle(
-                    color: Colors.blue, fontSize: 16))),
+      looping: true,
+      selecteds: _model.initTimeDistanceEnd,
+      adapter: NumberPickerAdapter(data: [
+        NumberPickerColumn(begin: 0, end: 23),
+        NumberPickerColumn(begin: 0, end: 55, jump: 5),
+        NumberPickerColumn(begin: 0, end: 0),
       ]),
       hideHeader: true,
-      onConfirm: (Picker picker, List value) {
-        print(value.toString());
-        print(picker.getSelectedValues());
+      onSelect: (Picker picker, int index, List<int> selecteds) {
+        Provider.of<DialogTipsModel>(context, listen: false).updateTips(
+            startPicker.getSelectedValues(), picker.getSelectedValues());
       },
+      selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 25),
     );
     return Column(
       children: <Widget>[
         Expanded(
           child: Column(
             children: <Widget>[
-              Consumer<DialogDateModel>(
+              Consumer<DialogPageModel>(
                 builder: (context, model, child) {
+                  LogUtil.e("  _timeDistancePage  Consumer");
+
                   return Container(
                     width: 150,
                     height: 30,
@@ -374,12 +411,9 @@ class _ToDayPageState extends State<ToDayPage>
                     child: FlatButton(
                       child: Text(
                         "${model.timeTxt}",
-                        style: prefix0.TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Colors.blue),
                       ),
-                      onPressed: () {
-                        // model.setTimeTxt("改变了");
-//                        Provider.of<TodayDialogStateModel>(context,listen: false).setTimeTxt("测试下");
-                      },
+                      onPressed: () => this._onDatePressed(context),
                     ),
                   );
                 },
@@ -389,39 +423,38 @@ class _ToDayPageState extends State<ToDayPage>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-
                     flex: 2,
                     child: startPicker.makePicker(),
                   ),
                   Expanded(
                     flex: 1,
-                    child: endPicker.makePicker(),
+                    child: Picker(
+                      itemExtent: 40,
+                      height: 200,
+                      adapter: PickerDataAdapter(data: [
+                        PickerItem(
+                            text: Text("至",
+                                style: TextStyle(
+                                    color: Colors.blue, fontSize: 16))),
+                      ]),
+                      hideHeader: true,
+                      onConfirm: (Picker picker, List value) {
+                        print(value.toString());
+                        print(picker.getSelectedValues());
+                      },
+                    ).makePicker(),
                   ),
                   Expanded(
                     flex: 2,
-                    child: Picker(
-                        itemExtent: 40,
-                        height: 200,
-                        looping: true,
-                        selecteds: [3, 5, 0],
-                        adapter: NumberPickerAdapter(data: [
-                          NumberPickerColumn(begin: 0, end: 23),
-                          NumberPickerColumn(begin: 0, end: 55, jump: 5),
-                          NumberPickerColumn(begin: 0, end: 0),
-                        ]),
-                        hideHeader: true,
-                        onSelect:
-                            (Picker picker, int index, List<int> selecteds) {
-                          print("  ${picker.adapter.toString()}");
-                        },
-                        selectedTextStyle:
-                            TextStyle(color: Colors.blue, fontSize: 25),
-                        onConfirm: (Picker picker, List value) {
-                          print(value.toString());
-                          print(picker.getSelectedValues());
-                        }).makePicker(),
+                    child: endPicker.makePicker(),
                   ),
                 ],
+              ),
+              Consumer<DialogTipsModel>(
+                builder: (context, model, child) {
+                  LogUtil.e("  DialogTipsModel  Consumer");
+                  return model.distanceTips;
+                },
               ),
             ],
           ),
@@ -435,16 +468,17 @@ class _ToDayPageState extends State<ToDayPage>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         InkWellImageWidget("dialog_time_select_img_add_calendar", () {}),
-        Consumer<DialogDateModel>(
+        Consumer<DialogPageModel>(
           builder: (context, model, child) {
+            LogUtil.e("  _timeAllpage  Consumer");
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: FlatButton(
                 child: Text(
                   "${model.timeTxt}",
-                  style: prefix0.TextStyle(color: Colors.blue, fontSize: 20),
+                  style: TextStyle(color: Colors.blue, fontSize: 20),
                 ),
-                onPressed: () {},
+                onPressed: () => this._onDatePressed(context),
               ),
             );
           },
@@ -457,13 +491,32 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _calendarPage() {
-    var controller = new CalendarController(weekBarItemWidgetBuilder: () {
-      return CustomStyleWeekBarItem();
-    }, dayWidgetBuilder: (dateModel) {
-      return CustomStyleDayWidget(dateModel);
+  _calendarPage(context) {
+    var _provider = Provider.of<DialogPageModel>(context, listen: false);
+
+    var controller = new CalendarController(
+      weekBarItemWidgetBuilder: () {
+        return CustomStyleWeekBarItem();
+      },
+      dayWidgetBuilder: (dateModel) {
+        return CustomStyleDayWidget(dateModel);
+      },
+      selectDateModel: DateModel()
+        ..year = _provider.selectDate.year
+        ..month = _provider.selectDate.month
+        ..day = _provider.selectDate.day,
+    );
+    var text = "${_provider.year}年${_provider.month}月";
+
+    controller.addOnCalendarSelectListener((dateModel) {
+      Provider.of<DialogPageModel>(context, listen: false).selectDate =
+          dateModel;
     });
-    var text = "${DateTime.now().year}年${DateTime.now().month}月";
+
+    controller.addMonthChangeListener((int year, int month) {
+      Provider.of<DialogPageModel>(context, listen: false).setDate(year, month);
+    });
+
     return Column(
       children: <Widget>[
         new Row(
@@ -483,12 +536,11 @@ class _ToDayPageState extends State<ToDayPage>
           ],
         ),
         Expanded(
-          child: ListView(
-            children: <Widget>[
-              CalendarViewWidget(
-                calendarController: controller,
-              )
-            ],
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: CalendarViewWidget(
+              calendarController: controller,
+            ),
           ),
         )
       ],
@@ -579,31 +631,82 @@ class CustomStyleWeekBarItem extends BaseWeekBar {
   @override
   Widget getWeekBarItem(int index) {
     return new Container(
-      color: Colors.red,
+      margin: EdgeInsets.symmetric(vertical: 20),
       child: new Center(
         child: new Text(
           weekList[index],
-          style: TextStyle(fontSize: 10, color: Colors.green),
+          style: TextStyle(fontSize: 10, color: Colors.black),
         ),
       ),
     );
   }
 }
 
-class CustomStyleDayWidget extends BaseCombineDayWidget {
+class CustomStyleDayWidget extends BaseCustomDayWidget {
   CustomStyleDayWidget(DateModel dateModel) : super(dateModel);
 
   @override
-  Widget getNormalWidget(DateModel dateModel) {
-    // TODO: implement getNormalWidget
-    return Container(
-      child: Text("${dateModel.lunarString}"),
-    );
+  void drawNormal(DateModel dateModel, Canvas canvas, Size size) {
+    bool isCurrentDay = dateModel.isCurrentDay;
+
+    //顶部的文字
+    TextPainter dayTextPainter = new TextPainter()
+      ..text = TextSpan(
+          text: isCurrentDay ? "今" : dateModel.day.toString(),
+          style: new TextStyle(
+              color: isCurrentDay ? ColorUtils.mainColor : Colors.black,
+              fontSize: 18))
+      ..textDirection = TextDirection.ltr
+      ..textAlign = TextAlign.center;
+
+    dayTextPainter.layout(minWidth: size.width, maxWidth: size.width);
+    dayTextPainter.paint(canvas, Offset(0, isCurrentDay ? 0 : 5));
+
+    //下面的文字
+    TextPainter lunarTextPainter = new TextPainter()
+      ..text = new TextSpan(
+          text: dateModel.lunarString,
+          style: new TextStyle(
+              color: isCurrentDay ? ColorUtils.mainColor : Colors.black12,
+              fontSize: 12))
+      ..textDirection = TextDirection.ltr
+      ..textAlign = TextAlign.center;
+
+    lunarTextPainter.layout(minWidth: size.width, maxWidth: size.width);
+    lunarTextPainter.paint(canvas, Offset(0, size.height / 2));
   }
 
   @override
-  Widget getSelectedWidget(DateModel dateModel) {
-    // TODO: implement getSelectedWidget
-    return Text("${dateModel.lunarString}");
+  void drawSelected(DateModel dateModel, Canvas canvas, Size size) {
+    //绘制背景
+    Paint backGroundPaint = new Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 2;
+    double padding = 8;
+    canvas.drawRect(
+        Rect.fromLTRB(0, 0, size.width, size.height), backGroundPaint);
+
+    //顶部的文字
+    TextPainter dayTextPainter = new TextPainter()
+      ..text = TextSpan(
+          text: dateModel.day.toString(),
+          style: new TextStyle(color: Colors.white, fontSize: 16))
+      ..textDirection = TextDirection.ltr
+      ..textAlign = TextAlign.center;
+
+    LogUtil.e("height       $size");
+    dayTextPainter.layout(minWidth: size.width, maxWidth: size.width);
+    dayTextPainter.paint(canvas, Offset(0, size.height / 8));
+
+    //下面的文字
+    TextPainter lunarTextPainter = new TextPainter()
+      ..text = new TextSpan(
+          text: dateModel.lunarString,
+          style: new TextStyle(color: Colors.white, fontSize: 10))
+      ..textDirection = TextDirection.ltr
+      ..textAlign = TextAlign.center;
+
+    lunarTextPainter.layout(minWidth: size.width, maxWidth: size.width);
+    lunarTextPainter.paint(canvas, Offset(0, size.height / 2));
   }
 }
