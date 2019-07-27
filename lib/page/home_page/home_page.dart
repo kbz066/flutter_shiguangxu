@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/config_page/config_page.dart';
-import 'package:flutter_shiguangxu/page/home_page/today_page.dart';
+import 'package:flutter_shiguangxu/page/today_page/today_page.dart';
 import 'package:flutter_shiguangxu/page/home_page/plan_list_page.dart';
 
 class HomePage extends StatefulWidget {
