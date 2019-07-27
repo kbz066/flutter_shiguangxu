@@ -1,7 +1,10 @@
 import 'dart:ui';
 
 import 'package:flustars/flustars.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart' as prefix1;
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter_calendar/constants/constants.dart';
 
 import 'package:flutter_calendar/controller.dart';
@@ -14,6 +17,7 @@ import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/model/DialogStateModel.dart';
+import 'package:flutter_shiguangxu/page/home_page/model/TodayStateModel.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayContentWidget.dart';
 import 'package:flutter_shiguangxu/page/home_page/widget/TodayWeekCalendarWidget.dart';
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
@@ -63,6 +67,21 @@ class _ToDayPageState extends State<ToDayPage>
 
   _showAddPlanDialog() {
     var contentKey = GlobalKey();
+
+    var typeIcon = [
+      "search_class_icon_work",
+      "search_class_icon_learn",
+      "search_class_icon_default",
+      "search_class_icon_health",
+      "search_class_icon_anniversary"
+    ];
+
+    var levelIcon = [
+      "icon_red_level",
+      "icon_yellow_level",
+      "icon_green_level",
+      "icon_blue_level",
+    ];
     var labels = ["今天", "明天", "后天", "大后天", "下周"].map((item) {
       return Container(
         width: item.length * 25.toDouble(),
@@ -91,82 +110,284 @@ class _ToDayPageState extends State<ToDayPage>
           },
           child: Scaffold(
             backgroundColor: Colors.black12,
-            body: Align(
-              alignment: Alignment.bottomCenter,
-              child: Column(
-                key: contentKey,
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: labels,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10))),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "写点什么,吧事情记录下来....",
-                                    hintStyle: TextStyle(color: Colors.black26),
+            body: ChangeNotifierProvider(
+              builder: (context) => TodayStateModel(),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  key: contentKey,
+                  mainAxisSize: MainAxisSize.min,
+
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Consumer<TodayStateModel>(
+                      builder: (context, model, child) {
+                        return model.dateTips == null
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: labels,
+                              )
+                            : Container(
+                                height: 30,
+                                margin: EdgeInsets.only(left: 20),
+
+                                decoration: BoxDecoration(
+
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(25)),
+                                    color: Colors.white),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(model.dateTips),
+
+                                    IconButton(
+                                      padding: EdgeInsets.all(0),
+
+                                      icon: Icon(Icons.clear,color: Colors.black26,size:18 ,),
+                                      onPressed: () {
+                                        model.setSelectDate(false, null, 0);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10))),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "写点什么,吧事情记录下来....",
+                                      hintStyle:
+                                          TextStyle(color: Colors.black26),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Image.asset(Constant.IMAGE_PATH +
-                                  "icon_add_voice_nor.png")
-                            ],
+                                Image.asset(Constant.IMAGE_PATH +
+                                    "icon_add_voice_nor.png")
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          color: Color.fromARGB(255, 250, 250, 250),
-                          child: Row(
-                            children: <Widget>[
-                              InkWellImageWidget("plant_icon_time", () {
-                                _showTimeDialog();
-                              }),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              InkWellImageWidget(
-                                  "icon_add_category_nor", () {}),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            color: Color.fromARGB(255, 250, 250, 250),
+                            child: Row(
+                              children: <Widget>[
+                                Consumer<TodayStateModel>(
+                                  builder: (context, model, child) {
+                                    LogUtil.e(
+                                        "TodayStateModel   build      ------------->");
+                                    return Container(
+                                      child: InkWellImageWidget(
+                                          model.selectDate
+                                              ? "icon_add_time_pre"
+                                              : "plant_icon_time", () {
+                                        _showTimeDialog(
+                                            contentKey.currentContext);
+                                      }),
+                                    );
+                                  },
+                                ),
 
-                              SizedBox(
-                                width: 30,
-                              ),
-                              InkWellImageWidget(
-                                  "icon_add_important_nor", () {}),
+                                SizedBox(
+                                  width: 30,
+                                ),
 
-                              //
-                            ],
+                                Consumer<TodayStateModel>(
+                                  builder: (context, model, child) {
+                                    LogUtil.e(
+                                        "TodayStateModel   build      ------------->");
+                                    return Container(
+                                      child: InkWellImageWidget(
+                                          model.updateTypeIcon
+                                              ? typeIcon[model.checkTypeIndex]
+                                              : "icon_add_category_nor", () {
+                                        Provider.of<TodayStateModel>(
+                                                contentKey.currentContext,
+                                                listen: false)
+                                            .setShowTypeView();
+                                      }),
+                                    );
+                                  },
+                                ),
+
+                                SizedBox(
+                                  width: 30,
+                                ),
+
+                                Consumer<TodayStateModel>(
+                                  builder: (context, model, child) {
+                                    LogUtil.e(
+                                        "TodayStateModel   build      ------------->");
+                                    return Container(
+                                      child: InkWellImageWidget(
+                                          model.updateLeveleIcon
+                                              ? levelIcon[model.checkLevelIndex]
+                                              : "icon_add_important_nor", () {
+                                        Provider.of<TodayStateModel>(
+                                                contentKey.currentContext,
+                                                listen: false)
+                                            .setShowLevelView();
+                                      }),
+                                    );
+                                  },
+                                ),
+
+                                //
+                              ],
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                          Consumer<TodayStateModel>(
+                            builder: (context, model, child) {
+                              LogUtil.e(
+                                  "TodayStateModel   build      ------------->");
+                              return Container(
+                                height:
+                                    model.showType || model.showLevel ? 290 : 0,
+                                child: model.showType
+                                    ? _showTypeView(model)
+                                    : _showLevelView(model),
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         )));
   }
 
-  _showTimeDialog() {
+  _showLevelView(TodayStateModel model) {
+    var levelIcon = [
+      "icon_level_one.png",
+      "icon_level_two.png",
+      "icon_level_three.png",
+      "icon_level_four.png"
+    ];
+    var levelTitle = ["主要且紧急", "主要不紧急", "紧急不重要", "不重要不紧急"];
+    var levelColor = [0xffFF6274, 0xffFFA523, 0xff58C086, 0xff4BA9FF];
+
+    return ListView.separated(
+      itemCount: 4,
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTapUp: (details) {
+            model.setCheckLevelIndex(index);
+          },
+          child: Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            height: 50,
+            child: Row(
+              children: <Widget>[
+                Image.asset("assets/images/${levelIcon[index]}"),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Text(
+                    levelTitle[index],
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Color(levelColor[index])),
+                  ),
+                ),
+                model.checkLevelIndex == index
+                    ? Image.asset("assets/images/icon_select_bell.png")
+                    : Container(),
+              ],
+            ),
+          ),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => Divider(),
+    );
+  }
+
+  _showTypeView(TodayStateModel model) {
+    LogUtil.e(" model    $model");
+    var _gridIcon = [
+      "class_icon_work2.png",
+      "class_icon_learn2.png",
+      "class_icon_default2.png",
+      "class_icon_health2.png",
+      "class_icon_yule2.png"
+    ];
+    var _gridTxt = ["工作", "学习", "私事", "健康", "娱乐"];
+
+    var _gridChildren = _gridIcon.map((item) {
+      var index = _gridIcon.indexOf(item);
+
+      return GestureDetector(
+        onTapUp: (details) {
+          model.setCheckTypeIndex(index);
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border(
+                  right: BorderSide(
+                      color: Colors.black12,
+                      width: 1.0,
+                      style: BorderStyle.solid),
+                  bottom: BorderSide(
+                      color: index == _gridIcon.length - 1
+                          ? Colors.white
+                          : Colors.black12,
+                      width: 1.0,
+                      style: BorderStyle.solid))),
+          child: Stack(
+            children: <Widget>[
+              Align(
+                child: Image.asset("assets/images/$item"),
+                alignment: Alignment.center,
+              ),
+              model.checkTypeIndex == index
+                  ? Align(
+                      child: Image.asset("assets/images/add_icon_hook.png"),
+                      alignment: Alignment(0.4, -0.3),
+                    )
+                  : Container(),
+              Align(
+                alignment: Alignment(0, 0.6),
+                child: Text("${_gridTxt[index]}"),
+              )
+            ],
+          ),
+        ),
+      );
+    }).toList();
+    return GridView.count(
+      crossAxisCount: 4,
+      childAspectRatio: 1 / 1.6,
+      padding: EdgeInsets.all(0),
+      children: _gridChildren,
+    );
+  }
+
+  _showTimeDialog(BuildContext currentContext) {
     showDialog(
       context: context,
       builder: (ctx) {
@@ -190,11 +411,12 @@ class _ToDayPageState extends State<ToDayPage>
                 ), //
                 child: Consumer<DialogPageModel>(
                   builder: (context, model, child) {
-                    LogUtil.e("Consumer  打印 build 了  ---DialogPageModel------>  $context");
+                    LogUtil.e(
+                        "Consumer  打印 build 了  ---DialogPageModel------>  $context");
 
                     return model.showCalendar
                         ? _calendarPage(context)
-                        : _contentPage(context);
+                        : _contentPage(context, currentContext);
                   },
                 ),
               ),
@@ -205,7 +427,15 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _contentPage(context) {
+  _saveTimeDate(BuildContext context, BuildContext currentContext, int index) {
+    var pageModel = Provider.of<DialogPageModel>(context, listen: false);
+
+    Provider.of<TodayStateModel>(currentContext, listen: false)
+        .setSelectDate(true, pageModel, index);
+    Navigator.pop(context);
+  }
+
+  _contentPage(context, BuildContext currentContext) {
     var tabs = ["时间点", "时间段", "全天"];
     var _tabController = TabController(
         length: 3,
@@ -279,14 +509,20 @@ class _ToDayPageState extends State<ToDayPage>
                 height: 50,
               ),
               Expanded(child: Consumer<DialogTipsModel>(
-                builder: (context, model, child) {
-                  LogUtil.e("Consumer  打印 build 了  -保存-------->  ${ model.disabled}");
+                builder: (contexts, model, child) {
+                  LogUtil.e(
+                      "Consumer  打印 build 了  -保存-------->  ${model.disabled}");
 
                   return FlatButton(
-                    onPressed: model.disabled ? null : () {},
+                    onPressed: model.disabled
+                        ? null
+                        : () => _saveTimeDate(
+                            context, currentContext, _tabController.index),
                     disabledTextColor: Colors.black12,
                     child: Text("保存",
-                        style: TextStyle(color:  model.disabled ? null:Colors.blue, fontSize: 16)),
+                        style: TextStyle(
+                            color: model.disabled ? null : Colors.blue,
+                            fontSize: 16)),
                   );
                 },
               ))
@@ -332,23 +568,20 @@ class _ToDayPageState extends State<ToDayPage>
                 },
               ),
               Picker(
-                  itemExtent: 40,
-                  height: 200,
-                  looping: true,
-                  selecteds: _model.initTimePoint,
-                  adapter: NumberPickerAdapter(data: [
-                    NumberPickerColumn(begin: 0, end: 0),
-                    NumberPickerColumn(begin: 0, end: 23),
-                    NumberPickerColumn(begin: 0, end: 55, jump: 5),
-                    NumberPickerColumn(begin: 0, end: 0),
-                  ]),
-                  hideHeader: true,
-                  title: Text("Please Select"),
-                  selectedTextStyle:
-                      TextStyle(color: Colors.blue, fontSize: 30),
-                  onSelect: (Picker picker, int index, List<int> selecteds) {
-                    LogUtil.e("$selecteds");
-                  }).makePicker(),
+                itemExtent: 40,
+                height: 200,
+                looping: true,
+                selecteds: _model.initTimePoint,
+                adapter: NumberPickerAdapter(data: [
+                  NumberPickerColumn(begin: 0, end: 0),
+                  NumberPickerColumn(begin: 0, end: 23),
+                  NumberPickerColumn(begin: 0, end: 55, jump: 5),
+                  NumberPickerColumn(begin: 0, end: 0),
+                ]),
+                hideHeader: true,
+                title: Text("Please Select"),
+                selectedTextStyle: TextStyle(color: Colors.blue, fontSize: 30),
+              ).makePicker(),
             ],
           ),
         ),
