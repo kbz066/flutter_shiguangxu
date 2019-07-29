@@ -1,7 +1,15 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
+import 'package:flutter_shiguangxu/page/backup_pullout_page/backup_pullout_Page.dart';
 import 'package:flutter_shiguangxu/page/config_page/system_sync_page.dart';
+import 'package:flutter_shiguangxu/page/exhibition_custom_page/ExhibitionCustomPage.dart';
+import 'package:flutter_shiguangxu/page/other_custom_page/OtherCustomPage.dart';
+import 'package:flutter_shiguangxu/page/reminder_custom_page/ReminderCustomPage.dart';
+import 'package:flutter_shiguangxu/page/ring_custom_page/RingCustomPage.dart';
+import 'package:flutter_shiguangxu/page/security_page/security_page.dart';
+
+
 
 class ConfigPage extends StatefulWidget {
   @override
@@ -255,6 +263,27 @@ class ConfigPageState extends State<ConfigPage>
       case "系统同步":
         NavigatorUtils.push(context, SystemSyncPage());
         break;
+
+      case "导出备份":
+        NavigatorUtils.push(context, DataBackupOrPulloutPage());
+        break;
+
+      case "安全中心":
+        NavigatorUtils.push(context, SecurityPage());
+        break;
+      case "提醒定制":
+        NavigatorUtils.push(context, ReminderCustomPage());
+        break;
+      case "铃声定制":
+        NavigatorUtils.push(context, RingCustomPage());
+        break;
+      case "展示定制":
+        NavigatorUtils.push(context, ExhibitionCustomPage());
+        break;
+      case "个性定制":
+        NavigatorUtils.push(context, OtherCustomPage());
+        break;
+
     }
   }
 }
@@ -271,16 +300,21 @@ class ConfigItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return GestureDetector(
-      onTapDown: (down)=>callback(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Image.asset("assets/images/$imageName.png", fit: BoxFit.cover),
-          SizedBox(
-            height: 10,
-          ),
-          Text("$title"),
-        ],
+      onTapDown: (down){
+        LogUtil.e("我被点击了");
+        callback();
+      },
+      child: Container(
+        color: Colors.transparent,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset("assets/images/$imageName.png", fit: BoxFit.cover),
+
+            SizedBox(height: 10,),
+            Text("$title"),
+          ],
+        ),
       ),
     );
   }
