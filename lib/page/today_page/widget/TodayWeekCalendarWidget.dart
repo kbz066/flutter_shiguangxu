@@ -9,7 +9,9 @@ import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
-import 'package:flutter_shiguangxu/page/home_page/widget/TodayMoveTriangleWidget.dart';
+
+import 'TodayMoveTriangleWidget.dart';
+
 
 class HomeWeekCalendarWidget extends StatefulWidget {
   WeekCalendarInfo _weekCalendarInfo;

@@ -1,6 +1,8 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_shiguangxu/page/home_page/model/DialogStateModel.dart';
+
+
+import 'DialogStateModel.dart';
 
 class TodayStateModel extends ChangeNotifier{
   bool showType=false;

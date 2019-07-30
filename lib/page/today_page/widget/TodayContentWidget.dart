@@ -9,11 +9,12 @@ import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
-import 'package:flutter_shiguangxu/page/home_page/widget/TodayPullListHeaderWidget.dart';
+
 import 'package:flutter_shiguangxu/widget/MyBehavior.dart';
 import 'package:flutter_shiguangxu/widget/RefreshScrollPhysics.dart';
 
 import 'TodayCircleWidget.dart';
+import 'TodayPullListHeaderWidget.dart';
 
 class TodayContentWidget extends StatefulWidget {
   var _initialPage;
