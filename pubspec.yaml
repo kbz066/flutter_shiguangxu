@@ -34,10 +34,15 @@ dependencies:
     git:
       url: https://github.com/kbz066/Flutter_Calendar.git
 
+  flutter_sqlite_orm:
+    git:
+      url: https://github.com/kbz066/flutter_sqlite_orm.git
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  build_runner:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

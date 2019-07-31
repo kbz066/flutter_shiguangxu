@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
+import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/widget/ConfigCommonItem.dart';
+
+import 'OtherAddPage.dart';
+import 'OtherManagePage.dart';
 
 
 
@@ -56,6 +60,9 @@ class OtherCustomPage extends StatelessWidget {
                     ],
                   ),
                   EdgeInsets.only(top: 10, bottom: 10, left: 20,right: 20),
+                  onClick: (){
+                    NavigatorUtils.push(context, OtherManagePage());
+                  },
 
                 ),
               )

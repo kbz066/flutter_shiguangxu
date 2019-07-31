@@ -301,7 +301,7 @@ class ConfigItemWidget extends StatelessWidget {
     // TODO: implement build
     return GestureDetector(
       onTapDown: (down){
-        LogUtil.e("我被点击了");
+
         callback();
       },
       child: Container(
