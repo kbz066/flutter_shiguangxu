@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
+import 'package:flutter_shiguangxu/dao/Other_DB.Dao.dart';
+import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresenter.dart';
 import 'package:flutter_shiguangxu/widget/ConfigCommonItem.dart';
+import 'package:provider/provider.dart';
 
 import 'OtherAddPage.dart';
 import 'OtherManagePage.dart';
-
-
+import 'model/OtherModel.dart';
 
 class OtherCustomPage extends StatelessWidget {
   @override
@@ -22,11 +24,11 @@ class OtherCustomPage extends StatelessWidget {
           color: ColorUtils.mainBGColor,
           child: Column(
             children: <Widget>[
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               GestureDetector(
-                onTapDown: (down) {
-
-                },
+                onTapDown: (down) {},
                 child: ConfigCommonItem(
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,16 +40,13 @@ class OtherCustomPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  EdgeInsets.only(top: 5, bottom: 5, left: 20,right: 0),
-
+                  EdgeInsets.only(top: 5, bottom: 5, left: 20, right: 0),
                   showSwitchBut: true,
                 ),
               ),
               SizedBox(height: 10),
               GestureDetector(
-                onTapDown: (down) {
-
-                },
+                onTapDown: (down) {},
                 child: ConfigCommonItem(
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,11 +58,17 @@ class OtherCustomPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  EdgeInsets.only(top: 10, bottom: 10, left: 20,right: 20),
-                  onClick: (){
-                    NavigatorUtils.push(context, OtherManagePage());
+                  EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                  onClick: () {
+                    Other_DB_Dao.init().then((onValue) {
+                      NavigatorUtils.push(
+                          context,
+                          ChangeNotifierProvider.value(
+                            value: OtherPresenter(),
+                            child: OtherManagePage(),
+                          ));
+                    });
                   },
-
                 ),
               )
             ],

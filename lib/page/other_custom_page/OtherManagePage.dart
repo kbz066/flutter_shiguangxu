@@ -2,18 +2,33 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/dao/Other_DB.dart';
+import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresenter.dart';
+import 'package:flutter_shiguangxu/widget/LoadingWidget.dart';
+import 'package:provider/provider.dart';
+
+import 'model/OtherModel.dart';
 
 class OtherManagePage extends StatefulWidget {
   @override
-  State createState() => new _OtherManagePageState();
+  State createState() => _OtherManagePageState();
 }
 
 class _OtherManagePageState extends State<OtherManagePage> {
   bool isEdit = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    OtherModel().getOtherListData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var list = Constant.OTHER_DATA;
+
+
+    var _otherPresenter = Provider.of<OtherPresenter>(context, listen: false);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -28,34 +43,53 @@ class _OtherManagePageState extends State<OtherManagePage> {
                   this.isEdit = !isEdit;
                 });
               },
-              child: Image.asset(Constant.IMAGE_PATH +
-                  (isEdit
-                      ? "icon_close_nav_white.png"
-                      : "nav_icon_edit_bai.png"),width: 50,),
+              child: Image.asset(
+                Constant.IMAGE_PATH +
+                    (isEdit
+                        ? "icon_close_nav_white.png"
+                        : "nav_icon_edit_bai.png"),
+                width: 50,
+              ),
             )
           ],
         ),
         body: SafeArea(
-            child: GridView.custom(
-          gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-//      横轴数量 这里的横轴就是x轴 因为方向是垂直的时候 主轴是垂直的
-              crossAxisCount: 3,
-              childAspectRatio: 1 / 1.2),
-          childrenDelegate: new SliverChildBuilderDelegate(
-            (context, index) {
-              return Container(
-                child: _gridItem(index == list.length ? null : list[index],
-                    index == list.length),
-              );
-            },
-            childCount: list.length + 1,
-          ),
+            child: FutureProvider<List<Other_DB>>(
+          builder: (content) => _otherPresenter.getOtherListData(),
+          child: Consumer<List<Other_DB>>(builder:
+              (BuildContext context, List<Other_DB> list, Widget child) {
+            return list == null ? LoadingWidget() : _showListView(list);
+          }),
         )),
       ),
     );
   }
 
-  _gridItem(Map map, bool isLast) {
+
+
+  _showListView(list) {
+
+    return GridView.custom(
+      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+//      横轴数量 这里的横轴就是x轴 因为方向是垂直的时候 主轴是垂直的
+          crossAxisCount: 3,
+          childAspectRatio: 1 / 1.2),
+      childrenDelegate: new SliverChildBuilderDelegate(
+        (context, index) {
+          return Container(
+            child: _gridItem(index == list.length ? null : list[index],
+                index == list.length),
+          );
+        },
+        childCount: list.length + 1,
+      ),
+    );
+  }
+
+  _gridItem(Other_DB data, bool isLast) {
+
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -78,14 +112,14 @@ class _OtherManagePageState extends State<OtherManagePage> {
                 ),
               )
             : Image.asset(
-                Constant.IMAGE_PATH + map.keys.first,
+                Constant.IMAGE_PATH + data.imageName,
                 width: 60,
                 fit: BoxFit.cover,
               ),
         SizedBox(
           height: 15,
         ),
-        isLast ? Container() : Text(map.values.first)
+        isLast ? Container() : Text(data.title)
       ],
     );
   }
