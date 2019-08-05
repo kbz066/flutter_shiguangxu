@@ -23,7 +23,7 @@ class RingCustomPage extends StatelessWidget {
                 },
                 child: ConfigCommonItem(
                   Text("通知音效"),
-                  EdgeInsets.only(top: 5, bottom: 5, left: 20,right: 20),
+                  EdgeInsets.only(top: 14, bottom: 14, left: 20,right: 20),
                   showDivider: true,
                   content: Text("默认"),
                 ),

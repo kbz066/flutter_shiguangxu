@@ -8,12 +8,15 @@ class ConfigCommonItem extends StatefulWidget {
   var showSwitchBut;
   var showDivider;
 
+  var offstageIcon;
   VoidCallback onClick;
 
-
-
-  ConfigCommonItem(this. title,this.padding,
-      {this.content, this.showSwitchBut=false, this.showDivider=false,this.onClick});
+  ConfigCommonItem(this.title, this.padding,
+      {this.content,
+      this.showSwitchBut = false,
+      this.showDivider = false,
+      this.onClick,
+      this.offstageIcon = false});
 
   @override
   State createState() => new _ConfigCommonItemState();
@@ -31,11 +34,11 @@ class _ConfigCommonItemState extends State<ConfigCommonItem> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (down){
-        if(widget.onClick!=null){
+      onTapDown: (down) {
+        if (widget.onClick != null) {
           widget.onClick();
         }
-      } ,
+      },
       child: Container(
         color: Colors.white,
         padding: EdgeInsets.all(0),
@@ -52,34 +55,40 @@ class _ConfigCommonItemState extends State<ConfigCommonItem> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 10),
-                    child: widget.content == null ? Container(height: 0,) : widget.content,
+                    child: widget.content == null
+                        ? Container(
+                            height: 0,
+                          )
+                        : widget.content,
                   ),
                   Padding(
                       padding: EdgeInsets.only(left: 10),
                       child: widget.showSwitchBut
                           ? Switch(
-                        value: check,
-                        activeColor: Colors.white,
-                        inactiveThumbColor: Colors.white,
-                        activeTrackColor: Color(0xff50D066),
-                        inactiveTrackColor: Color(0xffCCCCCC),
-                        onChanged: (bool val) {
-                          this.setState(() {
-                            this.check = !this.check;
-                          });
-                        },
-                      )
-                          : Image.asset(
-                          Constant.IMAGE_PATH + "icon_rightarrow_gray.png")
-                  ),
+                              value: check,
+                              activeColor: Colors.white,
+                              inactiveThumbColor: Colors.white,
+                              activeTrackColor: Color(0xff50D066),
+                              inactiveTrackColor: Color(0xffCCCCCC),
+                              onChanged: (bool val) {
+                                this.setState(() {
+                                  this.check = !this.check;
+                                });
+                              },
+                            )
+                          : Offstage(
+                              offstage: widget.offstageIcon,
+                              child: Image.asset(Constant.IMAGE_PATH +
+                                  "icon_rightarrow_gray.png"),
+                            )),
                 ],
               ),
             ),
             widget.showDivider
                 ? Divider(
-              height: 1,
-              color: Colors.black26,
-            )
+                    height: 1,
+                    color: Colors.black26,
+                  )
                 : Container()
           ],
         ),

@@ -63,10 +63,8 @@ class OtherCustomPage extends StatelessWidget {
                     Other_DB_Dao.init().then((onValue) {
                       NavigatorUtils.push(
                           context,
-                          ChangeNotifierProvider.value(
-                            value: OtherPresenter(),
-                            child: OtherManagePage(),
-                          ));
+                          OtherManagePage()
+                      );
                     });
                   },
                 ),

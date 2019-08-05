@@ -8,8 +8,9 @@ import 'package:flutter_shiguangxu/page/other_custom_page/OtherCustomPage.dart';
 import 'package:flutter_shiguangxu/page/reminder_custom_page/ReminderCustomPage.dart';
 import 'package:flutter_shiguangxu/page/ring_custom_page/RingCustomPage.dart';
 import 'package:flutter_shiguangxu/page/security_page/security_page.dart';
-
-
+import 'package:flutter_shiguangxu/page/setting_page/setting_page.dart';
+import 'package:flutter_shiguangxu/page/user_info_page/user_info_page.dart';
+import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 
 class ConfigPage extends StatefulWidget {
   @override
@@ -20,9 +21,7 @@ class ConfigPageState extends State<ConfigPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
-    return
-
-      Container(
+    return Container(
       child: Stack(
         children: <Widget>[
           Container(
@@ -45,8 +44,9 @@ class ConfigPageState extends State<ConfigPage>
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Image.asset("assets/images/my_avatar_def.png",
-                            fit: BoxFit.cover),
+                        InkWellImageWidget("my_avatar_def", () {
+                          NavigatorUtils.push(context, UserInfoPage());
+                        }),
                         SizedBox(
                           width: 10,
                         ),
@@ -65,8 +65,9 @@ class ConfigPageState extends State<ConfigPage>
                         )
                       ],
                     ),
-                    Image.asset("assets/images/my_icon_set.png",
-                        fit: BoxFit.cover),
+                    InkWellImageWidget("my_icon_set", () {
+                      NavigatorUtils.push(context, SettingPage());
+                    })
                   ],
                 ),
                 SizedBox(
@@ -97,10 +98,14 @@ class ConfigPageState extends State<ConfigPage>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            ConfigItemWidget("系统同步", "icon_tongbu_data_me",()=>_onTapDown("系统同步")),
-                            ConfigItemWidget("导出备份", "icon_daochu_data_me",()=>_onTapDown("导出备份")),
-                            ConfigItemWidget("安全中心", "icon_safe_data_me",()=>_onTapDown("安全中心")),
-                            ConfigItemWidget("回收站", "icon_hsz_data_me",()=>_onTapDown("回收站")),
+                            ConfigItemWidget("系统同步", "icon_tongbu_data_me",
+                                () => _onTapDown("系统同步")),
+                            ConfigItemWidget("导出备份", "icon_daochu_data_me",
+                                () => _onTapDown("导出备份")),
+                            ConfigItemWidget("安全中心", "icon_safe_data_me",
+                                () => _onTapDown("安全中心")),
+                            ConfigItemWidget("回收站", "icon_hsz_data_me",
+                                () => _onTapDown("回收站")),
                           ],
                         )
                       ],
@@ -132,10 +137,14 @@ class ConfigPageState extends State<ConfigPage>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            ConfigItemWidget("提醒定制", "icon_tixing_dingzhi_me",()=>_onTapDown("提醒定制")),
-                            ConfigItemWidget("铃声定制", "icon_bell_dingzhi_me",()=>_onTapDown("铃声定制")),
-                            ConfigItemWidget("展示定制", "icon_zhanshi_dingzhi_me",()=>_onTapDown("展示定制")),
-                            ConfigItemWidget("个性定制", "icon_other_dingzhi_me",()=>_onTapDown("个性定制")),
+                            ConfigItemWidget("提醒定制", "icon_tixing_dingzhi_me",
+                                () => _onTapDown("提醒定制")),
+                            ConfigItemWidget("铃声定制", "icon_bell_dingzhi_me",
+                                () => _onTapDown("铃声定制")),
+                            ConfigItemWidget("展示定制", "icon_zhanshi_dingzhi_me",
+                                () => _onTapDown("展示定制")),
+                            ConfigItemWidget("个性定制", "icon_other_dingzhi_me",
+                                () => _onTapDown("个性定制")),
                           ],
                         )
                       ],
@@ -255,11 +264,9 @@ class ConfigPageState extends State<ConfigPage>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 
-
-  _onTapDown(String type){
-
+  _onTapDown(String type) {
     LogUtil.e("执行了  _onTapDown   $type");
-    switch(type){
+    switch (type) {
       case "系统同步":
         NavigatorUtils.push(context, SystemSyncPage());
         break;
@@ -283,7 +290,6 @@ class ConfigPageState extends State<ConfigPage>
       case "个性定制":
         NavigatorUtils.push(context, OtherCustomPage());
         break;
-
     }
   }
 }
@@ -293,15 +299,13 @@ class ConfigItemWidget extends StatelessWidget {
   String imageName;
   VoidCallback callback;
 
-
   ConfigItemWidget(this.title, this.imageName, this.callback);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return GestureDetector(
-      onTapDown: (down){
-
+      onTapDown: (down) {
         callback();
       },
       child: Container(
@@ -310,8 +314,9 @@ class ConfigItemWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset("assets/images/$imageName.png", fit: BoxFit.cover),
-
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Text("$title"),
           ],
         ),

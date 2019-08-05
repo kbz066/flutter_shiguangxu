@@ -13,4 +13,10 @@ class OtherPresenter extends BasePresenter<OtherModel>{
   }
 
 
+  Future addOther(int color,String title,String imageName) async {
+     await model.addOther(color, title,imageName);
+
+  }
+
+
 }
