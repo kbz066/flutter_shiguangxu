@@ -12,7 +12,7 @@ class OtherModel extends BaseModel {
 //    await Future.delayed(Duration(seconds: 10));
 
 
-    LogUtil.e("getOtherListData------------------>");
+
     List<Other_DB> initialList=datas.map((item) {
       return Other_DB(
           id: datas.indexOf(item),
