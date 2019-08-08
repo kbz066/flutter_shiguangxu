@@ -6,6 +6,7 @@ import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/dao/Other_DB.dart';
 import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresenter.dart';
 import 'package:flutter_shiguangxu/widget/LoadingWidget.dart';
+import 'package:flutter_shiguangxu/widget/ReorderableGridView.dart';
 import 'package:provider/provider.dart';
 
 import 'OtherAddPage.dart';
@@ -17,9 +18,9 @@ class OtherManagePage extends StatefulWidget {
 }
 
 class _OtherManagePageState extends State<OtherManagePage> {
-
-
   bool isEdit = false;
+
+  bool showAdd=true;
 
   @override
   void initState() {
@@ -28,9 +29,8 @@ class _OtherManagePageState extends State<OtherManagePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return  Scaffold(
+    return
+      Scaffold(
       appBar: AppBar(
         title: Text("分类管理"),
         centerTitle: true,
@@ -41,6 +41,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
               print("点击；了  ${isEdit}");
               setState(() {
                 this.isEdit = !isEdit;
+                this.showAdd=!this.showAdd;
               });
             },
             child: Image.asset(
@@ -54,19 +55,19 @@ class _OtherManagePageState extends State<OtherManagePage> {
         ],
       ),
       body: SafeArea(
-        child:_buildFutureBuilder(Provider.of<OtherPresenter>(context, listen: false)),
+        child: _buildFutureBuilder(
+            Provider.of<OtherPresenter>(context, listen: false)),
       ),
     );
   }
 
   _buildFutureBuilder(OtherPresenter _otherPresenter) {
-    LogUtil.e("build    _buildFutureBuilder------------>");
+
     return FutureBuilder<List<Other_DB>>(
       future: _otherPresenter
           .getOtherListData(), // a previously-obtained Future<String> or null
       builder: (context, snap) {
         if (snap.connectionState == ConnectionState.done) {
-
           return _showListView(snap.data);
         } else {
           return LoadingWidget();
@@ -76,27 +77,23 @@ class _OtherManagePageState extends State<OtherManagePage> {
   }
 
   _showListView(list) {
-    return GridView.custom(
-      gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+    return ReorderableGridView(
+      delegate: new SliverGridDelegateWithFixedCrossAxisCount(
 //      横轴数量 这里的横轴就是x轴 因为方向是垂直的时候 主轴是垂直的
           crossAxisCount: 3,
           childAspectRatio: 1 / 1.2),
-      childrenDelegate: new SliverChildBuilderDelegate(
-        (context, index) {
-          return Container(
-            child: _gridItem(index == list.length ? null : list[index],
-                index == list.length),
-          );
-        },
-        childCount: list.length + 1,
-      ),
+      itemBuilder: (context, index) {
+        return Container(
+          child: _gridItem(
+              index == list.length ? null : list[index], index == list.length),
+        );
+      },
+      showAdd: showAdd,
+      datas: list,
     );
   }
 
   _gridItem(Other_DB data, bool isLast) {
-
-
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -124,27 +121,25 @@ class _OtherManagePageState extends State<OtherManagePage> {
                     size: 30,
                   ),
                 )
-              :data.isDBData!=null&&data.isDBData!=0?
-          Container(
-            width: 60,
-            height: 60,
-            margin: EdgeInsets.only(bottom: 15),
-            decoration: BoxDecoration(
-                color: Color(data.bgColor),
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            child:  Image.asset(
-              Constant.IMAGE_PATH + data.imageName,
-              width: 60,
-              fit: BoxFit.cover,
-            ),
-          )
-              :
-
-          Image.asset(
-                  Constant.IMAGE_PATH + data.imageName,
-                  width: 60,
-                  fit: BoxFit.cover,
-                ),
+              : data.isDBData != null && data.isDBData != 0
+                  ? Container(
+                      width: 60,
+                      height: 60,
+                      margin: EdgeInsets.only(bottom: 15),
+                      decoration: BoxDecoration(
+                          color: Color(data.bgColor),
+                          borderRadius: BorderRadius.all(Radius.circular(30))),
+                      child: Image.asset(
+                        Constant.IMAGE_PATH + data.imageName,
+                        width: 60,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : Image.asset(
+                      Constant.IMAGE_PATH + data.imageName,
+                      width: 60,
+                      fit: BoxFit.cover,
+                    ),
         ),
         SizedBox(
           height: 15,
