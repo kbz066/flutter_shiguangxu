@@ -22,21 +22,16 @@ class _HomePageState extends State<HomePage> {
 
     _pageController = PageController(initialPage: _currentIndex);
     pageLists = [ToDayPage(), PlanListPage(), ConfigPage()];
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-    return         Scaffold(
-      body:
-      PageView(
-
+    return Scaffold(
+      body: PageView(
         controller: _pageController,
         children: pageLists,
         onPageChanged: this.onPageChanged,
-        physics: new NeverScrollableScrollPhysics(),//禁止滑动
+        physics: new NeverScrollableScrollPhysics(), //禁止滑动
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -65,18 +60,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onTap(int index) {
-
     _pageController.animateToPage(index,
         duration: Duration(milliseconds: 300), curve: Curves.linear);
-
   }
 
   void onPageChanged(int index) {
-
     setState(() {
       _currentIndex = index;
     });
   }
-
-
 }

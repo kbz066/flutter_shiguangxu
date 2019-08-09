@@ -1,6 +1,6 @@
-import 'package:common_utils/common_utils.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_shiguangxu/dao/Other_DB.dart';
+
 
 class ReorderableGridView extends StatefulWidget {
   final SliverGridDelegate delegate;
@@ -38,9 +38,7 @@ class ReorderableGridViewState extends State<ReorderableGridView>
         gridDelegate: widget.delegate,
         childrenDelegate: new SliverChildBuilderDelegate(
           (context, index) {
-
             if (widget.showAdd) {
-
               return widget.itemBuilder(context, index);
             }
 
@@ -49,10 +47,10 @@ class ReorderableGridViewState extends State<ReorderableGridView>
             if (_needToAnimate) {
               slideAnimation = createTargetItemSlideAnimation(index);
             }
-            LogUtil.e("isHide---- start---------->  ");
+
             var isHide = _movingValue == datas[index];
 
-            LogUtil.e("isHide-------------->  ${isHide}");
+
             return isHide
                 ? Container()
                 : _GridItem(
@@ -244,37 +242,39 @@ class _GridItemState extends State<_GridItem> with TickerProviderStateMixin {
 
   Widget buildDragTarget() {
 
-    LogUtil.e("buildDragTarget----------------------->  ${widget.index}");
     return LongPressDraggable<dynamic>(
-            data: widget.datas[widget.index],
-            child: DragTarget(
-              builder: (BuildContext context, List<dynamic> candidateData,
-                  List<dynamic> rejectedData) {
-                return widget.child;
-              },
-              onWillAccept: (data) {
-                var startIndex = widget.datas.indexOf(data);
+      data: widget.datas[widget.index],
+      child: DragTarget(
+        builder: (BuildContext context, List<dynamic> candidateData,
+            List<dynamic> rejectedData) {
+          return widget.child;
+        },
+        onWillAccept: (data) {
+          var startIndex = widget.datas.indexOf(data);
 
-                if (startIndex != widget.index) {
-                  widget.startMove(startIndex, widget.index);
-                }
+          if (startIndex != widget.index) {
+            widget.startMove(startIndex, widget.index);
+          }
 
-                return startIndex != null &&
-                    startIndex !=
-                        widget.index; //当Draggable传递过来的dada不是null的时候 决定接收该数据。
-              },
-              onAccept: (data) {
-                widget.updateMovingValue(null);
-              },
-            ),
-            childWhenDragging: Container(),
-            feedback:  widget.child,
-            onDragStarted: () {
-              widget.updateMovingValue(widget.datas[widget.index]);
-            },
-            onDraggableCanceled: (velocity, offset) {
-              widget.updateMovingValue(null, update: true);
-            },
-          );
+          return startIndex != null &&
+              startIndex !=
+                  widget.index; //当Draggable传递过来的dada不是null的时候 决定接收该数据。
+        },
+        onAccept: (data) {
+          widget.updateMovingValue(null);
+        },
+      ),
+      childWhenDragging: Container(),
+      feedback: StatefulBuilder(builder: (context, state) {
+
+        return SizedBox.fromSize(size: _size, child: widget.child);
+      }),
+      onDragStarted: () {
+        widget.updateMovingValue(widget.datas[widget.index]);
+      },
+      onDraggableCanceled: (velocity, offset) {
+        widget.updateMovingValue(null, update: true);
+      },
+    );
   }
 }

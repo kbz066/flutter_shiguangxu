@@ -20,7 +20,7 @@ class OtherManagePage extends StatefulWidget {
 class _OtherManagePageState extends State<OtherManagePage> {
   bool isEdit = false;
 
-  bool showAdd=true;
+  bool showAdd = true;
 
   @override
   void initState() {
@@ -29,8 +29,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("分类管理"),
         centerTitle: true,
@@ -41,7 +40,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
               print("点击；了  ${isEdit}");
               setState(() {
                 this.isEdit = !isEdit;
-                this.showAdd=!this.showAdd;
+                this.showAdd = !this.showAdd;
               });
             },
             child: Image.asset(
@@ -54,6 +53,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
           )
         ],
       ),
+      backgroundColor:Colors.white ,
       body: SafeArea(
         child: _buildFutureBuilder(
             Provider.of<OtherPresenter>(context, listen: false)),
@@ -62,7 +62,6 @@ class _OtherManagePageState extends State<OtherManagePage> {
   }
 
   _buildFutureBuilder(OtherPresenter _otherPresenter) {
-
     return FutureBuilder<List<Other_DB>>(
       future: _otherPresenter
           .getOtherListData(), // a previously-obtained Future<String> or null
@@ -84,6 +83,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
           childAspectRatio: 1 / 1.2),
       itemBuilder: (context, index) {
         return Container(
+          color:Colors.white ,
           child: _gridItem(
               index == list.length ? null : list[index], index == list.length),
         );
@@ -144,7 +144,16 @@ class _OtherManagePageState extends State<OtherManagePage> {
         SizedBox(
           height: 15,
         ),
-        isLast ? Container() : Text(data.title)
+        isLast
+            ? Container()
+            : Text(
+                data.title,
+                style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w300,
+                    decoration: TextDecoration.none),
+              )
       ],
     );
   }
