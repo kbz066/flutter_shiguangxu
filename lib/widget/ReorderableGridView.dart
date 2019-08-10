@@ -106,7 +106,7 @@ class ReorderableGridViewState extends State<ReorderableGridView>
     this.moveEndIndex = endIndex;
 
     setState(() {
-      _needToAnimate = true;
+
       final temp = widget.datas[startIndex];
       widget.datas.remove(temp);
       widget.datas.insert(endIndex, temp);
@@ -114,7 +114,6 @@ class ReorderableGridViewState extends State<ReorderableGridView>
     });
     _slideController.forward().whenComplete(() {
       setState(() {
-        _needToAnimate = false;
         _needToAnimate = false;
         _slideController.value = 0;
       });

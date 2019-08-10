@@ -23,22 +23,20 @@ class MyDraggable extends StatelessWidget {
   const MyDraggable({this.data = "MyDraggable", Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Draggable(
-      data: data,
-      child: Container(
-        width: 150.0,
-        height: 150.0,
-        color: Colors.red[500],
-        child: Center(
-          child: Text('Draggable'),
-        ),
-      ),
-      feedback: Container(
-        width: 150.0,
-        height: 150.0,
-        color: Colors.blue[500],
-        child: Icon(Icons.feedback),
-      ),
-    );
+
+    return ListView(
+      children: List.generate(20, (index){
+        return Draggable(
+          data: data,
+          child: Text('Draggable  $index'),
+          feedback: Container(
+            width: 150.0,
+            height: 150.0,
+            color: Colors.blue[500],
+            child: Text('aaaaaaaaaaaa  $index'),
+          ),
+        );
+      }),
+    ) ;
   }
 }

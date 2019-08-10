@@ -30,6 +30,7 @@ dependencies:
   image_picker:
   dio:
 
+
   drag_list:
   provider: ^3.0.0+1
 

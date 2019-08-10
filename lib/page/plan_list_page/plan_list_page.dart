@@ -1,6 +1,7 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
+import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/widget/DragTargetListView.dart';
 
 class PlanListPage extends StatefulWidget {
@@ -9,7 +10,31 @@ class PlanListPage extends StatefulWidget {
 }
 
 class PlanListPageState extends State<PlanListPage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin{
+  AnimationController _feedbackController;
+  AnimationController _delController;
+  var datas = [
+    "java",
+    "c++",
+    "dart",
+    "flutter",
+    "js",
+  ];
+
+  @override
+  void initState() {
+    _delController=AnimationController(vsync: this,duration: Duration(milliseconds:400));
+    super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _delController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,42 +54,42 @@ class PlanListPageState extends State<PlanListPage>
           ),
         ),
         child: Container(
-          padding: EdgeInsets.only( top: 20),
+          padding: EdgeInsets.only(top: 20),
           child: Column(
             children: <Widget>[
-             Padding(
-               padding: EdgeInsets.symmetric(horizontal: 20),
-               child:  Row(
-                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                 children: <Widget>[
-                   SizedBox(
-                     width: 60,
-                     child: Row(
-                       children: <Widget>[
-                         Text(
-                           "全部",
-                           style: TextStyle(fontSize: 18, color: Colors.white70),
-                         ),
-                         SizedBox(
-                           width: 10,
-                         ),
-                         SizedBox(
-                           width: 6,
-                           child: Image.asset(
-                             "assets/images/icon_back_right_white_def.png",
-                             color: Colors.white70,
-                           ),
-                         )
-                       ],
-                     ),
-                   ),
-                   Text(
-                     "0/0",
-                     style: TextStyle(color: Colors.white70),
-                   )
-                 ],
-               )
-             ),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 60,
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              "全部",
+                              style: TextStyle(
+                                  fontSize: 18, color: Colors.white70),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            SizedBox(
+                              width: 6,
+                              child: Image.asset(
+                                "assets/images/icon_back_right_white_def.png",
+                                color: Colors.white70,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text(
+                        "0/0",
+                        style: TextStyle(color: Colors.white70),
+                      )
+                    ],
+                  )),
               SizedBox(
                 height: 20,
               ),
@@ -73,11 +98,54 @@ class PlanListPageState extends State<PlanListPage>
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
                     _showListContent(),
-                    Container(
-                      width: 80,
-                      height: 80,
-                      color: Colors.red,
-                      child: Text("删除"),
+                    DragTarget<dynamic>(
+                      builder: (BuildContext context,
+                          List<dynamic> candidateData,
+                          List<dynamic> rejectedData) {
+                        return SlideTransition(
+
+                          position: Tween(begin: Offset(1,1),end: Offset(0,0)).animate(_delController),
+                          child: Container(
+                              padding: EdgeInsets.only(left: 40, top: 30),
+                              decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(140))),
+                              width: 140,
+                              height: 150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Image.asset(
+                                    Constant.IMAGE_PATH +
+                                        "btn_sc_pressed_white.png",
+                                    height: 30,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  Text("拖至此处删除",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white)),
+                                ],
+                              )),
+                        );
+                      },
+                      onWillAccept: (data) {
+                        _feedbackController.forward();
+
+                        LogUtil.e("触发删除 --------------------》");
+                        return true;
+                      },
+                      onAccept: (data) {
+                        setState(() {
+                          datas.remove(data);
+                          _feedbackController.reverse();
+                        });
+                        LogUtil.e("触发删除 ---------onAccept-----------》");
+                      },
+                      onLeave: (data) {
+                        _feedbackController.reverse();
+                        LogUtil.e("触发删除 ---------onLeave-----------》");
+                      },
                     )
                   ],
                 ),
@@ -90,35 +158,67 @@ class PlanListPageState extends State<PlanListPage>
   }
 
   _showListContent() {
-    var datas = List.generate(50, (index) {
-      return index.toString();
-    });
+    var leadingIcon = [
+      "category_icon_birthday_def.png",
+      "category_icon_other_def.png",
+      "category_icon_anniversary_def.png",
+      "category_icon_thing_def.png",
+      "category_icon_birthday_def.png",
+      "category_icon_birthday_def.png",
+      "category_icon_birthday_def.png",
+      "category_icon_birthday_def.png"
+    ];
 
-    return
-     Container(
-       decoration: BoxDecoration(
-           color: Colors.white,
-           borderRadius: BorderRadius.only(
-               topLeft: Radius.circular(20),
-               topRight: Radius.circular(10))),
-       margin: EdgeInsets.symmetric(horizontal: 20),
-       child:  DragTargetListView(
-         padding: EdgeInsets.only(left: 20,top: 10),
-         itemBuilder: (BuildContext context, int index) {
-           return Container(
-//             color: Colors.amberAccent,
-             child: SizedBox(
-               height: 40,
-               child: Text(
-                 "当前的index==============    ${index}",
-                 style: TextStyle(color: Colors.green),
-               ),
-             ),
-           );
-         },
-         datas: datas,
-       ),
-     );
+
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(10))),
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child: DragTargetListView(
+        padding: EdgeInsets.only(left: 20, top: 10),
+        itemBuilder: (BuildContext context, int index) {
+          return Material(
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  Image.asset(Constant.IMAGE_PATH + leadingIcon[0]),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Colors.black12, width: 0.5))),
+                      child: Text(datas[index]),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+        datas: datas,
+        feedbackChange: _feedbackChange,
+        onDragStartedCallback: _onDragStartedCallback,
+        onDragEndCallback: _onDragEndCallback,
+      ),
+    );
+  }
+
+  _onDragStartedCallback() {
+    _delController.forward();
+  }
+  _onDragEndCallback() {
+    LogUtil.e("_onDragEndCallback------------------>");
+    _delController.reverse();
+  }
+
+  _feedbackChange(AnimationController controller) {
+    this._feedbackController = controller;
   }
 
   showEmptyContent() {
