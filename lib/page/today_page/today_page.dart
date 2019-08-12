@@ -89,8 +89,8 @@ class _ToDayPageState extends State<ToDayPage>
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtils.mainColor,
         onPressed: () {
-
-            _showAddPlanDialog();
+          _showSuccessDialog("");
+          //  _showAddPlanDialog();
         },
         child: Icon(Icons.add),
       ),
@@ -115,14 +115,22 @@ class _ToDayPageState extends State<ToDayPage>
 
   _showSuccessDialog(String title){
     PopupWindow.showDialog(context, 2000, this, (context) {
-      return Container(
-        color: Colors.red,
-        height: 50,
-        child: ListTile(
-          leading: Image.asset(Constant.IMAGE_PATH+"add_icon_hook.png"),
-          title: Text("清单添加成功"),
-        ),
+      return Material(
+        child: Container(
+          color: Colors.red,
+          height: 60,
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Image.asset(Constant.IMAGE_PATH+"add_icon_hook.png"),
+                  Text("清单添加成功")
+                ],
+              )
+            ],
+          ),
 
+        ),
       );
     }, top: 35, left: 10, right: 10);
   }
