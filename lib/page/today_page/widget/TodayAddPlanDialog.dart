@@ -1,6 +1,8 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_calendar/model/date_model.dart';
+import 'package:flutter_calendar/utils/date_util.dart' as prefix0;
 import 'package:flutter_shiguangxu/base/BaseView.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
@@ -11,19 +13,14 @@ import 'package:provider/provider.dart';
 
 import 'TodayTimeDialog.dart';
 
-
-
 class TodayAddPlanDialog extends BaseView {
   GlobalKey contentKey;
   var typeIcon;
   var levelIcon;
   var labels;
 
-
-
-  TodayAddPlanDialog(this.contentKey){
-
-
+  DateTime currentTime;
+  TodayAddPlanDialog(this.contentKey, this.currentTime) {
     typeIcon = [
       "search_class_icon_work",
       "search_class_icon_learn",
@@ -55,56 +52,62 @@ class TodayAddPlanDialog extends BaseView {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    bool isNowDay = DateUtil.isToday(currentTime.millisecondsSinceEpoch);
+
+
+
+    return Scaffold(
       backgroundColor: Colors.black12,
       body: ChangeNotifierProvider(
-        builder: (context) => TodayStateModel(),
+        builder: (context) => isNowDay ? TodayStateModel() :( TodayStateModel()
+          ..setSelectDate(
+              true, DialogPageModel()..setSelectDate(DateModel.fromDateTime(currentTime)), 0,isNotifyListeners: false)),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Column(
             key: contentKey,
             mainAxisSize: MainAxisSize.min,
-
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Consumer<TodayStateModel>(
                 builder: (context, model, child) {
+                  LogUtil.e("model.dateTips     ${model.dateTips}");
                   return model.dateTips == null
                       ? Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceEvenly,
-                    children: labels,
-                  )
-                      : Container(
-                    height: 30,
-                    margin: EdgeInsets.only(left: 20),
-
-                    decoration: BoxDecoration(
-
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(25)),
-                        color: Colors.white),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(model.dateTips),
-
-                        IconButton(
-                          padding: EdgeInsets.all(0),
-
-                          icon: Icon(Icons.clear,color: Colors.black26,size:18 ,),
-                          onPressed: () {
-                            model.setSelectDate(false, null, 0);
-                          },
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: labels,
                         )
-                      ],
-                    ),
-                  );
+                      : Container(
+                          height: 30,
+                          margin: EdgeInsets.only(left: 20),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                              color: Colors.white),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(model.dateTips),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.black26,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  model.setSelectDate(false, null, 0);
+                                },
+                              )
+                            ],
+                          ),
+                        );
                 },
               ),
               SizedBox(
@@ -127,19 +130,18 @@ class TodayAddPlanDialog extends BaseView {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "写点什么,吧事情记录下来....",
-                                hintStyle:
-                                TextStyle(color: Colors.black26),
+                                hintStyle: TextStyle(color: Colors.black26),
                               ),
                             ),
                           ),
-                          Image.asset(Constant.IMAGE_PATH +
-                              "icon_add_voice_nor.png")
+                          Image.asset(
+                              Constant.IMAGE_PATH + "icon_add_voice_nor.png")
                         ],
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       color: Color.fromARGB(255, 250, 250, 250),
                       child: Row(
                         children: <Widget>[
@@ -152,8 +154,7 @@ class TodayAddPlanDialog extends BaseView {
                                     model.selectDate
                                         ? "icon_add_time_pre"
                                         : "plant_icon_time", () {
-                                  _showTimeDialog(
-                                      contentKey.currentContext);
+                                  _showTimeDialog(contentKey.currentContext);
                                 }),
                               );
                             },
@@ -173,8 +174,8 @@ class TodayAddPlanDialog extends BaseView {
                                         ? typeIcon[model.checkTypeIndex]
                                         : "icon_add_category_nor", () {
                                   Provider.of<TodayStateModel>(
-                                      contentKey.currentContext,
-                                      listen: false)
+                                          contentKey.currentContext,
+                                          listen: false)
                                       .setShowTypeView();
                                 }),
                               );
@@ -195,8 +196,8 @@ class TodayAddPlanDialog extends BaseView {
                                         ? levelIcon[model.checkLevelIndex]
                                         : "icon_add_important_nor", () {
                                   Provider.of<TodayStateModel>(
-                                      contentKey.currentContext,
-                                      listen: false)
+                                          contentKey.currentContext,
+                                          listen: false)
                                       .setShowLevelView();
                                 }),
                               );
@@ -212,8 +213,7 @@ class TodayAddPlanDialog extends BaseView {
                         LogUtil.e(
                             "TodayStateModel   build      ------------->");
                         return Container(
-                          height:
-                          model.showType || model.showLevel ? 290 : 0,
+                          height: model.showType || model.showLevel ? 290 : 0,
                           child: model.showType
                               ? _showTypeView(model)
                               : _showLevelView(model),
@@ -314,9 +314,9 @@ class TodayAddPlanDialog extends BaseView {
               ),
               model.checkTypeIndex == index
                   ? Align(
-                child: Image.asset("assets/images/add_icon_hook.png"),
-                alignment: Alignment(0.4, -0.3),
-              )
+                      child: Image.asset("assets/images/add_icon_hook.png"),
+                      alignment: Alignment(0.4, -0.3),
+                    )
                   : Container(),
               Align(
                 alignment: Alignment(0, 0.6),

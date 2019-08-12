@@ -37,6 +37,7 @@ class PlanListPageState extends State<PlanListPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
 //      floatingActionButton: FloatingActionButton(
 //        backgroundColor: ColorUtils.mainColor,

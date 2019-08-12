@@ -41,6 +41,9 @@ class DialogPageModel with ChangeNotifier {
     0
   ];
 
+
+
+
   void setShowCalendar(bool show) {
     this.showCalendar = show;
     notifyListeners();
@@ -52,13 +55,14 @@ class DialogPageModel with ChangeNotifier {
     notifyListeners();
   }
 
-  set selectDate(DateModel value) {
+  void setSelectDate (DateModel value,{bool isMotifyListeners=true} ) {
     _selectDate = value;
     this.showCalendar = false;
     this.timeTxt = DateUtil.formatDate(
             DateTime(value.year, value.month, value.day),
             format: "MM月dd日") +
         " ${DateUtil.getZHWeekDay(DateTime(value.year, value.month, value.day))}";
+    if(isMotifyListeners)
     notifyListeners();
   }
 
@@ -134,5 +138,6 @@ class DialogTipsModel with ChangeNotifier {
     this.disabled=disabled;
     notifyListeners();
   }
+
 
 }

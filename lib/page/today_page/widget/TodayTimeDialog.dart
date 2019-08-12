@@ -89,8 +89,7 @@ class TodayTimeDialog extends BaseStateView{
     var text = "${_provider.year}年${_provider.month}月";
 
     controller.addOnCalendarSelectListener((dateModel) {
-      Provider.of<DialogPageModel>(context, listen: false).selectDate =
-          dateModel;
+      Provider.of<DialogPageModel>(context, listen: false).setSelectDate (dateModel);
     });
 
     controller.addMonthChangeListener((int year, int month) {

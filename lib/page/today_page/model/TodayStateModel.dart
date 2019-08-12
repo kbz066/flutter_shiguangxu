@@ -2,23 +2,28 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 
 
+
 import 'DialogStateModel.dart';
 
 class TodayStateModel extends ChangeNotifier{
-  bool showType=false;
-  bool showLevel=false;
+  bool showType;
+  bool showLevel;
 
-  bool updateTypeIcon=false;
-  int checkTypeIndex=2;
+  bool updateTypeIcon;
+  int checkTypeIndex;
 
-  bool updateLeveleIcon=false;
-  int checkLevelIndex=1;
+  bool updateLeveleIcon;
+  int checkLevelIndex;
 
 
-  bool selectDate=false;
+  bool selectDate;
 
   String dateTips;
 
+
+  TodayStateModel({this.showType=false, this.showLevel=false, this.updateTypeIcon=false,
+    this.checkTypeIndex=2, this.updateLeveleIcon=false, this.checkLevelIndex=1,
+    this.selectDate=false, this.dateTips});
 
   void  setShowTypeView(){
     this.showType=!showType;
@@ -43,43 +48,55 @@ class TodayStateModel extends ChangeNotifier{
     this.updateLeveleIcon=true;
     setShowLevelView();
   }
-  void setSelectDate(selectDate, DialogPageModel pageModel, int index){
+  void setSelectDate(selectDate, DialogPageModel pageModel, int index,{bool isNotifyListeners=true}){
+
+
     this.selectDate=selectDate;
     this.showLevel=false;
     this.showType=false;
 
 
+    _modelToDateTips(pageModel,index);
 
 
-    String tips = null;
+    if(isNotifyListeners)
+    notifyListeners();
+  }
+
+  String _modelToDateTips(DialogPageModel pageModel,int index){
 
     if(pageModel!=null){
       switch (index) {
         case 0:
-          tips =
+          this.dateTips =
           "${pageModel.selectDate.year}年${pageModel.selectDate.month}月${pageModel.selectDate.day}日 "
               "${DateUtil.getZHWeekDay(DateTime(pageModel.selectDate.year,pageModel.selectDate.month,pageModel.selectDate.day)
-          )} ${pageModel.initTimePoint[1]}:${pageModel.initTimePoint[2]}";
+          )} ${_formatDateTxt(pageModel.initTimePoint[1])}:${_formatDateTxt(pageModel.initTimePoint[2])}";
+
+
           break;
 
         case 1:
-          tips =
+          this.dateTips =
           "${pageModel.selectDate.year}年${pageModel.selectDate.month}月${pageModel.selectDate.day}日 "
               "${DateUtil.getZHWeekDay(DateTime(pageModel.selectDate.year,pageModel.selectDate.month,pageModel.selectDate.day)
-          )} ${pageModel.initTimeDistanceStart[1]}:${pageModel.initTimeDistanceStart[2]}~${pageModel.initTimeDistanceEnd[0]}:${pageModel.initTimeDistanceEnd[1]}";
+          )} ${_formatDateTxt(pageModel.initTimeDistanceStart[1])}:${_formatDateTxt(pageModel.initTimeDistanceStart[2])}~${_formatDateTxt(pageModel.initTimeDistanceEnd[0])}:${_formatDateTxt(pageModel.initTimeDistanceEnd[1])}";
           break;
         case 1:
-          tips =
+          this.dateTips =
           "${pageModel.selectDate.year}年${pageModel.selectDate.month}月${pageModel.selectDate.day}日 "
               "${DateUtil.getZHWeekDay(DateTime(pageModel.selectDate.year,pageModel.selectDate.month,pageModel.selectDate.day)
           )} ";
           break;
       }
+    }else{
+      this.dateTips=null;
+
+
+
     }
-    this.dateTips=tips;
-    notifyListeners();
   }
-
-
-
+  String _formatDateTxt(int value){
+    return value < 10 ? '0$value' : value.toString();
+}
 }

@@ -21,6 +21,7 @@ class ConfigPageState extends State<ConfigPage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       child: Stack(
         children: <Widget>[

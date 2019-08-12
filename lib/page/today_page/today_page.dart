@@ -19,6 +19,7 @@ import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
+import 'package:flutter_shiguangxu/widget/PopupWindowButton.dart';
 
 import 'widget/TodayContentWidget.dart';
 import 'widget/TodayWeekCalendarWidget.dart';
@@ -73,17 +74,23 @@ class _ToDayPageState extends State<ToDayPage>
               Navigator.pop(context);
             }
           },
-          child: TodayAddPlanDialog(contentKey),
+          child: TodayAddPlanDialog(
+              contentKey,
+              DateTime.now().add(Duration(
+                  days: this._weekCalendarInfo.currentPageIndex * 7 +
+                      this._weekCalendarInfo.currentWeekIndex))),
         )));
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtils.mainColor,
         onPressed: () {
-          _showAddPlanDialog();
+
+            _showAddPlanDialog();
         },
         child: Icon(Icons.add),
       ),
@@ -104,6 +111,20 @@ class _ToDayPageState extends State<ToDayPage>
         ],
       ),
     );
+  }
+
+  _showSuccessDialog(String title){
+    PopupWindow.showDialog(context, 2000, this, (context) {
+      return Container(
+        color: Colors.red,
+        height: 50,
+        child: ListTile(
+          leading: Image.asset(Constant.IMAGE_PATH+"add_icon_hook.png"),
+          title: Text("清单添加成功"),
+        ),
+
+      );
+    }, top: 35, left: 10, right: 10);
   }
 
   _buildTopWidget() {

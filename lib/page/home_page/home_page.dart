@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/config_page/config_page.dart';
 import 'package:flutter_shiguangxu/page/today_page/today_page.dart';
@@ -9,7 +10,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _currentIndex;
+  var _currentIndex=0;
 
   PageController _pageController;
   List<Widget> pageLists;
@@ -18,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _currentIndex = 0;
 
+    LogUtil.e("HomePage        initState  初始化     ");
     _pageController = PageController(initialPage: _currentIndex);
     pageLists = [ToDayPage(), PlanListPage(), ConfigPage()];
   }
