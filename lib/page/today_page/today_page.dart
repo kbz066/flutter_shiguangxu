@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:flustars/flustars.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart' as prefix1;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
+
 import 'package:flutter_calendar/constants/constants.dart';
 
 import 'package:flutter_calendar/controller.dart';
@@ -19,7 +19,7 @@ import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
-import 'package:flutter_shiguangxu/widget/PopupWindowButton.dart';
+import 'package:flutter_shiguangxu/widget/PopupWindow.dart';
 
 import 'widget/TodayContentWidget.dart';
 import 'widget/TodayWeekCalendarWidget.dart';
@@ -60,38 +60,13 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _showAddPlanDialog() {
-    var contentKey = GlobalKey();
-
-    Navigator.push(
-        context,
-        BottomPopupRoute(
-            child: GestureDetector(
-          onTapDown: (down) {
-            if (down.globalPosition.dy <
-                WindowUtils.getHeightDP() -
-                    contentKey.currentContext.size.height) {
-              Navigator.pop(context);
-            }
-          },
-          child: TodayAddPlanDialog(
-              contentKey,
-              DateTime.now().add(Duration(
-                  days: this._weekCalendarInfo.currentPageIndex * 7 +
-                      this._weekCalendarInfo.currentWeekIndex))),
-        )));
-  }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorUtils.mainColor,
-        onPressed: () {
-          _showSuccessDialog("");
-          //  _showAddPlanDialog();
-        },
+        onPressed: () => _showAddPlanDialog(),
         child: Icon(Icons.add),
       ),
       backgroundColor: Color.fromARGB(255, 249, 250, 252),
@@ -113,23 +88,60 @@ class _ToDayPageState extends State<ToDayPage>
     );
   }
 
-  _showSuccessDialog(String title){
+  _showAddPlanDialog() {
+    var contentKey = GlobalKey();
+
+    LogUtil.e(
+        "打印下日期     ${this._weekCalendarInfo.currentPageIndex * 7 + this._weekCalendarInfo.currentWeekIndex}  ${_weekCalendarInfo.currentTime.weekday}");
+    Navigator.push(
+        context,
+        BottomPopupRoute(
+            child: GestureDetector(
+          onTapDown: (down) {
+            if (down.globalPosition.dy <
+                WindowUtils.getHeightDP() -
+                    contentKey.currentContext.size.height) {
+              Navigator.pop(context);
+            }
+          },
+          child: TodayAddPlanDialog(
+              contentKey,
+              DateTime.now().add(Duration(
+                  days: _weekCalendarInfo.currentPageIndex * 7 +
+                      _weekCalendarInfo.currentWeekIndex -
+                      (_weekCalendarInfo.currentTime.weekday - 1)))),
+        )));
+  }
+
+  _showSuccessDialog(String title) {
     PopupWindow.showDialog(context, 2000, this, (context) {
       return Material(
+        color: Color.fromARGB(230, 255, 255, 255),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         child: Container(
-          color: Colors.red,
-          height: 60,
-          child: Column(
+          decoration: BoxDecoration(),
+          height: 70,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Row(
+              Container(
+                margin: EdgeInsets.all(10),
+                child: Image.asset(Constant.IMAGE_PATH + "add_icon_hook.png"),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Image.asset(Constant.IMAGE_PATH+"add_icon_hook.png"),
-                  Text("清单添加成功")
+                  SizedBox(height: 5),
+                  Text(
+                    "清单添加成功",
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                  Text(title,
+                      style: TextStyle(fontSize: 16, color: Colors.black))
                 ],
               )
             ],
           ),
-
         ),
       );
     }, top: 35, left: 10, right: 10);

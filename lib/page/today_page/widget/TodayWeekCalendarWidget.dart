@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -149,6 +150,8 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
      */
     var _nowDuration =
         _time.add(Duration(days: pageIndex * 7 + index - (_time.weekday - 1)));
+
+
     return _time.compareTo(_nowDuration) == 0
         ? Container(
             height: 25,

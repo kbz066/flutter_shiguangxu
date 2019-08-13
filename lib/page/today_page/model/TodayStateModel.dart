@@ -19,6 +19,7 @@ class TodayStateModel extends ChangeNotifier{
   bool selectDate;
 
   String dateTips;
+  String content;
 
 
   TodayStateModel({this.showType=false, this.showLevel=false, this.updateTypeIcon=false,
@@ -30,6 +31,17 @@ class TodayStateModel extends ChangeNotifier{
     notifyListeners();
   }
 
+  void updateContent(value){
+
+    bool isNotifyListeners=false;
+    if(content==null&&value!=null || content!=null&&value==null){
+      isNotifyListeners=true;
+    }
+    this.content=value;
+
+    if(isNotifyListeners)
+    notifyListeners();
+  }
 
   void  setShowLevelView(){
     this.showType=false;

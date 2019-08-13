@@ -51,20 +51,22 @@ class TodayAddPlanDialog extends BaseView {
     }).toList();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     bool isNowDay = DateUtil.isToday(currentTime.millisecondsSinceEpoch);
 
-
-
     return Scaffold(
       backgroundColor: Colors.black12,
       body: ChangeNotifierProvider(
-        builder: (context) => isNowDay ? TodayStateModel() :( TodayStateModel()
-          ..setSelectDate(
-              true, DialogPageModel()..setSelectDate(DateModel.fromDateTime(currentTime)), 0,isNotifyListeners: false)),
+        builder: (context) => isNowDay
+            ? TodayStateModel()
+            : (TodayStateModel()
+              ..setSelectDate(
+                  true,
+                  DialogPageModel()
+                    ..setSelectDate(DateModel.fromDateTime(currentTime)),
+                  0,
+                  isNotifyListeners: false)),
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Column(
@@ -132,10 +134,29 @@ class TodayAddPlanDialog extends BaseView {
                                 hintText: "写点什么,吧事情记录下来....",
                                 hintStyle: TextStyle(color: Colors.black26),
                               ),
+                              onChanged: (value) {
+                                var state = Provider.of<TodayStateModel>(
+                                    contentKey.currentContext,
+                                    listen: false);
+
+                                state.updateContent(value == "" ? null : value);
+                              },
                             ),
                           ),
-                          Image.asset(
-                              Constant.IMAGE_PATH + "icon_add_voice_nor.png")
+                          Consumer<TodayStateModel>(
+                            builder: (context, model, child) {
+                              LogUtil.e(
+                                  "TodayStateModel   build    content  -------------> ${model.content}");
+                              return Container(
+                                child: InkWellImageWidget(
+                                    model.content == null ||
+                                            model.content.isEmpty
+                                        ? "icon_add_voice_nor"
+                                        : "icon_add_sent_nor",
+                                    () =>_addPlanData(context)),
+                              );
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -230,6 +251,9 @@ class TodayAddPlanDialog extends BaseView {
     );
   }
 
+  _addPlanData(BuildContext context){
+    
+  }
   _showLevelView(TodayStateModel model) {
     var levelIcon = [
       "icon_level_one.png",

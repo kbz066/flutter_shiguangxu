@@ -10,6 +10,7 @@ class PopupWindow {
     double top,
     double right,
     double bottom,
+        bool autoClose=true
   }) {
     AnimationController controller = AnimationController(
       duration: Duration(milliseconds: 300),
@@ -37,9 +38,12 @@ class PopupWindow {
 //移除屏幕
 //    _overlayEntry.remove();
 
-    Future.delayed(Duration(milliseconds: milliseconds)).then((value) {
-      _overlayEntry.remove();
-    });
+    if(autoClose){
+      Future.delayed(Duration(milliseconds: milliseconds)).then((value) {
+        _overlayEntry.remove();
+      });
+    }
+
   }
 
   static LayoutBuilder buildToastLayout(String msg) {
