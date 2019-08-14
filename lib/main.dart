@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/home_page/home_page.dart';
 import 'package:flutter_shiguangxu/page/login_page/LoginPage.dart';
 import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresenter.dart';
+import 'package:flutter_shiguangxu/page/plan_list_page/presenter/PlanPresenter.dart';
 import 'package:flutter_shiguangxu/page/welcome_page/welcome_page.dart';
 
 import 'package:flutter_sqlite_orm/db_manager.dart';
@@ -12,13 +13,16 @@ import 'common/Constant.dart';
 import 'utils/HttpUtils.dart';
 
 void main() async {
-  http();
+
   await _initDataBase();
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(
         value: OtherPresenter(),
+      ),
+      ChangeNotifierProvider.value(
+        value: PlanPresenter(),
       ),
     ],
     child: MyApp(),
@@ -53,7 +57,4 @@ void _initDataBase() async {
 
 }
 
-Future http() async{
-  LogUtil.e("执行  http ----------------->");
-  HttpUtils.getInstance().get("/login",data:{"id":"111111111111"} );
-}
+

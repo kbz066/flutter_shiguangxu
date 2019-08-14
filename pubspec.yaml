@@ -29,7 +29,7 @@ dependencies:
   flustars: ^0.2.6+1
   image_picker:
   dio:
-
+  flutter_spinkit:
 
   drag_list:
   provider: ^3.0.0+1

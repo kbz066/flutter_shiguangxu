@@ -10,10 +10,10 @@ class TodayStateModel extends ChangeNotifier{
   bool showLevel;
 
   bool updateTypeIcon;
-  int checkTypeIndex;
+  int selectTypeIndex;
 
   bool updateLeveleIcon;
-  int checkLevelIndex;
+  int selectLevelIndex;
 
 
   bool selectDate;
@@ -23,7 +23,7 @@ class TodayStateModel extends ChangeNotifier{
 
 
   TodayStateModel({this.showType=false, this.showLevel=false, this.updateTypeIcon=false,
-    this.checkTypeIndex=2, this.updateLeveleIcon=false, this.checkLevelIndex=1,
+    this.selectTypeIndex=2, this.updateLeveleIcon=false, this.selectLevelIndex=1,
     this.selectDate=false, this.dateTips});
 
   void  setShowTypeView(){
@@ -49,14 +49,14 @@ class TodayStateModel extends ChangeNotifier{
     notifyListeners();
   }
 
-  void setCheckTypeIndex(index){
-    this.checkTypeIndex=index;
+  void setSelectTypeIndex(index){
+    this.selectTypeIndex=index;
     this.updateTypeIcon=true;
     setShowTypeView();
   }
 
-  void setCheckLevelIndex(index){
-    this.checkLevelIndex=index;
+  void setSelectLevelIndex(index){
+    this.selectLevelIndex=index;
     this.updateLeveleIcon=true;
     setShowLevelView();
   }

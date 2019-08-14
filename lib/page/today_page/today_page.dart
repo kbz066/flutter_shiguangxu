@@ -3,15 +3,7 @@ import 'dart:ui';
 import 'package:flustars/flustars.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 
-import 'package:flutter_calendar/constants/constants.dart';
-
-import 'package:flutter_calendar/controller.dart';
-import 'package:flutter_calendar/model/date_model.dart';
-import 'package:flutter_calendar/widget/base_day_view.dart';
-import 'package:flutter_calendar/widget/base_week_bar.dart';
-import 'package:flutter_calendar/widget/calendar_view.dart';
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
@@ -65,6 +57,7 @@ class _ToDayPageState extends State<ToDayPage>
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        heroTag: "today",
         backgroundColor: ColorUtils.mainColor,
         onPressed: () => _showAddPlanDialog(),
         child: Icon(Icons.add),

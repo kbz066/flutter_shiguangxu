@@ -1,8 +1,18 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
+
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/common/WindowUtils.dart';
+import 'package:flutter_shiguangxu/entity/plan_entity.dart';
+import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
+
+
 import 'package:flutter_shiguangxu/widget/DragTargetListView.dart';
+import 'package:provider/provider.dart';
+
+import 'presenter/PlanPresenter.dart';
 
 class PlanListPage extends StatefulWidget {
   @override
@@ -10,23 +20,27 @@ class PlanListPage extends StatefulWidget {
 }
 
 class PlanListPageState extends State<PlanListPage>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin{
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   AnimationController _feedbackController;
   AnimationController _delController;
-  var datas = [
-    "java",
-    "c++",
-    "dart",
-    "flutter",
-    "js",
-  ];
+  List<PlanData> dataList = [];
 
   @override
   void initState() {
-    _delController=AnimationController(vsync: this,duration: Duration(milliseconds:400));
+    _delController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getPlanListData();
+    });
   }
 
+
+  void getPlanListData() {
+    var presenter = Provider.of<PlanPresenter>(context, listen: false);
+
+    presenter.getPlanListData(context);
+  }
 
   @override
   void dispose() {
@@ -39,14 +53,15 @@ class PlanListPageState extends State<PlanListPage>
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-//      floatingActionButton: FloatingActionButton(
-//        backgroundColor: ColorUtils.mainColor,
-//        onPressed: () {
-//
-//        },
-//        child: Icon(Icons.add),
-//      ),
+      resizeToAvoidBottomPadding: false,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "plan",
+        backgroundColor: ColorUtils.mainColor,
+        onPressed: ()=>_showAddPlanDialog(),
+        child: Icon(Icons.add),
+      ),
       body: Container(
+        padding: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(
           color: Colors.blueAccent,
           image: DecorationImage(
@@ -55,8 +70,10 @@ class PlanListPageState extends State<PlanListPage>
           ),
         ),
         child: Container(
-          padding: EdgeInsets.only(top: 20),
-          child: Column(
+
+          child:
+
+          Column(
             children: <Widget>[
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
@@ -95,17 +112,37 @@ class PlanListPageState extends State<PlanListPage>
                 height: 20,
               ),
               Expanded(
-                child: Stack(
+                child:
+                Stack(
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
-                    _showListContent(),
+                    Consumer<PlanPresenter>(
+                      builder: (context, value, child) {
+                        this.dataList = value.dataList;
+                        LogUtil.e("dataList         $dataList");
+                        return  Container(
+
+                          width: double.infinity,
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10))
+                          ),
+                          child: dataList == null || dataList.length == 0
+                              ? showEmptyContent()
+                              : _showListContent(),
+                        );
+                      },
+                    ),
                     DragTarget<dynamic>(
                       builder: (BuildContext context,
                           List<dynamic> candidateData,
                           List<dynamic> rejectedData) {
                         return SlideTransition(
-
-                          position: Tween(begin: Offset(1,1),end: Offset(0,0)).animate(_delController),
+                          position:
+                              Tween(begin: Offset(1, 1), end: Offset(0, 0))
+                                  .animate(_delController),
                           child: Container(
                               padding: EdgeInsets.only(left: 40, top: 30),
                               decoration: BoxDecoration(
@@ -138,7 +175,7 @@ class PlanListPageState extends State<PlanListPage>
                       },
                       onAccept: (data) {
                         setState(() {
-                          datas.remove(data);
+                          dataList.remove(data);
                           _feedbackController.reverse();
                         });
                         LogUtil.e("触发删除 ---------onAccept-----------》");
@@ -157,7 +194,25 @@ class PlanListPageState extends State<PlanListPage>
       ),
     );
   }
+  _showAddPlanDialog() {
+    var contentKey = GlobalKey();
 
+    Navigator.push(
+        context,
+        BottomPopupRoute(
+          child: GestureDetector(
+              onTapDown: (down) {
+                if (down.globalPosition.dy <
+                    WindowUtils.getHeightDP() -
+                        contentKey.currentContext.size.height) {
+                  Navigator.pop(context);
+                }
+              },
+              child: TodayAddPlanDialog(contentKey, DateTime.now(),addPlanCallback: (data){
+                Provider.of<PlanPresenter>(context, listen: false).addPlan(data,context);
+              },)),
+        ));
+  }
   _showListContent() {
     var leadingIcon = [
       "category_icon_birthday_def.png",
@@ -170,13 +225,12 @@ class PlanListPageState extends State<PlanListPage>
       "category_icon_birthday_def.png"
     ];
 
-
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(10))),
-      margin: EdgeInsets.symmetric(horizontal: 20),
+
       child: DragTargetListView(
         padding: EdgeInsets.only(left: 20, top: 10),
         itemBuilder: (BuildContext context, int index) {
@@ -194,7 +248,7 @@ class PlanListPageState extends State<PlanListPage>
                           border: Border(
                               bottom: BorderSide(
                                   color: Colors.black12, width: 0.5))),
-                      child: Text(datas[index]),
+                      child: Text(dataList[index].title),
                     ),
                   )
                 ],
@@ -202,7 +256,7 @@ class PlanListPageState extends State<PlanListPage>
             ),
           );
         },
-        datas: datas,
+        datas: dataList,
         feedbackChange: _feedbackChange,
         onDragStartedCallback: _onDragStartedCallback,
         onDragEndCallback: _onDragEndCallback,
@@ -213,6 +267,7 @@ class PlanListPageState extends State<PlanListPage>
   _onDragStartedCallback() {
     _delController.forward();
   }
+
   _onDragEndCallback() {
     LogUtil.e("_onDragEndCallback------------------>");
     _delController.reverse();
@@ -223,23 +278,30 @@ class PlanListPageState extends State<PlanListPage>
   }
 
   showEmptyContent() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Image.asset("assets/images/today_empty.png"),
-        SizedBox(
-          height: 20,
-        ),
-        Text(
-          "还没有清单安排吖！",
-          style: TextStyle(color: Colors.black, fontSize: 16),
-        ),
-        Text(
-          "未来可期，提前做好安排",
-          style: TextStyle(color: Colors.black26, fontSize: 14),
-        )
-      ],
-    );
+    return
+       SingleChildScrollView(
+         child: SizedBox(
+           height: 500,
+           child: Column(
+
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+               Image.asset("assets/images/today_empty.png"),
+               SizedBox(
+                 height: 20,
+               ),
+               Text(
+                 "还没有清单安排吖！",
+                 style: TextStyle(color: Colors.black, fontSize: 16),
+               ),
+               Text(
+                 "未来可期，提前做好安排",
+                 style: TextStyle(color: Colors.black26, fontSize: 14),
+               )
+             ],
+           ),
+         ),
+       );
   }
 
   @override
