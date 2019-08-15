@@ -7,15 +7,17 @@ class DragTargetListView extends StatefulWidget {
   final VoidCallback onDragStartedCallback;
   final VoidCallback onDragEndCallback;
   final Function(AnimationController controller) feedbackChange;
-
+  final Function onItemCallback;
   List<dynamic> datas;
+
+
 
   DragTargetListView(
       {@required this.itemBuilder,
       @required this.datas,
       this.padding,
       this.feedbackChange,
-      this.onDragEndCallback,this.onDragStartedCallback});
+      this.onDragEndCallback,this.onDragStartedCallback,this.onItemCallback});
 
   @override
   _DragTargetListViewState createState() => _DragTargetListViewState();
@@ -53,13 +55,22 @@ class _DragTargetListViewState extends State<DragTargetListView>
           slideAnimation = createTargetItemSlideAnimation(index);
         }
       //  LogUtil.e("indexOf------------->  $_movingValue   $index   ${widget.datas.indexOf(_movingValue)}   ${_movingValue != null && widget.datas.indexOf(_movingValue) == index}");
-        return Opacity(
-          opacity:
-              _movingValue ==  widget.datas[index]
-              ? 0
-              : 1, //这里控制
-          child: buildItemChild(slideAnimation, context, index),
-        );
+        return
+
+         GestureDetector(
+           onTapDown: (details){
+             if(widget.onItemCallback!=null){
+               widget.onItemCallback(index);
+             }
+           },
+           child:  Opacity(
+             opacity:
+             _movingValue ==  widget.datas[index]
+                 ? 0
+                 : 1, //这里控制
+             child: buildItemChild(slideAnimation, context, index),
+           ),
+         );
       },
       itemCount: widget.datas.length,
     );

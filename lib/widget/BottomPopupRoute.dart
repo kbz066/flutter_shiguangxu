@@ -6,11 +6,13 @@ class BottomPopupRoute extends PopupRoute{
   final Duration _duration = Duration(milliseconds: 300);
   Widget child;
 
+  Color bgColor;
 
-  BottomPopupRoute({@required this.child});
+
+  BottomPopupRoute({@required this.child,this.bgColor});
 
   @override
-  Color get barrierColor => null;
+  Color get barrierColor => bgColor;
 
   @override
   bool get barrierDismissible => true;

@@ -14,7 +14,7 @@ class InkWellImageWidget extends StatelessWidget{
   Widget build(BuildContext context) {
    // LogUtil.e("_imageName         $_imageName");
     return InkWell(
-      child: Image.asset(Constant.IMAGE_PATH +"$_imageName.png"),
+      child: Image.asset(Constant.IMAGE_PATH +"$_imageName.png",fit: BoxFit.cover,),
       onTap: _callback
     );
   }

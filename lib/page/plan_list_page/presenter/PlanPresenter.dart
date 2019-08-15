@@ -16,7 +16,7 @@ class PlanPresenter extends BasePresenter<PlanModel>{
 
   void getPlanListData(BuildContext context)async{
     HttpUtils.getInstance().getCallback("/getPlanList",context: context,success: (value){
-      LogUtil.e("value -------------------> $value");
+
       dataList=PlanEntity.fromJson(value).data;
       notifyListeners();
     });
@@ -25,11 +25,34 @@ class PlanPresenter extends BasePresenter<PlanModel>{
   }
 
 
-  Future addPlan(PlanData data,BuildContext context)async{
+  void addPlan(PlanData data,BuildContext context,{Function success})async{
 
     var res=await HttpUtils.getInstance().post("/addPlan",data:data.toJson() ,context: context);
-    dataList=PlanEntity.fromJson(res).data;
-    notifyListeners();
-    LogUtil.e("addPlan -------------------> $res");
+
+      var entity=PlanEntity.fromJson(res);
+    if(entity.code==200){
+      dataList=entity.data;
+      notifyListeners();
+      if(success!=null){
+        success(data.title);
+      }
+    }
+
+
   }
+  void delPlan(context,int id){
+    HttpUtils.getInstance().postCallback("/delPlan",data:{"id":id},context: context,success: (value){
+      LogUtil.e("value -------------------> $value");
+      dataList=PlanEntity.fromJson(value).data;
+      notifyListeners();
+    });
+  }
+  void updatePlan(context,PlanData data){
+    HttpUtils.getInstance().postCallback("/updatePlan",data:data.toJson(),context: context,success: (value){
+      LogUtil.e("value -------------------> $value");
+      dataList=PlanEntity.fromJson(value).data;
+      notifyListeners();
+    });
+  }
+
 }

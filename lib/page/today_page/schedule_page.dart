@@ -4,24 +4,25 @@ import 'package:flustars/flustars.dart';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
+import 'package:flutter_shiguangxu/page/plan_list_page/presenter/PlanPresenter.dart';
 import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/PopupWindow.dart';
+import 'package:provider/provider.dart';
 
 import 'widget/TodayContentWidget.dart';
 import 'widget/TodayWeekCalendarWidget.dart';
 
-class ToDayPage extends StatefulWidget {
+class SchedulePage extends StatefulWidget {
   @override
-  _ToDayPageState createState() => _ToDayPageState();
+  _SchedulePageState createState() => _SchedulePageState();
 }
 
-class _ToDayPageState extends State<ToDayPage>
+class _SchedulePageState extends State<SchedulePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   EdgeInsetsTween _tween;
 
@@ -102,7 +103,13 @@ class _ToDayPageState extends State<ToDayPage>
               DateTime.now().add(Duration(
                   days: _weekCalendarInfo.currentPageIndex * 7 +
                       _weekCalendarInfo.currentWeekIndex -
-                      (_weekCalendarInfo.currentTime.weekday - 1)))),
+                      (_weekCalendarInfo.currentTime.weekday - 1))),
+              addPlanCallback: (data) {
+            Provider.of<PlanPresenter>(context, listen: false)
+                .addPlan(data, context,success:(title){
+              _showSuccessDialog(title);
+            });
+          }),
         )));
   }
 

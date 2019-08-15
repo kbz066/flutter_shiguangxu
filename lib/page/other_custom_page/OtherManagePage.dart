@@ -1,4 +1,5 @@
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
@@ -53,11 +54,23 @@ class _OtherManagePageState extends State<OtherManagePage> {
           )
         ],
       ),
-      backgroundColor:Colors.white ,
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: _buildFutureBuilder(
-            Provider.of<OtherPresenter>(context, listen: false)),
-      ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          isEdit?Container(
+            color: Colors.amber[50],
+            width: double.infinity,
+
+            padding: EdgeInsets.only(left: 15,top: 5,bottom: 5),
+            child: Text("长按可拖动排序",style: TextStyle(color: Colors.amber),),
+          ):Container(),
+          _buildFutureBuilder(
+              Provider.of<OtherPresenter>(context, listen: false)),
+        ],
+      )),
     );
   }
 
@@ -77,13 +90,14 @@ class _OtherManagePageState extends State<OtherManagePage> {
 
   _showListView(list) {
     return ReorderableGridView(
+
       delegate: new SliverGridDelegateWithFixedCrossAxisCount(
 //      横轴数量 这里的横轴就是x轴 因为方向是垂直的时候 主轴是垂直的
           crossAxisCount: 3,
           childAspectRatio: 1 / 1.2),
       itemBuilder: (context, index) {
         return Container(
-          color:Colors.white ,
+          color: Colors.white,
           child: _gridItem(
               index == list.length ? null : list[index], index == list.length),
         );

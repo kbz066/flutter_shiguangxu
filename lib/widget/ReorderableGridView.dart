@@ -35,6 +35,7 @@ class ReorderableGridViewState extends State<ReorderableGridView>
     var datas = widget.datas;
 
     return GridView.custom(
+        shrinkWrap:true,
         gridDelegate: widget.delegate,
         childrenDelegate: new SliverChildBuilderDelegate(
           (context, index) {

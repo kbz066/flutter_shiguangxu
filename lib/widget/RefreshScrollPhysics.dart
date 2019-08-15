@@ -50,7 +50,6 @@ class RefreshScrollPhysics extends ScrollPhysics {
   @override
   double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
 
- //   print("执行这里   $offset");
 
     if(offset<0.0){
       return 0.00000000000001;
