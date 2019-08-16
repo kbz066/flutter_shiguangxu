@@ -1,8 +1,8 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/config_page/config_page.dart';
-import 'package:flutter_shiguangxu/page/today_page/schedule_page.dart';
 import 'package:flutter_shiguangxu/page/plan_list_page/plan_list_page.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/schedule_page.dart';
 
 class HomePage extends StatefulWidget {
   @override

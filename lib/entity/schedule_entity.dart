@@ -1,15 +1,15 @@
-class PlanEntity {
+class ScheduleEntity {
 	String msg;
 	int code;
-	List<PlanData> data;
+	List<ScheduleData> data;
 
-	PlanEntity({this.msg, this.code, this.data});
+	ScheduleEntity({this.msg, this.code, this.data});
 
-	PlanEntity.fromJson(Map<String, dynamic> json) {
+	ScheduleEntity.fromJson(Map<String, dynamic> json) {
 		msg = json['msg'];
 		code = json['code'];
 		if (json['data'] != null) {
-			data = new List<PlanData>();(json['data'] as List).forEach((v) { data.add(new PlanData.fromJson(v)); });
+			data = new List<ScheduleData>();(json['data'] as List).forEach((v) { data.add(new ScheduleData.fromJson(v)); });
 		}
 	}
 
@@ -18,36 +18,45 @@ class PlanEntity {
 		data['msg'] = this.msg;
 		data['code'] = this.code;
 		if (this.data != null) {
-			data['data'] =  this.data.map((v) => v.toJson()).toList();
-		}
+      data['data'] =  this.data.map((v) => v.toJson()).toList();
+    }
 		return data;
 	}
 }
 
-class PlanData {
+class ScheduleData {
+	int month;
 	int level;
+	int year;
 	int id;
 	int state;
 	int type;
 	String title;
+	int day;
 
-	PlanData({this.level, this.id, this.state, this.type, this.title});
+	ScheduleData({this.month, this.level, this.year, this.id, this.state, this.type, this.title, this.day});
 
-	PlanData.fromJson(Map<String, dynamic> json) {
+	ScheduleData.fromJson(Map<String, dynamic> json) {
+		month = json['month'];
 		level = json['level'];
+		year = json['year'];
 		id = json['id'];
 		state = json['state'];
 		type = json['type'];
 		title = json['title'];
+		day = json['day'];
 	}
 
 	Map<String, dynamic> toJson() {
 		final Map<String, dynamic> data = new Map<String, dynamic>();
+		data['month'] = this.month;
 		data['level'] = this.level;
+		data['year'] = this.year;
 		data['id'] = this.id;
 		data['state'] = this.state;
 		data['type'] = this.type;
 		data['title'] = this.title;
+		data['day'] = this.day;
 		return data;
 	}
 }

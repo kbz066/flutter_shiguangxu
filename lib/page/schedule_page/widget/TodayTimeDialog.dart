@@ -11,8 +11,9 @@ import 'package:flutter_shiguangxu/base/BaseStateView.dart';
 import 'package:flutter_shiguangxu/base/BaseView.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/page/today_page/model/DialogStateModel.dart';
-import 'package:flutter_shiguangxu/page/today_page/model/TodayStateModel.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/model/DialogStateModel.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/model/TodayStateModel.dart';
+
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 import 'package:flutter_shiguangxu/widget/NumberPicker.dart';
 import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart'hide TabBarView;
@@ -31,13 +32,15 @@ class TodayTimeDialog extends BaseStateView{
   Widget buildWidget(BuildContext context,State state) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.black12,
       body: MultiProvider(
         providers: [
           ChangeNotifierProvider(builder: (context) => DialogPageModel()),
           ChangeNotifierProvider(builder: (context) => DialogTipsModel()),
         ],
-        child: Center(
+        child:
+        Center(
           child: Container(
             width: WindowUtils.getWidthDP() * 0.9,
             height: WindowUtils.getHeightDP() * 0.65,

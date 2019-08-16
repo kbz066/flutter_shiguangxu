@@ -5,16 +5,19 @@ import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/plan_entity.dart';
+import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+
 import 'package:flutter_shiguangxu/page/plan_list_page/plan_details_page.dart';
-import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/TodayAddPlanDialog.dart';
+
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/BottomSheet.dart' as sgx;
 
 import 'package:flutter_shiguangxu/widget/DragTargetListView.dart';
 import 'package:provider/provider.dart';
 
-import 'presenter/PlanPresenter.dart';
+
 
 class PlanListPage extends StatefulWidget {
   @override
@@ -27,7 +30,7 @@ class PlanListPageState extends State<PlanListPage>
   AnimationController _delController;
   AnimationController _buttonController;
 
-  List<PlanData> dataList = [];
+  List<ScheduleData> dataList = [];
 
   @override
   void initState() {
@@ -36,16 +39,10 @@ class PlanListPageState extends State<PlanListPage>
     _buttonController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getPlanListData();
-    });
+
   }
 
-  void getPlanListData() {
-    var presenter = Provider.of<PlanPresenter>(context, listen: false);
 
-    presenter.getPlanListData(context);
-  }
 
   @override
   void dispose() {
@@ -124,9 +121,9 @@ class PlanListPageState extends State<PlanListPage>
                 child: Stack(
                   alignment: Alignment.bottomRight,
                   children: <Widget>[
-                    Consumer<PlanPresenter>(
+                    Consumer<SchedulePresenter>(
                       builder: (context, value, child) {
-                        this.dataList = value.dataList;
+                        this.dataList = value.planList;
                         LogUtil.e("dataList         $dataList");
                         return Container(
                           width: double.infinity,
@@ -181,8 +178,8 @@ class PlanListPageState extends State<PlanListPage>
                       onAccept: (data) {
                         setState(() {
                           _feedbackController.reverse();
-                          Provider.of<PlanPresenter>(context, listen: false)
-                              .delPlan(context, data.id);
+                          Provider.of<SchedulePresenter>(context, listen: false)
+                              .delSchedule(context, data.id);
                         });
                       },
                       onLeave: (data) {
@@ -216,9 +213,9 @@ class PlanListPageState extends State<PlanListPage>
               child: TodayAddPlanDialog(
                 contentKey,
                 DateTime.now(),
-                addPlanCallback: (data) {
-                  Provider.of<PlanPresenter>(context, listen: false)
-                      .addPlan(data, context);
+                addScheduleCallback: (data) {
+                  Provider.of<SchedulePresenter>(context, listen: false)
+                      .addSchedule(data, context);
                 },
               )),
         ));
@@ -277,8 +274,7 @@ class PlanListPageState extends State<PlanListPage>
   _onItemCallback(index) {
     LogUtil.e("点击   ${index}");
 
-    sgx
-        .showModalBottomSheet(
+    sgx.showModalBottomSheet(
             context: context,
             builder: (context) {
               return PlanDetailsPage(dataList[index]);
@@ -286,8 +282,8 @@ class PlanListPageState extends State<PlanListPage>
             backgroundColor: Colors.transparent,
             ratio: 0.85)
         .whenComplete(() {
-      Provider.of<PlanPresenter>(context, listen: false)
-          .updatePlan(context, dataList[index]);
+      Provider.of<SchedulePresenter>(context, listen: false)
+          .updateSchedule(context, dataList[index]);
       LogUtil.e("页面销毁了   ${dataList[index]}");
     });
   }

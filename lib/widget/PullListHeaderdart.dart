@@ -2,51 +2,26 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'TodayCircleWidget.dart';
+import '../page/schedule_page/widget/TodayCircleWidget.dart';
 
-class TodayPullListHeaderWidget extends StatefulWidget {
-  List _headerTitleList = [
-    "天气",
-    "生理期",
-    "记账",
-    "专注",
-    "纪念日",
-    "日总结",
-    "生日",
-    "倒数日",
-    "万年历",
-    "闹钟",
-    "还款提醒"
-  ];
+class PullListHeader extends StatefulWidget {
 
-  List _headerImageList = [
-    "tool_icon_weather.png",
-    "icon_menstruation.png",
-    "icon_bookkeeping.png",
-    "icon_focus.png",
-    "icon_jnr.png",
-    "icon_summary.png",
-    "tool_icon_day.png",
-    "icon_dsr.png",
-    "tool_icon_calendar.png",
-    "tool_icon_clock.png",
-    "icon_card.png"
-  ];
 
   double _offset;
   double _containerHeight;
   double _listHeight;
   bool _arrivedListHeight = false;
+  Widget _child;
 
-  TodayPullListHeaderWidget(
-      this._listHeight, this._offset, this._arrivedListHeight) {
+  PullListHeader(
+      this._listHeight, this._offset, this._arrivedListHeight,this._child) {
     _containerHeight = _listHeight / 2;
   }
   @override
-  State createState() => new TodayPullListHeaderWidgetState();
+  State createState() => new PullListHeaderState();
 }
 
-class TodayPullListHeaderWidgetState extends State<TodayPullListHeaderWidget> {
+class PullListHeaderState extends State<PullListHeader> {
   double _percent = 1;
   double _circleOpacity = 1;
 
@@ -55,7 +30,7 @@ class TodayPullListHeaderWidgetState extends State<TodayPullListHeaderWidget> {
   double _circleHeight = 15;
 
   @override
-  void didUpdateWidget(TodayPullListHeaderWidget oldWidget) {
+  void didUpdateWidget(PullListHeader oldWidget) {
     pull();
   }
 
@@ -75,26 +50,8 @@ class TodayPullListHeaderWidgetState extends State<TodayPullListHeaderWidget> {
             child: Container(
               height: widget._listHeight,
               transform: Matrix4.translationValues(0, _listTranslationY, 0),
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget._headerImageList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.only(left: 40),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 10),
-                            child: Image.asset(
-                                "assets/images/${widget._headerImageList[index]}"),
-                          ),
-                          Text("${widget._headerTitleList[index]}")
-                        ],
-                      ),
-                    );
-                  }),
+              child: widget._child
+             ,
             ),
           ),
           Positioned(
@@ -127,10 +84,7 @@ class TodayPullListHeaderWidgetState extends State<TodayPullListHeaderWidget> {
 
         _listTranslationY = -containerHeight;
 
-        // Log.e("滑动   moreOffset33333","    "+(-Math.abs(offset) / 2 + mExpendPoint.getHeight() / 2));
-//                Log.e("滑动   moreOffset22",containerHeight+"");
-//
-//                Log.e("打印   ","mExpendPoint   "+(Math.abs(offset) / 2 - mExpendPoint.getHeight() / 2)+"      "+containerHeight);
+
       } else {
         double subPercent =
             (moreOffset) / (widget._listHeight - containerHeight);

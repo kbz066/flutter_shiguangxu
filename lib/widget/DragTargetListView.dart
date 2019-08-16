@@ -58,7 +58,7 @@ class _DragTargetListViewState extends State<DragTargetListView>
         return
 
          GestureDetector(
-           onTapDown: (details){
+           onTapUp: (details){
              if(widget.onItemCallback!=null){
                widget.onItemCallback(index);
              }

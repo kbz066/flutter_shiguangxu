@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/page/plan_list_page/presenter/PlanPresenter.dart';
-import 'package:flutter_shiguangxu/page/today_page/widget/TodayAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/TodayAddPlanDialog.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/PopupWindow.dart';
@@ -32,7 +33,8 @@ class _SchedulePageState extends State<SchedulePage>
 
   double lastMoveIndex = 0;
 
-  WeekCalendarInfo _weekCalendarInfo;
+
+
 
   @override
   void initState() {
@@ -46,11 +48,7 @@ class _SchedulePageState extends State<SchedulePage>
 
     _animation.addStatusListener((AnimationStatus status) {});
 
-    _weekCalendarInfo = WeekCalendarInfo(
-      DateTime.now(),
-      DateTime.now().difference(DateTime(2020, 12, 31)).inDays.abs(),
-      DateTime.now().weekday - 1,
-    );
+
   }
 
   @override
@@ -68,14 +66,9 @@ class _SchedulePageState extends State<SchedulePage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTopWidget(),
-          HomeWeekCalendarWidget(this._weekCalendarInfo),
+          HomeWeekCalendarWidget(),
           Expanded(
-            child: Listener(
-              onPointerMove: (PointerMoveEvent details) {},
-              child: TodayContentWidget(
-                  this._weekCalendarInfo.currentPageIndex * 7 +
-                      this._weekCalendarInfo.currentWeekIndex),
-            ),
+            child: TodayContentWidget(),
           )
         ],
       ),
@@ -85,8 +78,7 @@ class _SchedulePageState extends State<SchedulePage>
   _showAddPlanDialog() {
     var contentKey = GlobalKey();
 
-    LogUtil.e(
-        "打印下日期     ${this._weekCalendarInfo.currentPageIndex * 7 + this._weekCalendarInfo.currentWeekIndex}  ${_weekCalendarInfo.currentTime.weekday}");
+    var weekPresenter=Provider.of<WeekPresenter>(context,listen: false);
     Navigator.push(
         context,
         BottomPopupRoute(
@@ -100,14 +92,13 @@ class _SchedulePageState extends State<SchedulePage>
           },
           child: TodayAddPlanDialog(
               contentKey,
-              DateTime.now().add(Duration(
-                  days: _weekCalendarInfo.currentPageIndex * 7 +
-                      _weekCalendarInfo.currentWeekIndex -
-                      (_weekCalendarInfo.currentTime.weekday - 1))),
-              addPlanCallback: (data) {
-            Provider.of<PlanPresenter>(context, listen: false)
-                .addPlan(data, context,success:(title){
-              _showSuccessDialog(title);
+              weekPresenter.getNewCurrentTime(),
+              addScheduleCallback: (data) {
+            Provider.of<SchedulePresenter>(context, listen: false)
+                .addSchedule(data, context, success: (title) {
+              if (data.year == null) {
+                _showSuccessDialog(title);
+              }
             });
           }),
         )));

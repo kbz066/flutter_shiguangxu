@@ -6,10 +6,11 @@ import 'package:flutter_calendar/utils/date_util.dart' as prefix0;
 import 'package:flutter_shiguangxu/base/BaseView.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/plan_entity.dart';
-import 'package:flutter_shiguangxu/page/plan_list_page/presenter/PlanPresenter.dart';
-import 'package:flutter_shiguangxu/page/today_page/model/DialogStateModel.dart';
-import 'package:flutter_shiguangxu/page/today_page/model/TodayStateModel.dart';
+import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/model/DialogStateModel.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/model/TodayStateModel.dart';
+
+
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +21,10 @@ class TodayAddPlanDialog extends BaseView {
   var typeIcon;
   var levelIcon;
   var labels;
-  Function addPlanCallback;
+  Function addScheduleCallback;
 
   DateTime currentTime;
-  TodayAddPlanDialog(this.contentKey, this.currentTime,{this.addPlanCallback}) {
+  TodayAddPlanDialog(this.contentKey, this.currentTime,{this.addScheduleCallback}) {
     typeIcon = [
       "search_class_icon_work",
       "search_class_icon_learn",
@@ -160,7 +161,7 @@ class TodayAddPlanDialog extends BaseView {
                                         model.content.isEmpty
                                         ? "icon_add_voice_nor"
                                         : "icon_add_sent_nor",
-                                        () =>_addPlanData(context)),
+                                        () =>_addScheduleData(context)),
                               );
                             },
                           )
@@ -262,20 +263,27 @@ class TodayAddPlanDialog extends BaseView {
     );
   }
 
-  _addPlanData(BuildContext context){
+  _addScheduleData(BuildContext context){
     var state = Provider.of<TodayStateModel>(contentKey.currentContext, listen: false);
-    if(state.dateTips==null&&state.content!=null){
-      PlanData data=PlanData();
-      data.title=state.content;
-      data.level=state.selectLevelIndex;
-      data.type=state.selectTypeIndex;
-      data.state=0;
-      Navigator.pop(context);
-      if(addPlanCallback!=null)
-      addPlanCallback(data);
+    ScheduleData data=ScheduleData();
+    data.title=state.content;
+    data.level=state.selectLevelIndex;
+    data.type=state.selectTypeIndex;
+    data.state=0;
 
 
+    if(state.dateTips!=null){
+
+      data.year=int.parse(state.dateTips.substring(0,4)) ;
+      data.month= int.parse(state.dateTips.substring(state.dateTips.indexOf("年")+1,state.dateTips.indexOf("月")));
+      data.day=  int.parse(state.dateTips.substring(state.dateTips.indexOf("月")+1,state.dateTips.indexOf("日")));
+      LogUtil.e("${data.year}    ${data.month}  ${data.day}");
     }
+    Navigator.pop(context);
+      if(addScheduleCallback!=null)
+     addScheduleCallback(data);
+
+
   }
   _showLevelView(TodayStateModel model) {
     var levelIcon = [

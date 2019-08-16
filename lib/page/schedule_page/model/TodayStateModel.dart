@@ -94,7 +94,7 @@ class TodayStateModel extends ChangeNotifier{
               "${DateUtil.getZHWeekDay(DateTime(pageModel.selectDate.year,pageModel.selectDate.month,pageModel.selectDate.day)
           )} ${_formatDateTxt(pageModel.initTimeDistanceStart[1])}:${_formatDateTxt(pageModel.initTimeDistanceStart[2])}~${_formatDateTxt(pageModel.initTimeDistanceEnd[0])}:${_formatDateTxt(pageModel.initTimeDistanceEnd[1])}";
           break;
-        case 1:
+        case 2:
           this.dateTips =
           "${pageModel.selectDate.year}年${pageModel.selectDate.month}月${pageModel.selectDate.day}日 "
               "${DateUtil.getZHWeekDay(DateTime(pageModel.selectDate.year,pageModel.selectDate.month,pageModel.selectDate.day)
