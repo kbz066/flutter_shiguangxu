@@ -3,20 +3,23 @@ import 'dart:ui';
 import 'package:flustars/flustars.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/widget/TodayAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/schedule_week_page.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleContentWidget.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/PopupWindow.dart';
 import 'package:provider/provider.dart';
 
-import 'widget/TodayContentWidget.dart';
-import 'widget/TodayWeekCalendarWidget.dart';
+import 'widget/ScheduleWeekCalendarWidget.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -32,9 +35,7 @@ class _SchedulePageState extends State<SchedulePage>
   AnimationController _controller;
 
   double lastMoveIndex = 0;
-
-
-
+  bool isShowBasic = true;
 
   @override
   void initState() {
@@ -47,8 +48,6 @@ class _SchedulePageState extends State<SchedulePage>
     _animation = _tween.animate(_controller);
 
     _animation.addStatusListener((AnimationStatus status) {});
-
-
   }
 
   @override
@@ -66,9 +65,9 @@ class _SchedulePageState extends State<SchedulePage>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildTopWidget(),
-          HomeWeekCalendarWidget(),
+          _buildMultipleView(),
           Expanded(
-            child: TodayContentWidget(),
+            child: ScheduleContentWidget(),
           )
         ],
       ),
@@ -78,7 +77,7 @@ class _SchedulePageState extends State<SchedulePage>
   _showAddPlanDialog() {
     var contentKey = GlobalKey();
 
-    var weekPresenter=Provider.of<WeekPresenter>(context,listen: false);
+    var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
     Navigator.push(
         context,
         BottomPopupRoute(
@@ -90,9 +89,8 @@ class _SchedulePageState extends State<SchedulePage>
               Navigator.pop(context);
             }
           },
-          child: TodayAddPlanDialog(
-              contentKey,
-              weekPresenter.getNewCurrentTime(),
+          child: ScheduleAddPlanDialog(
+              contentKey, weekPresenter.getNewCurrentTime(),
               addScheduleCallback: (data) {
             Provider.of<SchedulePresenter>(context, listen: false)
                 .addSchedule(data, context, success: (title) {
@@ -138,18 +136,96 @@ class _SchedulePageState extends State<SchedulePage>
     }, top: 35, left: 10, right: 10);
   }
 
+  _buildMultipleView() {
+    var images = [
+      "icon_all_view.png",
+      "icon_week_view.png",
+      "icon_month_view.png",
+      "icon_quadrant_view.png",
+      "icon_undone_view.png"
+    ];
+    var titles = ["全部", "周视图", "月视图", "四象限", "未完成"];
+    return isShowBasic
+        ? ScheduleWeekCalendarWidget()
+        : Container(
+            color: ColorUtils.mainColor,
+            height: 55,
+            child: GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5,
+              ),
+              itemBuilder: (_, index) {
+                return GestureDetector(
+                  onTapDown: (_)=>_onMultipleItemClick(index),
+                  child:  Column(
+
+                    children: <Widget>[
+                      Image.asset(Constant.IMAGE_PATH + images[index]),
+                      SizedBox(height: 5,),
+                      Text(
+                        titles[index],
+                        style: TextStyle(color: Colors.white),
+                      )
+                    ],
+                  ),
+                )
+                 ;
+              },
+              itemCount: titles.length,
+            ),
+          );
+  }
+  _onMultipleItemClick(index){
+    switch(index){
+      case 1:
+        NavigatorUtils.push(context, ScheduleWeekPage());
+        break;
+    }
+  }
+
   _buildTopWidget() {
     return Container(
       color: ColorUtils.mainColor,
-      child: Column(
+      child:
+      Column(
         children: <Widget>[
           Row(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: Image.asset(
-                  "assets/images/abc_ic_menu_copy_mtrl_am_alpha.png",
-                  color: Colors.white70,
+              GestureDetector(
+                onTapDown: (_) {
+                  setState(() {
+                    isShowBasic = !isShowBasic;
+                  });
+                },
+                child: Container(
+                  margin: EdgeInsets.only(left: 20),
+                  child: isShowBasic
+                      ? Image.asset(
+                          "assets/images/abc_ic_menu_copy_mtrl_am_alpha.png",
+                          color: Colors.white70,
+                        )
+                      : Row(
+                          children: <Widget>[
+                            Text(
+                              "19",
+                              style:
+                                  TextStyle(fontSize: 30, color: Colors.white),
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              children: <Widget>[
+                                Text(
+                                  "周一\n八月",
+                                  style: TextStyle(
+                                      letterSpacing: 0,
+                                      wordSpacing: 0,
+                                      color: Colors.white),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
                 ),
               ),
               Expanded(

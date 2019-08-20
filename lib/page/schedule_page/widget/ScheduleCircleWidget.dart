@@ -10,20 +10,20 @@ import 'package:flutter/material.dart';
 //阶段四：只剩下内容列表，手指可以继续往下滑动，但阻尼变大。内容列表始终在中间。
 
 
-class  TodayCircleWidget extends StatefulWidget {
+class  ScheduleCircleWidget extends StatefulWidget {
 
 
   double _percent;
   double _height;
 
 
-  TodayCircleWidget(this._percent, this._height);
+  ScheduleCircleWidget(this._percent, this._height);
 
   @override
-  TodayCircleWidgetState createState() => new TodayCircleWidgetState();
+  ScheduleCircleWidgetState createState() => new ScheduleCircleWidgetState();
 }
 
-class TodayCircleWidgetState extends State<TodayCircleWidget> {
+class ScheduleCircleWidgetState extends State<ScheduleCircleWidget> {
 
 
 

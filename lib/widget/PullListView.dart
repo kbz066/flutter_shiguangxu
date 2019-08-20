@@ -7,6 +7,7 @@ import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
 
 import 'package:flutter_shiguangxu/widget/PullListHeaderdart.dart';
 import 'package:provider/provider.dart';
@@ -148,8 +149,9 @@ class _PullListViewState extends State<PullListView>
 
   /// page滑动事件
   _onPageChanged(index) {
-      print("index    _onPageChanged      $index    ${_isEvent}");
+
     if (!_isEvent) {
+
       EventBusUtils.instance.eventBus
           .fire(TodayWeekCalendarIndexEvent((index / 7).floor(), index % 7));
       _isEvent = false;

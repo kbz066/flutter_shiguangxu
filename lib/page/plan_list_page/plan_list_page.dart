@@ -7,9 +7,9 @@ import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
 
-import 'package:flutter_shiguangxu/page/plan_list_page/plan_details_page.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/schedule_details_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/widget/TodayAddPlanDialog.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleAddPlanDialog.dart';
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/BottomSheet.dart' as sgx;
@@ -210,7 +210,7 @@ class PlanListPageState extends State<PlanListPage>
                   Navigator.pop(context);
                 }
               },
-              child: TodayAddPlanDialog(
+              child: ScheduleAddPlanDialog(
                 contentKey,
                 DateTime.now(),
                 addScheduleCallback: (data) {
@@ -277,7 +277,7 @@ class PlanListPageState extends State<PlanListPage>
     sgx.showModalBottomSheet(
             context: context,
             builder: (context) {
-              return PlanDetailsPage(dataList[index]);
+              return ScheduleDetailsPage(dataList[index]);
             },
             backgroundColor: Colors.transparent,
             ratio: 0.85)

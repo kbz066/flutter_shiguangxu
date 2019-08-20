@@ -13,16 +13,17 @@ import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEv
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
 import 'package:provider/provider.dart';
 
-import 'TodayMoveTriangleWidget.dart';
+import 'ScheduleMoveTriangleWidget.dart';
 
-class HomeWeekCalendarWidget extends StatefulWidget {
-  HomeWeekCalendarWidget();
+
+class ScheduleWeekCalendarWidget extends StatefulWidget {
+  ScheduleWeekCalendarWidget();
 
   @override
-  HomeWeekCalendarWidgetState createState() => HomeWeekCalendarWidgetState();
+  ScheduleWeekCalendarWidgetState createState() => ScheduleWeekCalendarWidgetState();
 }
 
-class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
+class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> {
   bool _isTouch = false;
 
   PageController _transController;
@@ -30,20 +31,20 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
   StreamSubscription<TodayWeekCalendarIndexEvent> _eventStream;
 
   void initState() {
-    _transController = new PageController();
 
+    print("TodayWeekCalendarIndexEvent -------------->       ${Provider.of<WeekPresenter>(context, listen: false).currentPageIndex}   ${ DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()}");
     ///eventbus 通信
     _eventStream = EventBusUtils.instance.eventBus
         .on<TodayWeekCalendarIndexEvent>()
         .listen((event) {
-      print("TodayWeekCalendarIndexEvent      $event");
+
 
       Provider.of<WeekPresenter>(context, listen: false)
           .setIndex(event.pageIndex, event.weekIndex);
       _transController.animateToPage(event.pageIndex,
           duration: Duration(milliseconds: 300), curve: Curves.linear);
     });
-
+    _transController = new PageController(initialPage: Provider.of<WeekPresenter>(context, listen: false).currentPageIndex);
     super.initState();
   }
 
@@ -68,6 +69,8 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
             itemCount: (value.dateTotalSize / 7).ceil(),
             itemBuilder: (BuildContext context, int pageIndex) {
               return Stack(
+
+                overflow: Overflow.visible,
                 children: <Widget>[
                   GridView.builder(
                     physics: NeverScrollableScrollPhysics(),
@@ -87,7 +90,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
                                       pageIndex * 7 + index));
                             },
                             child: _getTimeWidget(
-                                value.currentTime, index, pageIndex, value),
+                                value.startTime, index, pageIndex, value),
                           )
                         ],
                       );
@@ -95,7 +98,7 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
                   ),
                   Positioned(
                     bottom: 0,
-                    child: HomeMoveTriangleWidget(EdgeInsets.only(
+                    child: ScheduleMoveTriangleWidget(EdgeInsets.only(
                         left: value.currentWeekIndex * _getWeekItemWidth())),
                   )
                 ],
@@ -111,7 +114,6 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
   _onPageChanged(index) {
     var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
     if (_isTouch) {
-      print("_onPageChanged    " + index.toString());
 
       if (index == weekPresenter.currentPageIndex) {
         return;
@@ -136,9 +138,8 @@ class HomeWeekCalendarWidgetState extends State<HomeWeekCalendarWidget> {
      */
     var _nowDuration =
         _time.add(Duration(days: pageIndex * 7 + index - (_time.weekday - 1)));
-    var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
-    LogUtil.e(
-        "_getTimeWidget   ${weekPresenter.currentWeekIndex}    ${weekPresenter.currentPageIndex}   ${index}   ${pageIndex}   ${value.currentWeekIndex}");
+
+
     return _time.compareTo(_nowDuration) == 0
         ? Container(
             height: 25,

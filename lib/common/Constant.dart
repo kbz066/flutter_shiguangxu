@@ -14,5 +14,7 @@ class Constant {
   static final DB_VERSION = 1;
   static final DB_NAME = "flutter_sgx.db";
 
+
+
   static bool isLogin(BuildContext buildContext) {}
 }

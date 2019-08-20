@@ -3,17 +3,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
-class HomeMoveTriangleWidget extends StatefulWidget {
+class ScheduleMoveTriangleWidget extends StatefulWidget {
 
   EdgeInsets moveEdgeInsets;
 
-  HomeMoveTriangleWidget(this.moveEdgeInsets);
+  ScheduleMoveTriangleWidget(this.moveEdgeInsets);
 
   @override
-  HomeMoveTriangleWidgetState createState() => HomeMoveTriangleWidgetState();
+  ScheduleMoveTriangleWidgetState createState() => ScheduleMoveTriangleWidgetState();
 }
 
-class HomeMoveTriangleWidgetState extends State<HomeMoveTriangleWidget>
+class ScheduleMoveTriangleWidgetState extends State<ScheduleMoveTriangleWidget>
     with TickerProviderStateMixin {
 
   Animation _animation;
@@ -40,7 +40,7 @@ class HomeMoveTriangleWidgetState extends State<HomeMoveTriangleWidget>
   }
 
   @override
-  void didUpdateWidget(HomeMoveTriangleWidget oldWidget) {
+  void didUpdateWidget(ScheduleMoveTriangleWidget oldWidget) {
 
     // TODO: implement didUpdateWidget
 
@@ -69,7 +69,7 @@ class HomeMoveTriangleWidgetState extends State<HomeMoveTriangleWidget>
     return window.physicalSize.width / window.devicePixelRatio / 7;
   }
 
-  startMoveAnimation(HomeMoveTriangleWidget oldWidget){
+  startMoveAnimation(ScheduleMoveTriangleWidget oldWidget){
     _controller = new AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
     _animation =

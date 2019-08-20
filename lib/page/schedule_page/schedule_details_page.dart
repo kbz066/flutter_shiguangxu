@@ -7,17 +7,17 @@ import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 
-class PlanDetailsPage extends StatefulWidget {
+class ScheduleDetailsPage extends StatefulWidget {
   final ScheduleData data;
 
 
-  PlanDetailsPage(this.data );
+  ScheduleDetailsPage(this.data );
 
   @override
-  _PlanDetailsPageState createState() => _PlanDetailsPageState();
+  _ScheduleDetailsPageState createState() => _ScheduleDetailsPageState();
 }
 
-class _PlanDetailsPageState extends State<PlanDetailsPage> {
+class _ScheduleDetailsPageState extends State<ScheduleDetailsPage> {
   var icons = [
     "bg_work_edit_task",
     "bg_study_edit_task",

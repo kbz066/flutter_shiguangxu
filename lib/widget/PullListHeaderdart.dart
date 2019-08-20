@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleCircleWidget.dart';
 
-import '../page/schedule_page/widget/TodayCircleWidget.dart';
+
 
 class PullListHeader extends StatefulWidget {
 
@@ -60,7 +61,7 @@ class PullListHeaderState extends State<PullListHeader> {
             bottom: 0,
             child: Opacity(
               opacity: _circleOpacity,
-              child: TodayCircleWidget(_percent, _circleHeight),
+              child: ScheduleCircleWidget(_percent, _circleHeight),
             ),
           )
         ],

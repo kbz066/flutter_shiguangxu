@@ -19,14 +19,14 @@ import 'package:flutter_shiguangxu/widget/NumberPicker.dart';
 import 'package:flutter_shiguangxu/widget/TextPagerIndexBar.dart'hide TabBarView;
 import 'package:provider/provider.dart';
 
-class TodayTimeDialog extends BaseStateView{
+class ScheduleTimeDialog extends BaseStateView{
 
 
 
   BuildContext _parentContext;
 
 
-  TodayTimeDialog(this._parentContext) : super(mixinType:MixinType.ordinary);
+  ScheduleTimeDialog(this._parentContext) : super(mixinType:MixinType.ordinary);
 
   @override
   Widget buildWidget(BuildContext context,State state) {

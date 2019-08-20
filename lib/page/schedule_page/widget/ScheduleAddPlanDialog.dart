@@ -14,9 +14,9 @@ import 'package:flutter_shiguangxu/page/schedule_page/model/TodayStateModel.dart
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 import 'package:provider/provider.dart';
 
-import 'TodayTimeDialog.dart';
+import 'ScheduleTimeDialog.dart';
 
-class TodayAddPlanDialog extends BaseView {
+class ScheduleAddPlanDialog extends BaseView {
   GlobalKey contentKey;
   var typeIcon;
   var levelIcon;
@@ -24,7 +24,7 @@ class TodayAddPlanDialog extends BaseView {
   Function addScheduleCallback;
 
   DateTime currentTime;
-  TodayAddPlanDialog(this.contentKey, this.currentTime,{this.addScheduleCallback}) {
+  ScheduleAddPlanDialog(this.contentKey, this.currentTime,{this.addScheduleCallback}) {
     typeIcon = [
       "search_class_icon_work",
       "search_class_icon_learn",
@@ -396,7 +396,7 @@ class TodayAddPlanDialog extends BaseView {
       context: currentContext,
       builder: (ctx) {
         LogUtil.e("顶级    bulid     --------->  $contentKey");
-        return TodayTimeDialog(contentKey.currentContext);
+        return ScheduleTimeDialog(contentKey.currentContext);
       },
     );
   }

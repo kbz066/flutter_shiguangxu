@@ -15,22 +15,23 @@ import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.d
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/widget/BottomSheet.dart' as sgx;
 
 import 'package:flutter_shiguangxu/widget/MyBehavior.dart';
 import 'package:flutter_shiguangxu/widget/PullListView.dart';
 import 'package:flutter_shiguangxu/widget/RefreshScrollPhysics.dart';
 import 'package:provider/provider.dart';
 
-class TodayContentWidget extends StatefulWidget {
+import '../schedule_details_page.dart';
 
-  TodayContentWidget();
+class ScheduleContentWidget extends StatefulWidget {
+  ScheduleContentWidget();
 
   @override
-  _TodayContentWidgetState createState() =>
-      _TodayContentWidgetState();
+  _ScheduleContentWidgettState createState() => _ScheduleContentWidgettState();
 }
 
-class _TodayContentWidgetState extends State<TodayContentWidget>
+class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
     with TickerProviderStateMixin {
   List _headerTitleList = [
     "天气",
@@ -60,26 +61,24 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
     "icon_card.png"
   ];
 
-  var _initialPage;
+
 
   ScrollPhysics _contentScrollPhysics;
 
-  _TodayContentWidgetState();
+
 
   List<ScheduleData> dataList = [];
   WeekPresenter weekPresenter;
 
   @override
   void initState() {
-    weekPresenter=Provider.of<WeekPresenter>(context,listen: false);
+    weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
     _contentScrollPhysics = AlwaysScrollableScrollPhysics();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _getPlanListData();
     });
     super.initState();
-
-
   }
 
   @override
@@ -104,7 +103,7 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
     return Container(
         width: double.infinity,
         child: PullListView(
-          initialPage:weekPresenter.currentPageIndex * 7 +
+          initialPage: weekPresenter.currentPageIndex * 7 +
               weekPresenter.currentWeekIndex,
           handerContainerHeight: 100,
           handerChild: ListView.builder(
@@ -128,9 +127,11 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
                 );
               }),
           contentChild:
-              Consumer<SchedulePresenter>(builder: (context, value, child) {
+              Consumer2<WeekPresenter,SchedulePresenter>(builder: (context, weekValue,value, child) {
+
             this.dataList = value.scheduleList;
-            return dataList.length == 0
+
+            return _getTodayList(weekValue).length == 0
                 ? ScrollConfiguration(
                     behavior: MyBehavior(false, true, Colors.blueAccent),
                     child: ListView(
@@ -149,8 +150,20 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
     });
   }
 
-  _getTodayList(List<ScheduleData> list) {
-    for (var value in list) {}
+  List<ScheduleData> _getTodayList(WeekPresenter weekPresenter) {
+    List<ScheduleData> toDayList = [];
+
+    var time = weekPresenter.getNewCurrentTime();
+
+    for (var value in dataList) {
+      if (value.year == time.year &&
+          value.month == time.month &&
+          value.day == time.day) {
+        toDayList.add(value);
+      }
+    }
+    dataList = toDayList;
+    return dataList;
   }
 
   _showListContent() {
@@ -175,26 +188,35 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
           physics: _contentScrollPhysics,
           itemBuilder: (context, index) {
             return Material(
-              child: Card(
-                margin: EdgeInsets.only(left: 10, top: 10, right: 10),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      width: 50,
-                      padding: EdgeInsets.all(8),
-                      color: Color(colors[index]).withAlpha(30),
-                      child: Image.asset(
-                        Constant.IMAGE_PATH + leadingIcon[index],
-                        fit: BoxFit.cover,
-                      ),
+              child:GestureDetector(
+                onTapDown: (down)=>_onItemCallback(index),
+                child:  Dismissible(
+                  onDismissed: (direction){
+                    Provider.of<SchedulePresenter>(context, listen: false).delSchedule(context, dataList[index].id);
+                  },
+                  child: Card(
+                    margin: EdgeInsets.only(left: 10, top: 10, right: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 50,
+                          padding: EdgeInsets.all(8),
+                          color: Color(colors[index]).withAlpha(30),
+                          child: Image.asset(
+                            Constant.IMAGE_PATH + leadingIcon[index],
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Text(dataList[index].title),
+                          ),
+                        )
+                      ],
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(dataList[index].title),
-                      ),
-                    )
-                  ],
+                  ),
+                  key: Key(index.toString()),
                 ),
               ),
             );
@@ -202,16 +224,28 @@ class _TodayContentWidgetState extends State<TodayContentWidget>
           itemCount: dataList.length,
         ));
   }
+  _onItemCallback(index) {
 
+
+    sgx.showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return ScheduleDetailsPage(dataList[index]);
+        },
+        backgroundColor: Colors.transparent,
+        ratio: 0.85)
+        .whenComplete(() {
+      Provider.of<SchedulePresenter>(context, listen: false)
+          .updateSchedule(context, dataList[index]);
+    });
+  }
   _showEmptyContent() {
-    LogUtil.e("打印这里   ${dataList}");
     return Container(
       height: 400,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Image.asset("assets/images/today_empty.png"),
-
           SizedBox(
             height: 20,
           ),
