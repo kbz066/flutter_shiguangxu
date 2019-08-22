@@ -2,8 +2,8 @@ import 'package:flustars/flustars.dart';
 import 'package:flutter_shiguangxu/base/BaseModel.dart';
 import 'package:flutter_shiguangxu/base/BasePresenter.dart';
 
-class WeekPresenter extends BasePresenter {
-  WeekPresenter() : super(null);
+class ScheduleDatePresenter extends BasePresenter {
+  ScheduleDatePresenter() : super(null);
 
   var weekTitles = ["一", "二", "三", "四", "五", "六", "日"];
 
@@ -15,7 +15,7 @@ class WeekPresenter extends BasePresenter {
 
 
   DateTime getNewCurrentTime(){
-    return   DateTime.now().add(Duration(days: currentPageIndex * 7 +
+    return  startTime.add(Duration(days: currentPageIndex * 7 +
        currentWeekIndex -
         (startTime.weekday - 1)));
   }

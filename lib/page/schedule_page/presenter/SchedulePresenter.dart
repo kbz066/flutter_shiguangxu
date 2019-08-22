@@ -3,7 +3,8 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_shiguangxu/base/BasePresenter.dart';
 
-import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+
+import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/model/ScheduleModel.dart';
 
 
@@ -13,9 +14,9 @@ import 'package:flutter_shiguangxu/utils/HttpUtils.dart';
 class SchedulePresenter extends BasePresenter{
   SchedulePresenter() : super(ScheduleModel());
 
-  List<ScheduleData> _dataList=[];
-  List<ScheduleData> planList=[];
-  List<ScheduleData> scheduleList=[];
+  List<SecheduleData> _dataList=[];
+  List<SecheduleData> planList=[];
+  List<SecheduleData> scheduleList=[];
 
 
   void classiFicationList(){
@@ -34,7 +35,7 @@ class SchedulePresenter extends BasePresenter{
   void getListData(BuildContext context)async{
     HttpUtils.getInstance().getCallback("/getScheduleList",context: context,success: (value){
 
-      _dataList=ScheduleEntity.fromJson(value).data;
+      _dataList=SecheduleEntity.fromJson(value).data;
       classiFicationList();
       notifyListeners();
     });
@@ -43,11 +44,11 @@ class SchedulePresenter extends BasePresenter{
   }
 
 
-  void addSchedule(ScheduleData data,BuildContext context,{Function success})async{
+  void addSchedule(SecheduleData data,BuildContext context,{Function success})async{
 
     var res=await HttpUtils.getInstance().post("/addSchedule",data:data.toJson() ,context: context);
 
-      var entity=ScheduleEntity.fromJson(res);
+      var entity=SecheduleEntity.fromJson(res);
     if(entity.code==200){
       _dataList=entity.data;
 
@@ -63,15 +64,15 @@ class SchedulePresenter extends BasePresenter{
   void delSchedule(context,int id){
     HttpUtils.getInstance().postCallback("/delSchedule",data:{"id":id},context: context,success: (value){
       LogUtil.e("value -------------------> $value");
-      _dataList=ScheduleEntity.fromJson(value).data;
+      _dataList=SecheduleEntity.fromJson(value).data;
       classiFicationList();
       notifyListeners();
     });
   }
-  void updateSchedule(context,ScheduleData data){
+  void updateSchedule(context,SecheduleData data){
     HttpUtils.getInstance().postCallback("/updateSchedule",data:data.toJson(),context: context,success: (value){
       LogUtil.e("value -------------------> $value");
-      _dataList=ScheduleEntity.fromJson(value).data;
+      _dataList=SecheduleEntity.fromJson(value).data;
       classiFicationList();
       notifyListeners();
     });

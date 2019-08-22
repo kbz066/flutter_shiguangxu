@@ -10,11 +10,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+
+import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 import 'package:flutter_shiguangxu/widget/BottomSheet.dart' as sgx;
 
 import 'package:flutter_shiguangxu/widget/MyBehavior.dart';
@@ -67,12 +68,12 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
 
 
 
-  List<ScheduleData> dataList = [];
-  WeekPresenter weekPresenter;
+  List<SecheduleData> dataList = [];
+  ScheduleDatePresenter weekPresenter;
 
   @override
   void initState() {
-    weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
+    weekPresenter = Provider.of<ScheduleDatePresenter>(context, listen: false);
     _contentScrollPhysics = AlwaysScrollableScrollPhysics();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -127,7 +128,7 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
                 );
               }),
           contentChild:
-              Consumer2<WeekPresenter,SchedulePresenter>(builder: (context, weekValue,value, child) {
+              Consumer2<ScheduleDatePresenter,SchedulePresenter>(builder: (context, weekValue,value, child) {
 
             this.dataList = value.scheduleList;
 
@@ -150,8 +151,8 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
     });
   }
 
-  List<ScheduleData> _getTodayList(WeekPresenter weekPresenter) {
-    List<ScheduleData> toDayList = [];
+  List<SecheduleData> _getTodayList(ScheduleDatePresenter weekPresenter) {
+    List<SecheduleData> toDayList = [];
 
     var time = weekPresenter.getNewCurrentTime();
 

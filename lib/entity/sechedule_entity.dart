@@ -1,15 +1,15 @@
-class ScheduleEntity {
+class SecheduleEntity {
 	String msg;
 	int code;
-	List<ScheduleData> data;
+	List<SecheduleData> data;
 
-	ScheduleEntity({this.msg, this.code, this.data});
+	SecheduleEntity({this.msg, this.code, this.data});
 
-	ScheduleEntity.fromJson(Map<String, dynamic> json) {
+	SecheduleEntity.fromJson(Map<String, dynamic> json) {
 		msg = json['msg'];
 		code = json['code'];
 		if (json['data'] != null) {
-			data = new List<ScheduleData>();(json['data'] as List).forEach((v) { data.add(new ScheduleData.fromJson(v)); });
+			data = new List<SecheduleData>();(json['data'] as List).forEach((v) { data.add(new SecheduleData.fromJson(v)); });
 		}
 	}
 
@@ -18,13 +18,13 @@ class ScheduleEntity {
 		data['msg'] = this.msg;
 		data['code'] = this.code;
 		if (this.data != null) {
-      data['data'] =  this.data.map((v) => v.toJson()).toList();
-    }
+			data['data'] =  this.data.map((v) => v.toJson()).toList();
+		}
 		return data;
 	}
 }
 
-class ScheduleData {
+class SecheduleData {
 	int month;
 	int level;
 	int year;
@@ -33,13 +33,14 @@ class ScheduleData {
 	int type;
 	String title;
 	int day;
+	int startHour;
+	SecheduleData({this.month, this.level, this.year, this.startHour, this.id, this.state, this.type, this.title, this.day});
 
-	ScheduleData({this.month, this.level, this.year, this.id, this.state, this.type, this.title, this.day});
-
-	ScheduleData.fromJson(Map<String, dynamic> json) {
+	SecheduleData.fromJson(Map<String, dynamic> json) {
 		month = json['month'];
 		level = json['level'];
 		year = json['year'];
+		startHour = json['startHour'];
 		id = json['id'];
 		state = json['state'];
 		type = json['type'];
@@ -52,6 +53,7 @@ class ScheduleData {
 		data['month'] = this.month;
 		data['level'] = this.level;
 		data['year'] = this.year;
+		data['startHour'] = this.startHour;
 		data['id'] = this.id;
 		data['state'] = this.state;
 		data['type'] = this.type;

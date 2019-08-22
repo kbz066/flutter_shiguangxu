@@ -32,7 +32,8 @@ dependencies:
   flutter_spinkit:
 
   drag_list:
-  provider: ^3.0.0+1
+  provider:
+  tuple:
 
   flutter_calendar:
     git:

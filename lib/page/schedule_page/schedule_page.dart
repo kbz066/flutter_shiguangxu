@@ -10,7 +10,7 @@ import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/schedule_week_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleAddPlanDialog.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleContentWidget.dart';
@@ -77,7 +77,7 @@ class _SchedulePageState extends State<SchedulePage>
   _showAddPlanDialog() {
     var contentKey = GlobalKey();
 
-    var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
+    var weekPresenter = Provider.of<ScheduleDatePresenter>(context, listen: false);
     Navigator.push(
         context,
         BottomPopupRoute(

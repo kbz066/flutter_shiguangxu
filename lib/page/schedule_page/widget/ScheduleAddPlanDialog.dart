@@ -6,10 +6,10 @@ import 'package:flutter_calendar/utils/date_util.dart' as prefix0;
 import 'package:flutter_shiguangxu/base/BaseView.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+
+import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/model/DialogStateModel.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/model/TodayStateModel.dart';
-
 
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,8 @@ class ScheduleAddPlanDialog extends BaseView {
   Function addScheduleCallback;
 
   DateTime currentTime;
-  ScheduleAddPlanDialog(this.contentKey, this.currentTime,{this.addScheduleCallback}) {
+  ScheduleAddPlanDialog(this.contentKey, this.currentTime,
+      {this.addScheduleCallback}) {
     typeIcon = [
       "search_class_icon_work",
       "search_class_icon_learn",
@@ -59,12 +60,9 @@ class ScheduleAddPlanDialog extends BaseView {
   Widget build(BuildContext context) {
     bool isNowDay = DateUtil.isToday(currentTime.millisecondsSinceEpoch);
 
-    return
-      Scaffold(
-
+    return Scaffold(
       backgroundColor: Colors.black12,
-      body:
-      ChangeNotifierProvider(
+      body: ChangeNotifierProvider(
         builder: (context) => isNowDay
             ? TodayStateModel()
             : (TodayStateModel()
@@ -76,8 +74,7 @@ class ScheduleAddPlanDialog extends BaseView {
                   isNotifyListeners: false)),
         child: Align(
           alignment: Alignment.bottomCenter,
-          child:
-          Column(
+          child: Column(
             key: contentKey,
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,37 +84,37 @@ class ScheduleAddPlanDialog extends BaseView {
                   LogUtil.e("model.dateTips     ${model.dateTips}");
                   return model.dateTips == null
                       ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: labels,
-                  )
-                      : Container(
-                    height: 30,
-                    margin: EdgeInsets.only(left: 20),
-                    decoration: BoxDecoration(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(25)),
-                        color: Colors.white),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(model.dateTips),
-                        IconButton(
-                          padding: EdgeInsets.all(0),
-                          icon: Icon(
-                            Icons.clear,
-                            color: Colors.black26,
-                            size: 18,
-                          ),
-                          onPressed: () {
-                            model.setSelectDate(false, null, 0);
-                          },
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: labels,
                         )
-                      ],
-                    ),
-                  );
+                      : Container(
+                          height: 30,
+                          margin: EdgeInsets.only(left: 20),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                              color: Colors.white),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Text(model.dateTips),
+                              IconButton(
+                                padding: EdgeInsets.all(0),
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Colors.black26,
+                                  size: 18,
+                                ),
+                                onPressed: () {
+                                  model.setSelectDate(false, null, 0);
+                                },
+                              )
+                            ],
+                          ),
+                        );
                 },
               ),
               SizedBox(
@@ -158,10 +155,10 @@ class ScheduleAddPlanDialog extends BaseView {
                               return Container(
                                 child: InkWellImageWidget(
                                     model.content == null ||
-                                        model.content.isEmpty
+                                            model.content.isEmpty
                                         ? "icon_add_voice_nor"
                                         : "icon_add_sent_nor",
-                                        () =>_addScheduleData(context)),
+                                    () => _addScheduleData(context)),
                               );
                             },
                           )
@@ -170,7 +167,7 @@ class ScheduleAddPlanDialog extends BaseView {
                     ),
                     Container(
                       padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       color: Color.fromARGB(255, 250, 250, 250),
                       child: Row(
                         children: <Widget>[
@@ -199,16 +196,15 @@ class ScheduleAddPlanDialog extends BaseView {
                                   "TodayStateModel   build      ------------->");
                               return Container(
                                 child: InkWellImageWidget(
-
                                     model.updateTypeIcon
                                         ? typeIcon[model.selectTypeIndex]
                                         : "icon_add_category_nor", () {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   Provider.of<TodayStateModel>(
-                                      contentKey.currentContext,
-                                      listen: false)
+                                          contentKey.currentContext,
+                                          listen: false)
                                       .setShowTypeView();
-
                                 }),
                               );
                             },
@@ -227,10 +223,11 @@ class ScheduleAddPlanDialog extends BaseView {
                                     model.updateLeveleIcon
                                         ? levelIcon[model.selectLevelIndex]
                                         : "icon_add_important_nor", () {
-                                  FocusScope.of(context).requestFocus(FocusNode());
+                                  FocusScope.of(context)
+                                      .requestFocus(FocusNode());
                                   Provider.of<TodayStateModel>(
-                                      contentKey.currentContext,
-                                      listen: false)
+                                          contentKey.currentContext,
+                                          listen: false)
                                       .setShowLevelView();
                                 }),
                               );
@@ -263,28 +260,36 @@ class ScheduleAddPlanDialog extends BaseView {
     );
   }
 
-  _addScheduleData(BuildContext context){
-    var state = Provider.of<TodayStateModel>(contentKey.currentContext, listen: false);
-    ScheduleData data=ScheduleData();
-    data.title=state.content;
-    data.level=state.selectLevelIndex;
-    data.type=state.selectTypeIndex;
-    data.state=0;
+  _addScheduleData(BuildContext context) {
+    var state =
+        Provider.of<TodayStateModel>(contentKey.currentContext, listen: false);
+    SecheduleData data = SecheduleData();
+    data.title = state.content;
+    data.level = state.selectLevelIndex;
+    data.type = state.selectTypeIndex;
+    data.state = 0;
 
+    if (state.dateTips != null) {
+      data.year = int.parse(state.dateTips.substring(0, 4));
+      data.month = int.parse(state.dateTips.substring(
+          state.dateTips.indexOf("年") + 1, state.dateTips.indexOf("月")));
+      data.day = int.parse(state.dateTips.substring(
+          state.dateTips.indexOf("月") + 1, state.dateTips.indexOf("日")));
+      if (state.dateTips.indexOf(":") == -1) {
+        data.startHour = 0;
+      } else {
+        data.startHour = int.parse(state.dateTips.substring(
+            state.dateTips.indexOf(":") - 2, state.dateTips.indexOf(":")));
+      }
 
-    if(state.dateTips!=null){
-
-      data.year=int.parse(state.dateTips.substring(0,4)) ;
-      data.month= int.parse(state.dateTips.substring(state.dateTips.indexOf("年")+1,state.dateTips.indexOf("月")));
-      data.day=  int.parse(state.dateTips.substring(state.dateTips.indexOf("月")+1,state.dateTips.indexOf("日")));
-      LogUtil.e("${data.year}    ${data.month}  ${data.day}");
+      LogUtil.e(
+          "${data.year}    ${data.month}  ${data.day}    ${data.startHour} ");
     }
     Navigator.pop(context);
       if(addScheduleCallback!=null)
      addScheduleCallback(data);
-
-
   }
+
   _showLevelView(TodayStateModel model) {
     var levelIcon = [
       "icon_level_one.png",
@@ -383,7 +388,6 @@ class ScheduleAddPlanDialog extends BaseView {
       );
     }).toList();
     return GridView.count(
-
       crossAxisCount: 4,
       childAspectRatio: 1 / 1.6,
       padding: EdgeInsets.all(0),

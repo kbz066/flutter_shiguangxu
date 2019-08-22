@@ -7,7 +7,7 @@ import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 
 import 'package:flutter_shiguangxu/widget/PullListHeaderdart.dart';
 import 'package:provider/provider.dart';

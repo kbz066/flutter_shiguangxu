@@ -2,13 +2,14 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
+
 
 import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
 
 class ScheduleDetailsPage extends StatefulWidget {
-  final ScheduleData data;
+  final SecheduleData data;
 
 
   ScheduleDetailsPage(this.data );

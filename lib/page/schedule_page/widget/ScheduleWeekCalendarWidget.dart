@@ -5,12 +5,13 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_calendar/utils/date_util.dart' as prefix0;
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/EventBusUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayContentIndexEvent.dart';
 import 'package:flutter_shiguangxu/page/home_page/event/TodayWeekCalendarIndexEvent.dart';
-import 'package:flutter_shiguangxu/page/schedule_page/presenter/WeekPresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 import 'package:provider/provider.dart';
 
 import 'ScheduleMoveTriangleWidget.dart';
@@ -32,19 +33,19 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
 
   void initState() {
 
-    print("TodayWeekCalendarIndexEvent -------------->       ${Provider.of<WeekPresenter>(context, listen: false).currentPageIndex}   ${ DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()}");
+    print("TodayWeekCalendarIndexEvent -------------->       ${Provider.of<ScheduleDatePresenter>(context, listen: false).currentPageIndex}   ${ DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()}");
     ///eventbus 通信
     _eventStream = EventBusUtils.instance.eventBus
         .on<TodayWeekCalendarIndexEvent>()
         .listen((event) {
 
 
-      Provider.of<WeekPresenter>(context, listen: false)
+      Provider.of<ScheduleDatePresenter>(context, listen: false)
           .setIndex(event.pageIndex, event.weekIndex);
       _transController.animateToPage(event.pageIndex,
           duration: Duration(milliseconds: 300), curve: Curves.linear);
     });
-    _transController = new PageController(initialPage: Provider.of<WeekPresenter>(context, listen: false).currentPageIndex);
+    _transController = new PageController(initialPage: Provider.of<ScheduleDatePresenter>(context, listen: false).currentPageIndex);
     super.initState();
   }
 
@@ -63,7 +64,7 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
       child: Container(
         color: ColorUtils.mainColor,
         height: 55,
-        child: Consumer<WeekPresenter>(builder: (context, value, child) {
+        child: Consumer<ScheduleDatePresenter>(builder: (context, value, child) {
           return PageView.builder(
             controller: _transController,
             itemCount: (value.dateTotalSize / 7).ceil(),
@@ -112,7 +113,7 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
   }
 
   _onPageChanged(index) {
-    var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
+    var weekPresenter = Provider.of<ScheduleDatePresenter>(context, listen: false);
     if (_isTouch) {
 
       if (index == weekPresenter.currentPageIndex) {
@@ -132,7 +133,7 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
     }
   }
 
-  _getTimeWidget(_time, index, pageIndex, WeekPresenter value) {
+  _getTimeWidget(_time, index, pageIndex, ScheduleDatePresenter value) {
     /**
      * 当前显示的日期
      */
@@ -170,7 +171,8 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
   }
 
   isCheckIndex(index, pageIndex) {
-    var weekPresenter = Provider.of<WeekPresenter>(context, listen: false);
+
+    var weekPresenter = Provider.of<ScheduleDatePresenter>(context, listen: false);
     return weekPresenter.currentPageIndex == pageIndex &&
         weekPresenter.currentWeekIndex == index;
   }

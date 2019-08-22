@@ -5,7 +5,8 @@ import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
-import 'package:flutter_shiguangxu/entity/schedule_entity.dart';
+import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
+
 
 import 'package:flutter_shiguangxu/page/schedule_page/schedule_details_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
@@ -30,7 +31,7 @@ class PlanListPageState extends State<PlanListPage>
   AnimationController _delController;
   AnimationController _buttonController;
 
-  List<ScheduleData> dataList = [];
+  List<SecheduleData> dataList = [];
 
   @override
   void initState() {
