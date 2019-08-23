@@ -9,6 +9,7 @@ import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/common/WindowUtils.dart';
+import 'package:flutter_shiguangxu/page/quadrant_page/quadrant_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/schedule_week_page.dart';
@@ -181,6 +182,10 @@ class _SchedulePageState extends State<SchedulePage>
       case 1:
         NavigatorUtils.push(context, ScheduleWeekPage());
         break;
+      case 3:
+        NavigatorUtils.push(context, QuadrantPage());
+        break;
+
     }
   }
 

@@ -62,7 +62,7 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
 
   @override
   Widget build(BuildContext context) {
-    _getCurrentMonth();
+
 
     return Material(
       child: Scaffold(
@@ -174,14 +174,7 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
           );
   }
 
-  _getCurrentMonth() {
-    var presenter = Provider.of<ScheduleWeekPresenter>(context, listen: false);
 
-    LogUtil.e(
-        "${presenter.currentPageIndex}  ${presenter.currentWeekIndex}  ${presenter.startTime.weekday}  ${presenter.currentWeekIndex}");
-//    LogUtil.e(
-//        "当前时间  ${presenter.getNewCurrentTime(20)}  ${presenter.dateTotalSize}    ${presenter.getNewCurrentTime(0).day ~/ 7}");
-  }
 
   _buildScheduleGridView(pageIndex) {
 
@@ -191,15 +184,12 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
     return ListView.builder(
 
       itemBuilder: (_, listIndex) {
-        var size=_getItemHeight(listIndex);
+        var itemHeight=_getItemHeight(listIndex);
         return Container(
-          height:_getItemHeight(listIndex),
+          height:itemHeight,
 
           child:  ListView.builder(
-//            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//              crossAxisCount: 8,
-//              childAspectRatio: listIndex == 1 ? 0.5 : 1,
-//            ),
+
               scrollDirection: Axis.horizontal,
               itemBuilder: (_, childIndex) {
 
@@ -209,14 +199,14 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
                   child: childIndex == 0
                       ? Text(" ${timeTitles[listIndex]}")
                       : Container(
-                    color: Colors.red,
+                    color: Colors.black12,
                     padding: EdgeInsets.all(1),
                     child: Container(
 
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(5))),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: _buildItem(pageIndex,listIndex,childIndex,weekPresenter,itemHeight),
                     ),
                   ),
                 );
@@ -231,25 +221,32 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
     );
   }
 
+
+
   _getItemHeight(listIndex){
     var list=getItemData(timeTitles[listIndex]);
     if(list==null){
       return WindowUtils.getWidthDP()/8;
     }else{
-      return list.length>2?WindowUtils.getWidthDP()/8:list.length/2*WindowUtils.getWidthDP()/8;
+      return list.length<2?WindowUtils.getWidthDP()/8:list.length/2*WindowUtils.getWidthDP()/8;
     }
   }
-  findListByTime(pageIndex,listIndex,childIndex,SchedulePresenter schedulePresenter,ScheduleWeekPresenter weekPresenter){
-    var list=schedulePresenter.scheduleList;
-    var currentList=<Map<int,SecheduleData>>[];
-    //LogUtil.e("时间        ${weekPresenter.getNewCurrentTime(pageIndex,childIndex)}  ${pageIndex*7+childIndex}   $pageIndex");
-//
-//    if(listIndex!=0){
-//      list.forEach((v){
-//        var startHour=timeTitles[listIndex].substring(startIndex);
-//        if(v.startHour==)
-//      });
-//    }
+  List<SecheduleData> findListByTime(pageIndex,childIndex,key,ScheduleWeekPresenter weekPresenter){
+    var list=<SecheduleData>[];
+    var itemList=dataMap[key];
+
+    if(itemList==null){
+      return itemList;
+    }
+    for (var value in itemList) {
+      var time=weekPresenter.getNewCurrentTime(pageIndex,childIndex );
+
+      if(time.year==value.year&&time.month==value.month&&time.day==value.day){
+        list.add(value);
+      }
+    }
+    return list;
+
   }
   _distinguishList(SchedulePresenter schedulePresenter){
     var list=schedulePresenter.scheduleList;
@@ -268,7 +265,31 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
 
       }
     };
-    LogUtil.e("类别         ${dataMap}");
+
+  }
+  _buildItem(pageIndex,listIndex,childIndex,weekPresenter,itemHeight) {
+    var itemList = findListByTime(
+        pageIndex, childIndex-1, timeTitles[listIndex], weekPresenter);
+
+
+
+    return Column(
+      children: itemList == null ? [] : itemList.map((value) {
+
+        return Container(
+          width: double.infinity,
+          alignment: Alignment.center,
+          height: itemList.length==1?itemHeight/2:itemHeight/itemList.length-(itemList.length-1*2)-2,
+          margin: EdgeInsets.only(bottom: itemList.indexOf(value)==itemList.length-1?0:2),
+          decoration: BoxDecoration(
+              color: Colors.blue,
+
+              borderRadius: BorderRadius.all(Radius.circular(5))
+          ),
+          child: Text(value.title,style: TextStyle(color: Colors.white),maxLines: 1,),
+        );
+      }).toList(),
+    );
   }
 
   List<SecheduleData> getItemData(key){

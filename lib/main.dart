@@ -9,6 +9,7 @@ import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleWeekPres
 import 'package:flutter_sqlite_orm/db_manager.dart';
 import 'package:provider/provider.dart';
 import 'common/Constant.dart';
+import 'page/quadrant_page/presenter/QuadrantPresenter.dart';
 import 'page/schedule_page/presenter/SchedulePresenter.dart';
 import 'utils/HttpUtils.dart';
 
@@ -29,6 +30,10 @@ void main() async {
       ChangeNotifierProvider.value(
         value: ScheduleWeekPresenter(),
       ),
+      ChangeNotifierProvider.value(
+        value: QuadrantPresenter(),
+      ),
+
     ],
     child: MyApp(),
   ));

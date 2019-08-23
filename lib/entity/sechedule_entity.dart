@@ -53,12 +53,13 @@ class SecheduleData {
 		data['month'] = this.month;
 		data['level'] = this.level;
 		data['year'] = this.year;
-		data['startHour'] = this.startHour;
+
 		data['id'] = this.id;
 		data['state'] = this.state;
 		data['type'] = this.type;
 		data['title'] = this.title;
 		data['day'] = this.day;
+		data['startHour'] = this.startHour;
 		return data;
 	}
 }
