@@ -19,7 +19,7 @@
 [Android](https://github.com/binaryshao/WanAndroid_Flutter/raw/master/app-release.apk)
 
 ### 效果图
-![](https://github.com/guodongxiaren/ImageCache/raw/master/Logo/foryou.gif)  
+
 |![splash.gif](https://github.com/kbz066/flutter_shiguangxu/master/gif/1.gif)| ![首页空中楼阁](https://upload-images.jianshu.io/upload_images/581515-2f68e3fc18a3161e.gif?imageMogr2/auto-orient/strip) | ![tab概览_1080-50-128.gif](https://upload-images.jianshu.io/upload_images/581515-be91ba09c020f594.gif?imageMogr2/auto-orient/strip)|
 | --- | --- | --- |
 | ![页面不同状态展示.gif](https://upload-images.jianshu.io/upload_images/581515-81e45c5a72fd6b83.gif?imageMogr2/auto-orient/strip) | ![搜索.gif](https://upload-images.jianshu.io/upload_images/581515-00f7b2f89cf141a1.gif?imageMogr2/auto-orient/strip)| ![收藏-50.gif](https://upload-images.jianshu.io/upload_images/581515-5c5e9b7219100c26.gif?imageMogr2/auto-orient/strip)|
