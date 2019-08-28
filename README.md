@@ -22,7 +22,7 @@
 |![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/1.gif)| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/2.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/3.gif)|
 | --- | --- | --- |
 | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/4.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/5.gif)| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/6.gif)|
-| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/7.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/8.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/1.gif)| 
+| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/7.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/8.gif) | 
 
 
 ### 用到的开源库
