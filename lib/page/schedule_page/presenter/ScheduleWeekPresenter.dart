@@ -1,6 +1,7 @@
 
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_calendar/utils/math_util.dart';
 import 'package:flutter_shiguangxu/base/BasePresenter.dart';
 
 
@@ -17,7 +18,7 @@ class ScheduleWeekPresenter extends BasePresenter{
 
   var startTime =  DateTime(2019,1,1);
   var dateTotalSize = DateTime(2019,1,1).difference(DateTime(2020, 12, 31)).inDays.abs();
-  var currentPageIndex =  DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()~/7;
+  var currentPageIndex =  (DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()/7).ceil();
   var currentWeekIndex = DateTime.now().weekday - 1;
 
 

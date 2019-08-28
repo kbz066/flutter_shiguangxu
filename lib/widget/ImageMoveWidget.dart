@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart' hide Action;
+import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 
 class ImageMoveWidget extends StatefulWidget {
   var time;
 
+  var begin;
   var path;
 
-  ImageMoveWidget(this.time, this.path);
+  ImageMoveWidget(this.time,this.begin, this.path);
 
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +22,7 @@ class ImageMoveWidgetState extends State<ImageMoveWidget>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<EdgeInsets> _animation;
+
 
   var time;
 
@@ -44,32 +47,29 @@ class ImageMoveWidgetState extends State<ImageMoveWidget>
 
   @override
   void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: Duration(milliseconds:widget.time));
+    _animation = EdgeInsetsTween(
+      begin: EdgeInsets.only(left: WindowUtils.getWidth()),
+      end: EdgeInsets.only(left: 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        widget.begin,
+        1,
+        curve: Curves.linear,
+      ),
+    ));
+    _controller.forward();
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-    _controller = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 500));
-    _animation = EdgeInsetsTween(
-      begin: EdgeInsets.only(left: mediaQuery.size.width),
-      end: EdgeInsets.only(left: 0.0),
-    ).animate(_controller);
 
-    Timer(Duration(milliseconds: time), () {
-      _controller.forward();
-    });
-    print("physicalSize-------------------------------->  " +
-        "      " +
-        mediaQuery.size.width.toString());
-  }
 
   @override
   void dispose() {
-    super.dispose();
     _controller.dispose();
+    super.dispose();
+
   }
 }

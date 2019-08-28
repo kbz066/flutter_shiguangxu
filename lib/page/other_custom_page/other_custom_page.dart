@@ -6,8 +6,8 @@ import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresent
 import 'package:flutter_shiguangxu/widget/ConfigCommonItem.dart';
 import 'package:provider/provider.dart';
 
-import 'OtherAddPage.dart';
-import 'OtherManagePage.dart';
+import 'other_add_page.dart';
+import 'other_manage_page.dart';
 import 'model/OtherModel.dart';
 
 class OtherCustomPage extends StatelessWidget {

@@ -12,6 +12,7 @@ import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/page/quadrant_page/quadrant_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
+import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleWeekPresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/schedule_week_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleAddPlanDialog.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/widget/ScheduleContentWidget.dart';
@@ -78,7 +79,8 @@ class _SchedulePageState extends State<SchedulePage>
   _showAddPlanDialog() {
     var contentKey = GlobalKey();
 
-    var weekPresenter = Provider.of<ScheduleDatePresenter>(context, listen: false);
+    var weekPresenter =
+        Provider.of<ScheduleDatePresenter>(context, listen: false);
     Navigator.push(
         context,
         BottomPopupRoute(
@@ -158,42 +160,41 @@ class _SchedulePageState extends State<SchedulePage>
               ),
               itemBuilder: (_, index) {
                 return GestureDetector(
-                  onTapDown: (_)=>_onMultipleItemClick(index),
-                  child:  Column(
-
+                  onTapDown: (_) => _onMultipleItemClick(index),
+                  child: Column(
                     children: <Widget>[
                       Image.asset(Constant.IMAGE_PATH + images[index]),
-                      SizedBox(height: 5,),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Text(
                         titles[index],
                         style: TextStyle(color: Colors.white),
                       )
                     ],
                   ),
-                )
-                 ;
+                );
               },
               itemCount: titles.length,
             ),
           );
   }
-  _onMultipleItemClick(index){
-    switch(index){
+
+  _onMultipleItemClick(index) {
+    switch (index) {
       case 1:
         NavigatorUtils.push(context, ScheduleWeekPage());
         break;
       case 3:
         NavigatorUtils.push(context, QuadrantPage());
         break;
-
     }
   }
 
   _buildTopWidget() {
     return Container(
       color: ColorUtils.mainColor,
-      child:
-      Column(
+      child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -204,34 +205,38 @@ class _SchedulePageState extends State<SchedulePage>
                   });
                 },
                 child: Container(
-                  margin: EdgeInsets.only(left: 20),
-                  child: isShowBasic
-                      ? Image.asset(
-                          "assets/images/abc_ic_menu_copy_mtrl_am_alpha.png",
-                          color: Colors.white70,
-                        )
-                      : Row(
-                          children: <Widget>[
-                            Text(
-                              "19",
-                              style:
-                                  TextStyle(fontSize: 30, color: Colors.white),
-                            ),
-                            SizedBox(width: 20),
-                            Column(
+                    margin: EdgeInsets.only(left: 20),
+                    child: Consumer<ScheduleDatePresenter>(
+                        builder: (_, presenter, child) {
+
+
+                      return isShowBasic
+                          ? Image.asset(
+                              "assets/images/abc_ic_menu_copy_mtrl_am_alpha.png",
+                              color: Colors.white70,
+                            )
+                          : Row(
                               children: <Widget>[
                                 Text(
-                                  "周一\n八月",
+                                  "${presenter.getNewCurrentTime().day}",
                                   style: TextStyle(
-                                      letterSpacing: 0,
-                                      wordSpacing: 0,
-                                      color: Colors.white),
+                                      fontSize: 30, color: Colors.white),
+                                ),
+                                SizedBox(width: 20),
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "${DateUtil.getZHWeekDay(presenter.getNewCurrentTime())}\n${presenter.getNewCurrentTime().month}月",
+                                      style: TextStyle(
+                                          letterSpacing: 0,
+                                          wordSpacing: 0,
+                                          color: Colors.white),
+                                    )
+                                  ],
                                 )
                               ],
-                            )
-                          ],
-                        ),
-                ),
+                            );
+                    })),
               ),
               Expanded(
                 child: Row(

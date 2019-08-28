@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
 import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
+import 'package:flutter_shiguangxu/page/quadrant_page/quadrant_big_page.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/SchedulePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleWeekPresenter.dart';
+import 'package:flutter_shiguangxu/widget/BottomPopupRoute.dart';
 import 'package:provider/provider.dart';
 
 import 'presenter/QuadrantPresenter.dart';
@@ -91,6 +93,7 @@ class QuadrantPageState extends State<QuadrantPage> {
   }
 
   _onPageChanged(index) {
+
     Provider.of<QuadrantPresenter>(context, listen: false)
         .updatePageIndex(index);
   }
@@ -112,7 +115,7 @@ class QuadrantPageState extends State<QuadrantPage> {
             crossAxisCount: 2, childAspectRatio: 0.72),
         itemBuilder: (_, index) {
           return Card(
-            child:Column(
+            child: Column(
               children: <Widget>[
                 Container(
                   color: Color(levelColor[index]).withAlpha(50),
@@ -138,7 +141,8 @@ class QuadrantPageState extends State<QuadrantPage> {
                 )
               ],
             ),
-          );
+          )
+           ;
         });
   }
 
@@ -152,54 +156,58 @@ class QuadrantPageState extends State<QuadrantPage> {
         list.add(value);
       }
     }
-    return list.length == 0
-        ? Container()
-        : ListView.builder(
-            padding: EdgeInsets.only(left: 5, top: 10),
-            itemCount: list.length,
-            itemBuilder: (_, index) {
-              return Container(
-                decoration: BoxDecoration(border: Border(bottom:BorderSide(color: Colors.black12) )),
-                padding: EdgeInsets.symmetric(vertical: 10),
+    return GestureDetector(
+      onTapUp: (_) {
 
-                child: Row(
-                  children: <Widget>[
-                    Image.asset(
-                      Constant.IMAGE_PATH + "icon_time_taskson.png",
-                      width: 12,
-                    ),
-                    SizedBox(width: 10),
-                    Text(list[index].title),
-                    SizedBox(width: 10),
-
-                  ],
-                ),
-              );
-            });
+        Navigator.push(
+            context, BottomPopupRoute(pageAnimation:true,child: QuadrantBigPage(list, index),bgColor: Colors.white.withAlpha(1)));
+      },
+      child: list.length == 0
+          ? Container(
+              width: double.infinity,
+              height: double.infinity,
+        color: Colors.transparent,
+            )
+          : ListView.builder(
+              padding: EdgeInsets.only(left: 5, top: 10),
+              itemCount: list.length,
+              itemBuilder: (_, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                      border:
+                          Border(bottom: BorderSide(color: Colors.black12))),
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    children: <Widget>[
+                      Image.asset(
+                        Constant.IMAGE_PATH + "icon_time_taskson.png",
+                        width: 12,
+                      ),
+                      SizedBox(width: 10),
+                      Text(list[index].title),
+                      SizedBox(width: 10),
+                    ],
+                  ),
+                );
+              }),
+    );
   }
 
   _checkTime(QuadrantPresenter presenter, SecheduleData data, index) {
+
     int startDay;
     int endDay;
-    switch (presenter.week[presenter.currentPageIndex]) {
-      case 1:
-        startDay = 1;
-        endDay = 7;
-        break;
-      case 2:
-        startDay = 7;
-        endDay = 14;
-        break;
-      case 3:
-        startDay = 14;
-        endDay = 21;
-        break;
-      case 4:
-        startDay = 21;
-        endDay = Constant.getMonthOfDay(
-            DateTime.now().year, presenter.month[presenter.currentPageIndex]);
-        break;
+
+    int week = presenter.week[presenter.currentPageIndex];
+    if (week == 4) {
+      startDay = (week - 1) * 7;
+      endDay = Constant.getMonthOfDay(
+          DateTime.now().year, presenter.month[presenter.currentPageIndex]);
+    } else {
+      startDay = (week - 1) * 7;
+      endDay = (week) * 7;
     }
+
     if (presenter.month[presenter.currentPageIndex] == data.month &&
         data.level == index &&
         (data.day >= startDay && data.day < endDay)) {
@@ -216,6 +224,7 @@ class QuadrantPageState extends State<QuadrantPage> {
     return tabTitles.map((value) {
       return GestureDetector(
         onTapDown: (_) {
+
           Provider.of<QuadrantPresenter>(context, listen: false)
               .updateWeek(tabTitles.indexOf(value) + 1);
         },

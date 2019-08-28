@@ -10,7 +10,7 @@ import 'package:flutter_shiguangxu/widget/LoadingWidget.dart';
 import 'package:flutter_shiguangxu/widget/ReorderableGridView.dart';
 import 'package:provider/provider.dart';
 
-import 'OtherAddPage.dart';
+import 'other_add_page.dart';
 import 'model/OtherModel.dart';
 
 class OtherManagePage extends StatefulWidget {

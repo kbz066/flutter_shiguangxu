@@ -52,8 +52,7 @@ class ScheduleTimeDialog extends BaseStateView{
             ), //
             child: Consumer<DialogPageModel>(
               builder: (context, model, child) {
-                LogUtil.e(
-                    "Consumer  打印 build 了  ---DialogPageModel------>  $context");
+
 
                 return model.showCalendar
                     ? _calendarPage(context)

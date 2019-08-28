@@ -33,7 +33,7 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
 
   void initState() {
 
-    print("TodayWeekCalendarIndexEvent -------------->       ${Provider.of<ScheduleDatePresenter>(context, listen: false).currentPageIndex}   ${ DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()}");
+
     ///eventbus 通信
     _eventStream = EventBusUtils.instance.eventBus
         .on<TodayWeekCalendarIndexEvent>()
@@ -141,7 +141,8 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
         _time.add(Duration(days: pageIndex * 7 + index - (_time.weekday - 1)));
 
 
-    return _time.compareTo(_nowDuration) == 0
+
+    return DateUtil.isToday(_nowDuration.millisecondsSinceEpoch)
         ? Container(
             height: 25,
             alignment: Alignment.center,

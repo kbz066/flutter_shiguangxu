@@ -241,6 +241,7 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
     });
   }
   _showEmptyContent() {
+
     return Container(
       height: 400,
       child: Column(

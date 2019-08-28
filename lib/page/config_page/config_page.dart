@@ -4,7 +4,7 @@ import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/page/backup_pullout_page/backup_pullout_Page.dart';
 import 'package:flutter_shiguangxu/page/config_page/system_sync_page.dart';
 import 'package:flutter_shiguangxu/page/exhibition_custom_page/ExhibitionCustomPage.dart';
-import 'package:flutter_shiguangxu/page/other_custom_page/OtherCustomPage.dart';
+import 'package:flutter_shiguangxu/page/other_custom_page/other_custom_page.dart';
 import 'package:flutter_shiguangxu/page/reminder_custom_page/ReminderCustomPage.dart';
 import 'package:flutter_shiguangxu/page/ring_custom_page/RingCustomPage.dart';
 import 'package:flutter_shiguangxu/page/security_page/security_page.dart';

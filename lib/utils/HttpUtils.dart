@@ -7,7 +7,7 @@ import 'package:flutter_shiguangxu/widget/Loadding.dart';
 
 class BaseUrl {
   // 配置默认请求地址
-  static const String url = 'http://10.0.0.142:7788';
+  static const String url = 'http://149.129.87.69:3000';
 }
 
 class HttpUtils {
@@ -121,15 +121,16 @@ class HttpUtils {
 
 
       if (success != null) {
+        if (context != null) {
+          Navigator.pop(context);
+        }
         if (_code == 200) {
           success(response.data);
         } else {
           String errorMsg = _code.toString() + ':' + _msg;
           _handError(error, errorMsg);
         }
-        if (context != null) {
-          Navigator.pop(context);
-        }
+
       }
     } catch (exception) {
       _handError(error, '数据请求错误：' + exception.toString());

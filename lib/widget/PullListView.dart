@@ -171,7 +171,7 @@ class _PullListViewState extends State<PullListView>
   }
 
   void _handleScrollUpdateNotification(ScrollUpdateNotification notification) {
-    //当上拉加载时，不知道什么原因，dragDetails可能会为空，导致抛出异常，会发生很明显的卡顿，所以这里必须判空
+    //当上拉加载时，不知道什么原因，dragDetails可能会为空，导致抛出异常 所以这里必须判空
     if (notification.dragDetails == null) {
       return;
     }
@@ -267,7 +267,7 @@ class _PullListViewState extends State<PullListView>
         .on<TodayContentIndexEvent>()
         .listen((event) {
       _isEvent=true;
-      print("订阅收到     ${event.pageIndex}");
+
       _pageController.animateToPage(event.pageIndex,
           duration: Duration(milliseconds: 300), curve: Curves.linear);
     });
