@@ -37,7 +37,7 @@
 [鸿神提供的数据源](https://www.wanandroid.com/blog/show/2)
 
 ### 关于作者
-个人网站 &nbsp;: [binaryshao](http://sbingo666.com/)
+
 
 Github &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: [binaryshao](https://github.com/binaryshao)
 
