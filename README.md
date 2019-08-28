@@ -21,7 +21,7 @@
 ### 效果图
 #### Android
 | --- | --- | --- |
-| ![页面不同状态展示.gif](<img src="./gif/1.gif">)
+<img src="./gif/1.gif">|<img src="./gif/2.gif"> 
 
 
 
