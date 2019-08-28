@@ -41,6 +41,4 @@
 
 Github &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: [binaryshao](https://github.com/binaryshao)
 
-CSDN &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: [binaryshao](https://blog.csdn.net/recordgrowth)
 
-Email &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: shaojianbin@sbingo666.com
