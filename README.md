@@ -22,7 +22,7 @@
 |![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/1.gif)| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/2.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/3.gif)|
 | --- | --- | --- |
 | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/4.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/5.gif)| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/6.gif)|
-| ![登录页展示.gif](https://upload-images.jianshu.io/upload_images/581515-9d83d6940c9a57ed.gif?imageMogr2/auto-orient/strip) | ![收藏列表到登录.gif](https://upload-images.jianshu.io/upload_images/581515-15084c89cc5a55f2.gif?imageMogr2/auto-orient/strip) | ![主题切换-1080-75-256.gif](https://upload-images.jianshu.io/upload_images/581515-348b013cc8a52621.gif?imageMogr2/auto-orient/strip)| 
+| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/7.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/8.gif) | ![主题切换-1080-75-256.gif](https://upload-images.jianshu.io/upload_images/581515-348b013cc8a52621.gif?imageMogr2/auto-orient/strip)| 
 
 
 ### 用到的开源库
