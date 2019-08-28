@@ -1,6 +1,7 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/common/WindowUtils.dart';
 import 'package:flutter_shiguangxu/entity/sechedule_entity.dart';
 
 class QuadrantBigPage extends StatefulWidget {
@@ -25,6 +26,7 @@ class _QuadrantBigPageState extends State<QuadrantBigPage> {
   @override
   Widget build(BuildContext context) {
 
+    LogUtil.e("高度   ${WindowUtils.getHeight()-600}");
     return Material(
       color: Colors.transparent,
       child: Scaffold(
@@ -33,7 +35,7 @@ class _QuadrantBigPageState extends State<QuadrantBigPage> {
           child: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 510,
+              height: WindowUtils.getHeightDP()-125,
               child:  Card(
                 child: Column(
                   children: <Widget>[

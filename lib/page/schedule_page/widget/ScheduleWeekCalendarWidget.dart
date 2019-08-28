@@ -63,7 +63,7 @@ class ScheduleWeekCalendarWidgetState extends State<ScheduleWeekCalendarWidget> 
       },
       child: Container(
         color: ColorUtils.mainColor,
-        height: 55,
+        height: 60,
         child: Consumer<ScheduleDatePresenter>(builder: (context, value, child) {
           return PageView.builder(
             controller: _transController,

@@ -152,7 +152,7 @@ class _SchedulePageState extends State<SchedulePage>
         ? ScheduleWeekCalendarWidget()
         : Container(
             color: ColorUtils.mainColor,
-            height: 55,
+            height: 60,
             child: GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

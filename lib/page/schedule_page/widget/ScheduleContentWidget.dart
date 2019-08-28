@@ -128,9 +128,9 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
                 );
               }),
           contentChild:
-              Consumer2<ScheduleDatePresenter,SchedulePresenter>(builder: (context, weekValue,value, child) {
+              Consumer2<ScheduleDatePresenter,SchedulePresenter>(builder: (context, weekValue,presenter, child) {
 
-            this.dataList = value.scheduleList;
+            this.dataList = presenter.scheduleList;
 
             return _getTodayList(weekValue).length == 0
                 ? ScrollConfiguration(
@@ -139,7 +139,7 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
                       physics: _contentScrollPhysics,
                       children: [_showEmptyContent()],
                     ))
-                : _showListContent();
+                : _showListContent(presenter);
           }),
           scrollPhysicsChanged: _scrollPhysicsChanged,
         ));
@@ -167,7 +167,7 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
     return dataList;
   }
 
-  _showListContent() {
+  _showListContent(SchedulePresenter presenter) {
     var leadingIcon = [
       "search_class_icon_work.png",
       "search_class_icon_learn.png",
@@ -190,10 +190,13 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
           itemBuilder: (context, index) {
             return Material(
               child:GestureDetector(
-                onTapDown: (down)=>_onItemCallback(index),
-                child:  Dismissible(
+                onTapUp: (_)=>_onItemCallback(index),
+                child:
+                Dismissible(
                   onDismissed: (direction){
-                    Provider.of<SchedulePresenter>(context, listen: false).delSchedule(context, dataList[index].id);
+
+                    presenter.delSchedule(context,dataList[index].id);
+
                   },
                   child: Card(
                     margin: EdgeInsets.only(left: 10, top: 10, right: 10),
@@ -202,9 +205,9 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
                         Container(
                           width: 50,
                           padding: EdgeInsets.all(8),
-                          color: Color(colors[index]).withAlpha(30),
+                          color: Color(colors[dataList[index].type]).withAlpha(30),
                           child: Image.asset(
-                            Constant.IMAGE_PATH + leadingIcon[index],
+                            Constant.IMAGE_PATH + leadingIcon[dataList[index].type],
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -217,7 +220,7 @@ class _ScheduleContentWidgettState extends State<ScheduleContentWidget>
                       ],
                     ),
                   ),
-                  key: Key(index.toString()),
+                  key: UniqueKey(),
                 ),
               ),
             );
