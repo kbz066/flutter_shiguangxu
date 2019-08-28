@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
 
-    LogUtil.e("HomePage        initState  初始化     ");
+
     _pageController = PageController(initialPage: _currentIndex);
     pageLists = [SchedulePage(), PlanListPage(), ConfigPage()];
   }

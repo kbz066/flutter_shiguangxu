@@ -10,7 +10,7 @@ class ScheduleDatePresenter extends BasePresenter {
   var startTime =  DateTime(2019,1,1);
   var dateTotalSize =
       DateTime(2019,1,1).difference(DateTime(2020, 12, 31)).inDays.abs();
-  var currentPageIndex =  (DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()/7).ceil();
+  var currentPageIndex =  (DateTime(2019,1,1).difference(DateTime.now()).inDays.abs()/7).floor();
   var currentWeekIndex = DateTime.now().weekday - 1;
 
 

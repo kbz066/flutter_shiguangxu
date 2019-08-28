@@ -81,7 +81,7 @@ class ScheduleAddPlanDialog extends BaseView {
             children: <Widget>[
               Consumer<TodayStateModel>(
                 builder: (context, model, child) {
-                  LogUtil.e("model.dateTips     ${model.dateTips}");
+
                   return model.dateTips == null
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -150,8 +150,7 @@ class ScheduleAddPlanDialog extends BaseView {
                           ),
                           Consumer<TodayStateModel>(
                             builder: (context, model, child) {
-                              LogUtil.e(
-                                  "TodayStateModel   build    content  -------------> ${model.content}");
+
                               return Container(
                                 child: InkWellImageWidget(
                                     model.content == null ||
@@ -173,8 +172,7 @@ class ScheduleAddPlanDialog extends BaseView {
                         children: <Widget>[
                           Consumer<TodayStateModel>(
                             builder: (context, model, child) {
-                              LogUtil.e(
-                                  "TodayStateModel   build      ------------->");
+
                               return Container(
                                 child: InkWellImageWidget(
                                     model.selectDate
@@ -192,8 +190,7 @@ class ScheduleAddPlanDialog extends BaseView {
 
                           Consumer<TodayStateModel>(
                             builder: (_context, model, child) {
-                              LogUtil.e(
-                                  "TodayStateModel   build      ------------->");
+
                               return Container(
                                 child: InkWellImageWidget(
                                     model.updateTypeIcon
@@ -216,8 +213,7 @@ class ScheduleAddPlanDialog extends BaseView {
 
                           Consumer<TodayStateModel>(
                             builder: (context, model, child) {
-                              LogUtil.e(
-                                  "TodayStateModel   build      ------------->");
+
                               return Container(
                                 child: InkWellImageWidget(
                                     model.updateLeveleIcon
@@ -240,8 +236,7 @@ class ScheduleAddPlanDialog extends BaseView {
                     ),
                     Consumer<TodayStateModel>(
                       builder: (context, model, child) {
-                        LogUtil.e(
-                            "TodayStateModel   build      ------------->");
+
                         return Container(
                           height: model.showType || model.showLevel ? 290 : 0,
                           child: model.showType
@@ -282,8 +277,7 @@ class ScheduleAddPlanDialog extends BaseView {
             state.dateTips.indexOf(":") - 2, state.dateTips.indexOf(":")));
       }
 
-      LogUtil.e(
-          "${data.year}    ${data.month}  ${data.day}    ${data.startHour} ");
+
     }
     Navigator.pop(context);
       if(addScheduleCallback!=null)
@@ -336,7 +330,7 @@ class ScheduleAddPlanDialog extends BaseView {
   }
 
   _showTypeView(TodayStateModel model) {
-    LogUtil.e(" model    $model");
+
     var _gridIcon = [
       "class_icon_work2.png",
       "class_icon_learn2.png",
@@ -399,7 +393,7 @@ class ScheduleAddPlanDialog extends BaseView {
     showDialog(
       context: currentContext,
       builder: (ctx) {
-        LogUtil.e("顶级    bulid     --------->  $contentKey");
+
         return ScheduleTimeDialog(contentKey.currentContext);
       },
     );

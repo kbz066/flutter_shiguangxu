@@ -220,7 +220,7 @@ class QuadrantPageState extends State<QuadrantPage> {
   _buildTab(pageIndex) {
     var tabTitles = ["第1周", "第2周", "第3周", "第4周"];
     var week = Provider.of<QuadrantPresenter>(context, listen: false).week;
-    LogUtil.e("week   ${week[pageIndex]}");
+
     return tabTitles.map((value) {
       return GestureDetector(
         onTapDown: (_) {

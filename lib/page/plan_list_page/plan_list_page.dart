@@ -57,7 +57,7 @@ class PlanListPageState extends State<PlanListPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    LogUtil.e("打印      ----------------》");
+
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       floatingActionButton: SlideTransition(
@@ -125,7 +125,7 @@ class PlanListPageState extends State<PlanListPage>
                     Consumer<SchedulePresenter>(
                       builder: (context, value, child) {
                         this.dataList = value.planList;
-                        LogUtil.e("dataList         $dataList");
+
                         return Container(
                           width: double.infinity,
                           margin: EdgeInsets.symmetric(horizontal: 15),
@@ -239,7 +239,7 @@ class PlanListPageState extends State<PlanListPage>
       child: DragTargetListView(
         padding: EdgeInsets.only(left: 20, top: 10),
         itemBuilder: (BuildContext context, int index) {
-          LogUtil.e("  ${dataList[index].id}");
+
           return Material(
             child: Container(
               color: Colors.white,
@@ -273,7 +273,7 @@ class PlanListPageState extends State<PlanListPage>
   }
 
   _onItemCallback(index) {
-    LogUtil.e("点击   ${index}");
+
 
     sgx.showModalBottomSheet(
             context: context,
@@ -285,7 +285,7 @@ class PlanListPageState extends State<PlanListPage>
         .whenComplete(() {
       Provider.of<SchedulePresenter>(context, listen: false)
           .updateSchedule(context, dataList[index]);
-      LogUtil.e("页面销毁了   ${dataList[index]}");
+
     });
   }
 

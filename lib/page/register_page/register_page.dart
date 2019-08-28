@@ -151,7 +151,7 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   void _onSubmit() {
-    LogUtil.e("_onSubmit     $_name      $_password");
+
     if (_name == null || _password == null) {
       Toast.show("账号或密码不能为空!", context,
           duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
@@ -192,7 +192,7 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   _textChange(type, value) {
-    LogUtil.e("_textChange     $type      $value");
+
     switch (type) {
       case "账号":
 

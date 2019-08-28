@@ -24,7 +24,7 @@ class _QuadrantBigPageState extends State<QuadrantBigPage> {
   var levelColor = [0xffFF6274, 0xffFFA523, 0xff58C086, 0xff4BA9FF];
   @override
   Widget build(BuildContext context) {
-    LogUtil.e("big   ${widget.index}");
+
     return Material(
       color: Colors.transparent,
       child: Scaffold(

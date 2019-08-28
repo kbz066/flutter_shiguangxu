@@ -203,8 +203,7 @@ class ScheduleTimeDialog extends BaseStateView{
               ),
               Expanded(child: Consumer<DialogTipsModel>(
                 builder: (contexts, model, child) {
-                  LogUtil.e(
-                      "Consumer  打印 build 了  -保存-------->  ${model.disabled}");
+
 
                   return FlatButton(
                     onPressed: model.disabled
@@ -228,7 +227,7 @@ class ScheduleTimeDialog extends BaseStateView{
   _timePointPage(context) {
     var _model = Provider.of<DialogPageModel>(context, listen: false);
 
-    LogUtil.e("_timePointPage           ${_model.initTimePoint}");
+
 
     return Column(
       children: <Widget>[
@@ -237,7 +236,7 @@ class ScheduleTimeDialog extends BaseStateView{
             children: <Widget>[
               Consumer<DialogPageModel>(
                 builder: (context, model, child) {
-                  LogUtil.e("  _timePointPage  Consumer");
+
                   return Container(
                     width: 150,
                     height: 30,
@@ -323,7 +322,7 @@ class ScheduleTimeDialog extends BaseStateView{
             children: <Widget>[
               Consumer<DialogPageModel>(
                 builder: (context, model, child) {
-                  LogUtil.e("  _timeDistancePage  Consumer");
+
 
                   return Container(
                     width: 150,
@@ -375,7 +374,7 @@ class ScheduleTimeDialog extends BaseStateView{
               ),
               Consumer<DialogTipsModel>(
                 builder: (context, model, child) {
-                  LogUtil.e("  DialogTipsModel  Consumer");
+
                   return model.distanceTips;
                 },
               ),
@@ -393,7 +392,7 @@ class ScheduleTimeDialog extends BaseStateView{
         InkWellImageWidget("dialog_time_select_img_add_calendar", () => this._onDatePressed(context)),
         Consumer<DialogPageModel>(
           builder: (context, model, child) {
-            LogUtil.e("  _timeAllpage  Consumer");
+
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 20),
               child: FlatButton(
@@ -415,7 +414,7 @@ class ScheduleTimeDialog extends BaseStateView{
   }
 
   _onDatePressed(context) {
-    LogUtil.e("   _onDatePressed     --------->  $context");
+
     Provider.of<DialogPageModel>(context, listen: false).setShowCalendar(true);
   }
 
@@ -508,7 +507,7 @@ class CustomStyleDayWidget extends BaseCustomDayWidget {
       ..textDirection = TextDirection.ltr
       ..textAlign = TextAlign.center;
 
-    LogUtil.e("height       $size");
+
     dayTextPainter.layout(minWidth: size.width, maxWidth: size.width);
     dayTextPainter.paint(canvas, Offset(0, size.height / 8));
 

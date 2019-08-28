@@ -267,7 +267,7 @@ class ConfigPageState extends State<ConfigPage>
   bool get wantKeepAlive => true;
 
   _onTapDown(String type) {
-    LogUtil.e("执行了  _onTapDown   $type");
+
     switch (type) {
       case "系统同步":
         NavigatorUtils.push(context, SystemSyncPage());

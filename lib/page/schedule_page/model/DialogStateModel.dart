@@ -86,7 +86,7 @@ class DialogTipsModel with ChangeNotifier {
 
     int endMin = initTimeDistanceEnd[1];
 
-    LogUtil.e("  ${initTimeDistanceStart}   ${initTimeDistanceEnd}");
+
     var d1 = new DateTime(DateTime.now().year, DateTime.now().month,
         DateTime.now().day, startHour, startMin);
     var d2 = new DateTime(DateTime.now().year, DateTime.now().month,
@@ -100,9 +100,6 @@ class DialogTipsModel with ChangeNotifier {
         this.distanceTips = Text("持续${endHour - startHour}小时");
       } else {
 
-
-
-        LogUtil.e("  ${difference}  ");
 
         if (difference.inHours == 0) {
 

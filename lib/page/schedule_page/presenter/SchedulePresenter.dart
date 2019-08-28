@@ -63,7 +63,7 @@ class SchedulePresenter extends BasePresenter{
   }
   void delSchedule(context,int id){
     HttpUtils.getInstance().postCallback("/delSchedule",data:{"id":id},context: context,success: (value){
-      LogUtil.e("value -------------------> $value");
+
       _dataList=SecheduleEntity.fromJson(value).data;
       classiFicationList();
       notifyListeners();
@@ -71,7 +71,7 @@ class SchedulePresenter extends BasePresenter{
   }
   void updateSchedule(context,SecheduleData data){
     HttpUtils.getInstance().postCallback("/updateSchedule",data:data.toJson(),context: context,success: (value){
-      LogUtil.e("value -------------------> $value");
+
       _dataList=SecheduleEntity.fromJson(value).data;
       classiFicationList();
       notifyListeners();

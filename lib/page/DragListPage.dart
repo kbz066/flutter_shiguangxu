@@ -97,7 +97,7 @@ class _HJDraggableGridWidgetState extends State<HJDraggableGridWidget> {
   // 基础展示的item 此处设置width,height对GridView 无效，主要是偷懒给feedback用
   Widget baseItem(value, bgColor) {
 
-    LogUtil.e("baseItem-------------->   ${_movingValue}");
+
     if (value == _movingValue) {
       return Container();
     }

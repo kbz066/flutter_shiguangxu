@@ -54,7 +54,6 @@ class _DragTargetListViewState extends State<DragTargetListView>
         if (_needToAnimate) {
           slideAnimation = createTargetItemSlideAnimation(index);
         }
-      //  LogUtil.e("indexOf------------->  $_movingValue   $index   ${widget.datas.indexOf(_movingValue)}   ${_movingValue != null && widget.datas.indexOf(_movingValue) == index}");
         return
 
          GestureDetector(
@@ -85,7 +84,7 @@ class _DragTargetListViewState extends State<DragTargetListView>
       if (index < moveStartIndex || index >= moveEndIndex) {
         return null;
       }
-      LogUtil.e("createTargetItemSlideAnimation --------------->   $moveStartIndex   $moveEndIndex $index");
+
       tween = Tween(begin: Offset(0.0, 1), end: Offset(0.0, 0));
     } else if (moveStartIndex > moveEndIndex) {
       if (index <= moveEndIndex || index > moveStartIndex) {
@@ -115,7 +114,7 @@ class _DragTargetListViewState extends State<DragTargetListView>
       widget.datas.remove(temp);
       widget.datas.insert(endIndex, temp);
       _needToAnimate = true;
-      LogUtil.e(" ${widget.datas}");
+
     });
     _slideController.forward().whenComplete(() {
       setState(() {
@@ -191,10 +190,10 @@ class _DragTargetListViewState extends State<DragTargetListView>
           setState(() {
             this._movingValue = null;
           });
-          LogUtil.e("执行   onAccept    ");
+
         },
         onLeave: (data){
-          LogUtil.e("执行   onLeave    ");
+
 
         },
       ),
@@ -204,7 +203,7 @@ class _DragTargetListViewState extends State<DragTargetListView>
         if(widget.onDragStartedCallback!=null){
           widget.onDragStartedCallback();
         }
-        LogUtil.e("执行   onDragStarted    ");
+
       },
 
 
@@ -215,16 +214,16 @@ class _DragTargetListViewState extends State<DragTargetListView>
         if(widget.onDragEndCallback!=null){
           widget.onDragEndCallback();
         }
-        LogUtil.e("执行   onDragEnd    ");
+
       },
       onDragCompleted: (){
         if(widget.onDragEndCallback!=null){
           widget.onDragEndCallback();
         }
-        LogUtil.e("执行   onDragCompleted    ");
+
       },
       onDraggableCanceled: (Velocity velocity, Offset offset){
-        LogUtil.e("执行   onDraggableCanceled    ");
+
         setState(() {
           this._movingValue = null;
         });

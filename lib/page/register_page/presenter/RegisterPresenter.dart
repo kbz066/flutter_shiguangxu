@@ -12,7 +12,7 @@ class RegisterPresenter extends BasePresenter {
   RegisterPresenter() : super(null);
 
   register(BuildContext context, String name, int passWord) {
-    LogUtil.e("RegisterPresenter    注册    $context    ${UserData(userName: name, passWord: passWord).toJson()} ");
+
     HttpUtils.getInstance().postCallback("/register",
         context: context,
         data: UserData(userName: name, passWord: passWord).toJson(),
