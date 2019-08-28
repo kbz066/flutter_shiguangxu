@@ -21,7 +21,7 @@
 ### 效果图
 #### Android
 | --- | --- | --- |
-<img src="./gif/1.gif">|<img src="./gif/2.gif"> 
+<img src="./gif/1.gif">|<img src="./gif/2.gif"> |<img src="./gif/3.gif">|<img src="./gif/4.gif">  |<img src="./gif/5.gif">|<img src="./gif/6.gif">|<img src="./gif/7.gif">|<img src="./gif/8.gif">
 
 
 
