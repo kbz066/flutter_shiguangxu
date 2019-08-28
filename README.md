@@ -20,10 +20,9 @@
 
 ### 效果图
 #### Android
-<img src="./screenshot/android.png">
+<img src="./gif/1.gif">
 
-#### iOS
-<img src="./screenshot/ios.png">
+
 
 ### 用到的开源库
 - http：网络请求
