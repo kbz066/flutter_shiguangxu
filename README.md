@@ -26,10 +26,10 @@
 
 
 ### 用到的开源库
-- http：网络请求
-- flutter_webview_plugin：webview 插件
+- dio：网络请求
+- flutter_spinkit：loading动画
 - toast：吐司
-- shared_preferences：持久化键值对
+- sqlite：数据库
 - event_bus：事件总线
 - datetime_picker_formfield：日期时间选择器
 
