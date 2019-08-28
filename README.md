@@ -18,6 +18,9 @@
 ### 安装包
 [Android](https://github.com/binaryshao/WanAndroid_Flutter/raw/master/app-release.apk)
 
+# 项目地址：
+ > [https://github.com/kbz066/flutter_shiguangxu](https://github.com/kbz066/flutter_shiguangxu)
+
 ### 效果图
 |![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/1.gif)| ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/2.gif) | ![](https://github.com/kbz066/flutter_shiguangxu/blob/master/gif/3.gif)|
 | --- | --- | --- |
