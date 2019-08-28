@@ -43,6 +43,7 @@ class OtherModel extends BaseModel {
 
 
   Future addOther(int color,String title,String imageName){
+
     return Other_DB_Dao.insert(Other_DB(isDBData: 1,title: title,bgColor: color,imageName: imageName));
   }
 }

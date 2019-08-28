@@ -45,14 +45,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    List list=List();
-    list.add(true);
-    list.add(123);
-    list[0]='中国';
-    LogUtil.e("$list");
     return MaterialApp(
 
-        title: 'Flutter Demo',
+        title: '时光序 ',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
