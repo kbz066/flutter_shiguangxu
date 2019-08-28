@@ -39,6 +39,6 @@
 ### 关于作者
 
 
-Github &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: (https://github.com/kbz066)
+Github &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: https://github.com/kbz066
 
 
