@@ -27,6 +27,7 @@ class HttpUtils {
       contentType: ContentType.json,
       responseType: ResponseType.json,
     ));
+
     _dio.interceptors.add(LogInterceptor(responseBody: true)); //开启请求日志
   }
 
