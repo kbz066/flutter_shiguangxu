@@ -75,7 +75,7 @@ class ScheduleMoveTriangleWidgetState extends State<ScheduleMoveTriangleWidget>
     _animation =
         EdgeInsetsTween(begin: oldWidget==null?widget.moveEdgeInsets:oldWidget.moveEdgeInsets, end: widget.moveEdgeInsets).animate(_controller);
 
-//    print("打印  ${widget.begin}  ${widget.end}");
+
     _controller.forward();
   }
 }

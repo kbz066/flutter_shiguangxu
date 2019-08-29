@@ -31,7 +31,6 @@ dependencies:
   dio:
   flutter_spinkit:
 
-  drag_list:
   provider:
   tuple:
   toast:

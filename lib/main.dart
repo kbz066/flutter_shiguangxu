@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
 
 
           body: SafeArea(
-            child: HomePage(),
+            child: WelcomePage(),
           ),
         ));
   }

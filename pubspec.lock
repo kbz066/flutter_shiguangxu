@@ -183,13 +183,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.13"
-  drag_list:
-    dependency: "direct main"
-    description:
-      name: drag_list
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "1.0.3"
   event_bus:
     dependency: "direct main"
     description:

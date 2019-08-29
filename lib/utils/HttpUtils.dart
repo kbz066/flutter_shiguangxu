@@ -7,7 +7,7 @@ import 'package:flutter_shiguangxu/widget/Loadding.dart';
 
 class BaseUrl {
   // 配置默认请求地址
-  static const String url = 'http://10.0.0.153:7788';
+  static const String url = 'http://149.129.87.69:3000';
 }
 
 class HttpUtils {
