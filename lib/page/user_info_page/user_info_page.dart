@@ -17,9 +17,9 @@ class UserInfoPageState extends State<UserInfoPage> {
   File _image;
 
   Future getImage() async {
-
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
+    LogUtil.e("加载 图片  ${image}");
     setState(() {
       _image = image;
     });
@@ -42,12 +42,15 @@ class UserInfoPageState extends State<UserInfoPage> {
                 Text("头像"),
                 EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
                 showDivider: true,
-                content: Image.asset(
-                  _image == null
-                      ? Constant.IMAGE_PATH + "data_avatar_boy.png"
-                      : _image.path,
-                  height: 60,
-                ),
+                content: _image == null
+                    ? Image.asset(
+                        Constant.IMAGE_PATH + "data_avatar_boy.png",
+                        height: 60,
+                      )
+                    : SizedBox(
+                        height: 60,
+                        child: Image.file(_image),
+                      ),
                 onClick: getImage,
               ),
               ConfigCommonItem(
