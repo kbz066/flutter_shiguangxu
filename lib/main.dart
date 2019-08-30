@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'common/Constant.dart';
 import 'page/quadrant_page/presenter/QuadrantPresenter.dart';
 import 'page/schedule_page/presenter/SchedulePresenter.dart';
+import 'page/user_info_page/presenter/UserInfoPresenter.dart';
 import 'utils/HttpUtils.dart';
 
 void main() async {
@@ -34,6 +35,9 @@ void main() async {
       ),
       ChangeNotifierProvider.value(
         value: QuadrantPresenter(),
+      ),
+      ChangeNotifierProvider.value(
+        value: UserInfoPresenter(),
       ),
 
     ],

@@ -38,9 +38,13 @@ class ScheduleWeekPresenter extends BasePresenter{
   }
 
   String getWeekOfMonth(){
+
+
     var time=startTime.add(Duration(days: currentPageIndex * 7 +
 
         (startTime.weekday - 1)));
+
+
     return "${time.month}月 第${(time.day/7).ceil()}周";
   }
 

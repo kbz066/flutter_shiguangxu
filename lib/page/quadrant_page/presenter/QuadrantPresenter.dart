@@ -6,7 +6,7 @@ class QuadrantPresenter extends BasePresenter{
 
   var currentPageIndex = 1;
   var month=[DateTime.now().month-1,DateTime.now().month,DateTime.now().month+1];
-  var week=[1,(DateTime.now().day/7).ceil(),1];
+  var week=[1,(DateTime.now().day/7).ceil()>4?4:(DateTime.now().day/7).ceil(),1];
 
 
   void updateWeek(index){
