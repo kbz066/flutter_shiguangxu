@@ -25,7 +25,7 @@ class UserInfoEntity {
 
 class UserInfoData {
 	int id;
-	Uint8List headImage;
+	String headImage;
 	String userName;
 	String mobile;
 	String email;

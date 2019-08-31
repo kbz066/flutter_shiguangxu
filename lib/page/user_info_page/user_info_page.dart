@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -8,12 +9,14 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_shiguangxu/common/ColorUtils.dart';
 import 'package:flutter_shiguangxu/common/Constant.dart';
+import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/entity/user_info_entity.dart';
 import 'package:flutter_shiguangxu/widget/ConfigCommonItem.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'presenter/UserInfoPresenter.dart';
+import 'user_autograph_page.dart';
 
 class UserInfoPage extends StatefulWidget {
   @override
@@ -21,9 +24,7 @@ class UserInfoPage extends StatefulWidget {
 }
 
 class UserInfoPageState extends State<UserInfoPage> {
-  var _newValue = 1;
 
-  File _image;
 
   UserInfoData _infoData;
 
@@ -32,12 +33,15 @@ class UserInfoPageState extends State<UserInfoPage> {
     this._infoData = Provider.of<UserInfoPresenter>(context, listen: false)
         .infoData ??= UserInfoData();
 
-    LogUtil.e("打印                          ${_infoData.toJson()}");
+
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("个人资料"),
@@ -63,8 +67,8 @@ class UserInfoPageState extends State<UserInfoPage> {
                   ),
                 )
                     : ClipOval(
-                        child: Image.file(
-                          _image,
+                        child: Image.memory(
+                          base64Decode(_infoData.headImage),
                           height: 50,
                         ),
                       ),
@@ -84,7 +88,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                     onChanged: (val){
                       _infoData.userName=val;
                     },
-                    controller: TextEditingController(text: null),
+                    controller: TextEditingController(text:_infoData.userName ),
                     textAlign: TextAlign.end,
                     decoration: InputDecoration(
                       hintText: "请填写昵称",
@@ -147,12 +151,14 @@ class UserInfoPageState extends State<UserInfoPage> {
                 EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 10),
                 showDivider: true,
                 content: Text(_infoData.autograph ?? "请编辑签名"),
+
+                onClick: this._setAutograph,
               ),
               ConfigCommonItem(
                 Text("生日"),
                 EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 10),
                 showDivider: true,
-                content: Text(_infoData.birthday ?? "未设置"),
+                content: Text(_infoData.birthday ??"未设置"),
               ),
               ConfigCommonItem(
                 Text("职业"),
@@ -169,7 +175,6 @@ class UserInfoPageState extends State<UserInfoPage> {
             child: RaisedButton(
               child: Text("保存"),
               onPressed: () {
-                LogUtil.e("json                ${this._infoData.toJson()}");
                 Provider.of<UserInfoPresenter>(context, listen: false).updateInfo(this._infoData, context);
 //                Navigator.pop(context);
               },
@@ -184,13 +189,25 @@ class UserInfoPageState extends State<UserInfoPage> {
     );
   }
 
+
+  _setAutograph(){
+
+
+
+    NavigatorUtils.push(context, UserAutographPage(_infoData.autograph)).then((val){
+
+      setState(() {
+        _infoData.autograph=val;
+      });
+    });
+  }
   Future getImage() async {
     var image =
         await ImagePicker.pickImage(source: ImageSource.gallery, maxHeight: 50);
-    _infoData.headImage = image.readAsBytesSync();
-    LogUtil.e("加载 图片  ${image}       ${image.readAsBytesSync().length}");
+
+
     setState(() {
-      _image = image;
+      _infoData.headImage = base64Encode(image.readAsBytesSync());
     });
   }
 }

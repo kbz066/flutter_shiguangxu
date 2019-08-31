@@ -26,7 +26,7 @@ class _QuadrantBigPageState extends State<QuadrantBigPage> {
   @override
   Widget build(BuildContext context) {
 
-    LogUtil.e("高度   ${WindowUtils.getHeight()-600}");
+
     return Material(
       color: Colors.transparent,
       child: Scaffold(

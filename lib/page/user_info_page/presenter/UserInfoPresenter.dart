@@ -14,7 +14,7 @@ class UserInfoPresenter extends BasePresenter{
 
   void updateInfo(UserInfoData infoData,context){
     this.infoData=infoData;
-    LogUtil.e("更新              ${infoData.toJson()}");
+
     HttpUtils.getInstance().postCallback("/updateInfo",data:infoData.toJson(),context: context,success: (value){
 
       notifyListeners();

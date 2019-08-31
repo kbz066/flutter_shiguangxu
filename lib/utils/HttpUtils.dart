@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:common_utils/common_utils.dart';
 import 'package:dio/dio.dart';
+import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/widget/Loadding.dart';
 
 class BaseUrl {
   // 配置默认请求地址
-  static const String url = 'http://10.0.0.153:7788';
+  static const String url = 'http://149.129.87.69:3000';
 }
 
 class HttpUtils {
@@ -42,7 +43,6 @@ class HttpUtils {
 
   static HttpUtils getInstance() => init();
 
-
   ///回调的方式
   void getCallback(String url,
       {Map<String, dynamic> data,
@@ -53,10 +53,14 @@ class HttpUtils {
       String loadTitle}) async {
     // 发送get请求
     await _sendRequestCallback(url, 'get', success,
-        headers: headers, error: error, data: data,context: context,loadTitle: loadTitle);
+        headers: headers,
+        error: error,
+        data: data,
+        context: context,
+        loadTitle: loadTitle);
   }
 
- ///回调的方式
+  ///回调的方式
   void postCallback(String url,
       {Map<String, dynamic> data,
       Map<String, dynamic> headers,
@@ -66,24 +70,29 @@ class HttpUtils {
       String loadTitle}) async {
     // 发送post请求
     _sendRequestCallback(url, 'post', success,
-        data: data, headers: headers, error: error,context: context,loadTitle: loadTitle);
+        data: data,
+        headers: headers,
+        error: error,
+        context: context,
+        loadTitle: loadTitle);
   }
 
-
-
-
   // 请求处理
-  static Future _sendRequestCallback(String url, String method, Function success,
+  static Future _sendRequestCallback(
+      String url, String method, Function success,
       {Map<String, dynamic> data,
       Map<String, dynamic> headers,
       Function error,
       BuildContext context,
-      String loadTitle }) async {
+      String loadTitle}) async {
     int _code;
     String _msg;
-    var _backData;
-    if (context != null) {
 
+    dynamic _backData;
+    bool closeLoad = true;
+
+    if (context != null) {
+      closeLoad = false;
       Loadding.showLoad(context, loadTitle);
     }
     try {
@@ -103,11 +112,9 @@ class HttpUtils {
       }
 
       if (response.statusCode != 200) {
-        _msg = '网络请求错误,状态码:' + response.statusCode.toString();
-        _handError(error, _msg);
-        if (context != null) {
-          Navigator.pop(context);
-        }
+        _msg = response.statusCode.toString();
+        _handError(error, _msg, context, closeLoad);
+
         return;
       }
 
@@ -115,75 +122,70 @@ class HttpUtils {
 
       Map<String, dynamic> resCallbackMap = response.data;
 
-
       _code = resCallbackMap['code'];
       _msg = resCallbackMap['msg'];
       _backData = resCallbackMap['data'];
 
-
       if (success != null) {
-        if (context != null) {
-          Navigator.pop(context);
-        }
         if (_code == 200) {
+          if (context != null) {
+            closeLoad = true;
+            Navigator.pop(context);
+          }
           success(response.data);
         } else {
-          String errorMsg = _code.toString() + ':' + _msg;
-          _handError(error, errorMsg);
-        }
+          String errorMsg = _msg;
 
+          _handError(error, errorMsg, context, closeLoad);
+        }
       }
     } catch (exception) {
-      _handError(error, '数据请求错误：' + exception.toString());
-      if (context != null) {
-        Navigator.pop(context);
-      }
+      _handError(error, exception.toString(), context, closeLoad);
     }
   }
 
   // 返回错误信息
-  static Future _handError(Function errorCallback, String errorMsg) {
+  static Future _handError(
+
+      Function errorCallback, String errorMsg, context, closeLoad) {
+    if (context != null && closeLoad == false) {
+      Navigator.pop(context);
+    }
     if (errorCallback != null) {
       errorCallback(errorMsg);
     }
   }
 
-
-
-
-
-
-
-
   /*********************Future 方式********************************/
 
-  Future< Map<String, dynamic>> get(String url,
+  Future<Map<String, dynamic>> get(String url,
       {Map<String, dynamic> data,
-        Map<String, dynamic> headers,
-        BuildContext context,
-        String loadTitle}) async{
-   return  _sendRequest(url,"get",data: data,headers: headers,context: context,loadTitle:loadTitle );
+      Map<String, dynamic> headers,
+      BuildContext context,
+      String loadTitle}) async {
+    return _sendRequest(url, "get",
+        data: data, headers: headers, context: context, loadTitle: loadTitle);
   }
+
   ///回调的方式
 
-  Future< Map<String, dynamic>> post(String url,
+  Future<Map<String, dynamic>> post(String url,
       {Map<String, dynamic> data,
-        Map<String, dynamic> headers,
-
-        BuildContext context,
-        String loadTitle}) async {
+      Map<String, dynamic> headers,
+      BuildContext context,
+      String loadTitle}) async {
     // 发送post请求
     return _sendRequest(url, 'post',
-        data: data, headers: headers,context: context,loadTitle: loadTitle);
+        data: data, headers: headers, context: context, loadTitle: loadTitle);
   }
-  // 请求处理
-  static  Future< Map<String, dynamic>> _sendRequest(String url,String method,
-      {Map<String, dynamic> data,
-        Map<String, dynamic> headers,
-        Function error,
-        BuildContext context,
-        String loadTitle }) async {
 
+  // 请求处理
+  static Future<Map<String, dynamic>> _sendRequest(String url, String method,
+      {Map<String, dynamic> data,
+      Map<String, dynamic> headers,
+      Function error,
+      BuildContext context,
+      String loadTitle}) async {
     if (context != null) {
       Loadding.showLoad(context, loadTitle);
     }
@@ -206,11 +208,12 @@ class HttpUtils {
         Navigator.pop(context);
       }
       return response.data;
-    }catch(exception){
+    } catch (exception) {
       if (context != null) {
         Navigator.pop(context);
       }
-      return Future.value({"code":-1,"msg":'数据请求错误：' + exception.toString()});
+      return Future.value(
+          {"code": -1, "msg": '数据请求错误：' + exception.toString()});
     }
   }
 }

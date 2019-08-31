@@ -38,7 +38,7 @@ class QuadrantPageState extends State<QuadrantPage> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Consumer<QuadrantPresenter>(builder: (_, presenter, child) {
-                LogUtil.e("打印这里   ${presenter.currentPageIndex}         ${presenter.week[presenter.currentPageIndex]}  ${DateTime.now().day/7}");
+               
 
                 return Text(
                   "${presenter.month[presenter.currentPageIndex]}月 第${presenter.week[presenter.currentPageIndex]}周",

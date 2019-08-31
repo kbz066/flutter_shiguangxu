@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:common_utils/common_utils.dart';
+import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/common/NavigatorUtils.dart';
 import 'package:flutter_shiguangxu/page/backup_pullout_page/backup_pullout_Page.dart';
@@ -9,8 +12,10 @@ import 'package:flutter_shiguangxu/page/reminder_custom_page/ReminderCustomPage.
 import 'package:flutter_shiguangxu/page/ring_custom_page/RingCustomPage.dart';
 import 'package:flutter_shiguangxu/page/security_page/security_page.dart';
 import 'package:flutter_shiguangxu/page/setting_page/setting_page.dart';
+import 'package:flutter_shiguangxu/page/user_info_page/presenter/UserInfoPresenter.dart';
 import 'package:flutter_shiguangxu/page/user_info_page/user_info_page.dart';
 import 'package:flutter_shiguangxu/widget/InkWellImageWidget.dart';
+import 'package:provider/provider.dart';
 
 class ConfigPage extends StatefulWidget {
   @override
@@ -37,36 +42,51 @@ class ConfigPageState extends State<ConfigPage>
           ),
           Container(
             padding: EdgeInsets.only(left: 20, right: 20, top: 30),
-
             child: Column(
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        InkWellImageWidget("my_avatar_def", () {
-                          NavigatorUtils.push(context, UserInfoPage());
-                        }),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "昵称",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Text(
-                              "编辑个性签名",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                    Consumer<UserInfoPresenter>(
+                        builder: (context, presenter, child) {
+
+
+                      return Row(
+                        children: <Widget>[
+                          presenter?.infoData?.headImage == null
+                              ? InkWellImageWidget("my_avatar_def", () {
+                                  NavigatorUtils.push(context, UserInfoPage());
+                                })
+                              : GestureDetector(
+                                  child: ClipOval(
+                                    child: Image.memory(base64Decode(
+                                        presenter?.infoData?.headImage)),
+                                  ),
+                                  onTapDown: (_) {
+                                    NavigatorUtils.push(
+                                        context, UserInfoPage());
+                                  },
+                                ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                presenter?.infoData?.userName ??= "昵称",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Text(
+                                presenter?.infoData?.autograph ?? "编辑个性签名",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    }),
                     InkWellImageWidget("my_icon_set", () {
                       NavigatorUtils.push(context, SettingPage());
                     })
@@ -267,7 +287,6 @@ class ConfigPageState extends State<ConfigPage>
   bool get wantKeepAlive => true;
 
   _onTapDown(String type) {
-
     switch (type) {
       case "系统同步":
         NavigatorUtils.push(context, SystemSyncPage());

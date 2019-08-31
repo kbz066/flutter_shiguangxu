@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flustars/flustars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_shiguangxu/base/BaseModel.dart';
@@ -23,11 +25,13 @@ class LoginPresenter extends BasePresenter {
 
       Provider.of<UserInfoPresenter>(context, listen: false).infoData =
           UserInfoEntity.fromJson(value).data;
-      LogUtil.e("登录成功   $value");
+
       NavigatorUtils.pushReplacement(context, HomePage());
     }, error: (value) {
-      var error = value.toString().split(":");
-      Toast.show(error[1], context);
+
+
+
+      Toast.show(value, context);
     });
   }
 }
