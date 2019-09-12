@@ -174,10 +174,15 @@ class QuadrantPageState extends State<QuadrantPage> {
               padding: EdgeInsets.only(left: 5, top: 10),
               itemCount: list.length,
               itemBuilder: (_, index) {
+
+                LogUtil.e("标题  ${list[index].title}");
                 return Container(
+
+
+
                   decoration: BoxDecoration(
-                      border:
-                          Border(bottom: BorderSide(color: Colors.black12))),
+
+                      border: Border(bottom: BorderSide(color: Colors.black12))),
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Row(
                     children: <Widget>[
@@ -186,7 +191,7 @@ class QuadrantPageState extends State<QuadrantPage> {
                         width: 12,
                       ),
                       SizedBox(width: 10),
-                      Text(list[index].title),
+                      Expanded(child: Text(list[index].title,maxLines: 1,overflow : TextOverflow.ellipsis)),
                       SizedBox(width: 10),
                     ],
                   ),
