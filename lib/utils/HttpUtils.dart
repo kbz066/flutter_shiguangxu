@@ -25,7 +25,7 @@ class HttpUtils {
       connectTimeout: 5000,
       receiveTimeout: 100000,
       // 5s
-      contentType: ContentType.json,
+      contentType: Headers.jsonContentType,
       responseType: ResponseType.json,
     ));
 
