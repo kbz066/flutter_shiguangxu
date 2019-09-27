@@ -208,8 +208,6 @@ class _SchedulePageState extends State<SchedulePage>
                     margin: EdgeInsets.only(left: 20),
                     child: Consumer<ScheduleDatePresenter>(
                         builder: (_, presenter, child) {
-
-
                       return isShowBasic
                           ? Image.asset(
                               "assets/images/abc_ic_menu_copy_mtrl_am_alpha.png",
@@ -239,25 +237,22 @@ class _SchedulePageState extends State<SchedulePage>
                     })),
               ),
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 10),
-                      padding: EdgeInsets.only(
-                          left: 20, top: 5, right: 20, bottom: 5),
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(40, 255, 255, 255),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.0),
-                              bottomLeft: Radius.circular(20.0),
-                              topRight: Radius.circular(20.0))),
-                      child: Text(
-                        "改变自己,从现在做起",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )
-                  ],
+                child: Container(
+                  alignment: Alignment.center,
+
+                  margin: EdgeInsets.only(right: 10,left: isShowBasic?50:10),
+                  padding: EdgeInsets.only(left: 20, top: 5, right: 20, bottom: 5),
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(40, 255, 255, 255),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          bottomLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0))),
+                  child: Text(
+                    "改变自己,从现在做起",
+                    style: TextStyle(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
               Image.asset("assets/images/home_img_totoro.png")
