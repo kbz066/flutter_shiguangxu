@@ -53,6 +53,7 @@ class ConfigPageState extends State<ConfigPage>
 
 
                       return Row(
+
                         children: <Widget>[
                           presenter?.infoData?.headImage == null
                               ? InkWellImageWidget("my_avatar_def", () {

@@ -43,7 +43,7 @@ class Other_DB_Dao extends Dao<Other_DB> {
   ///初始化数据库
   static Future<bool> init() async {
     DBManager dbManager = DBManager.getInstance();
-    List<Map> maps = await await dbManager.db
+    List<Map> maps =  await dbManager.db
         .query("sqlite_master", where: " name = 'other'");
     if (maps == null || maps.length == 0) {
       await dbManager.db.execute(

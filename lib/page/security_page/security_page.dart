@@ -28,20 +28,40 @@ class SecurityPageState extends State<SecurityPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          ConfigCommonItem(Text("修改登录密码"),EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),showDivider: true,),
-          ConfigCommonItem(Text("手机号"),EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),content: Text("182****1509"),showDivider: true,),
-          ConfigCommonItem(Text("邮箱号"),EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),content: Text("立即绑定"),showDivider: true,),
-          ConfigCommonItem(Text("微信号"),EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),content: Text("立即绑定"),showDivider: true,),
-
-          ConfigCommonItem(Text("qq号"),EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),content: Text("立即绑定")),
-
-
+          ConfigCommonItem(
+            Text("修改登录密码"),
+            EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),
+            showDivider: true,
+          ),
+          ConfigCommonItem(
+            Text("手机号"),
+            EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),
+            content: Text("182****1509"),
+            showDivider: true,
+          ),
+          ConfigCommonItem(
+            Text("邮箱号"),
+            EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),
+            content: Text("立即绑定"),
+            showDivider: true,
+          ),
+          ConfigCommonItem(
+            Text("微信号"),
+            EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),
+            content: Text("立即绑定"),
+            showDivider: true,
+          ),
+          ConfigCommonItem(Text("qq号"),
+              EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 15),
+              content: Text("立即绑定")),
           SizedBox(
             height: 10,
           ),
-
-          ConfigCommonItem(Text("手势密码"),EdgeInsets.only(left: 10, right: 10),showSwitchBut: true,),
-
+          ConfigCommonItem(
+            Text("手势密码"),
+            EdgeInsets.only(left: 10, right: 10),
+            showSwitchBut: true,
+          ),
         ],
       )),
     );

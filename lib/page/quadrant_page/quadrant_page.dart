@@ -159,10 +159,11 @@ class QuadrantPageState extends State<QuadrantPage> {
       }
     }
     return GestureDetector(
+
+
       onTapUp: (_) {
 
-        Navigator.push(
-            context, BottomPopupRoute(pageAnimation:true,child: QuadrantBigPage(list, index),bgColor: Colors.white.withAlpha(1)));
+        Navigator.push(context, BottomPopupRoute(pageAnimation:true,child: QuadrantBigPage(list, index),bgColor: Colors.white.withAlpha(1)));
       },
       child: list.length == 0
           ? Container(

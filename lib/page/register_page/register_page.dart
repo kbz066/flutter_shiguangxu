@@ -37,119 +37,118 @@ class RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Material(
       child:  SafeArea(
-        child: Stack(
-          overflow: Overflow.visible,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: Container(
-                child: Image.asset(
-                  "assets/images/login_bg.png",
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Align(
-              child: Card(
-                margin: EdgeInsets.only(left: 20, right: 20),
-                child: Container(
-                  height: 410,
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Stack(
-                    fit: StackFit.passthrough,
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          _buildUserWidget(),
-                          Divider(
-                            height: 1,
-                          ),
-                          _buildVerificationCode(),
-                          Divider(
-                            height: 1,
-                          ),
-                          _buildPassWord(
-                              _isSHowPassWord, this._setPassWordEyeState),
-                          Divider(
-                            height: 1,
-                          ),
-                          _buildInvitationCode(),
-                          Divider(
-                            height: 1,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Checkbox(
-                                value: _isChekAgreement,
-                                checkColor: Colors.white,
-                                activeColor: Colors.green,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _isChekAgreement = val;
-                                  });
-                                },
-                              ),
-                              RichText(
-                                text: TextSpan(children: <TextSpan>[
-                                  TextSpan(
-                                      text: "已阅读并同意",
-                                      style: TextStyle(color: Colors.black)),
-                                  TextSpan(
-                                      text: "《注册协议》",
-                                      style: TextStyle(color: Colors.blue))
-                                ]),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 250,
-                            height: 50,
-                            margin: EdgeInsets.symmetric(vertical: 20),
-                            child: RaisedButton(
-                              child: Text("注册"),
-                              onPressed: _onSubmit,
-                              color: Colors.blue,
-                              textColor: Colors.white,
-                              shape: new RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25)),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment(0, -1.22),
-                        child: Image.asset("assets/images/longmao_openeye.png"),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20, top: 10),
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white70,
-                    size: 20,
-                  ),
-                  SizedBox(width: 120),
-                  Text(
-                    "注册",
-                    style: TextStyle(color: Colors.white70, fontSize: 18),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                alignment: Alignment.topCenter,
+                image: AssetImage("assets/images/login_bg.png"),
+              )),
+          child: Column(
+            children: <Widget>[
+              _buildTitle(),
+              _buildCard()
+            ],
+          ),
         ),
       ),
     );
   }
 
+  _buildCard(){
+    return Card(
+      margin: EdgeInsets.only(left: 20, right: 20,top: 60),
+      child: Container(
+        height: 410,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Stack(
+          fit: StackFit.passthrough,
+          overflow: Overflow.visible,
+          alignment: Alignment.center,
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _buildUserWidget(),
+                Divider(
+                  height: 1,
+                ),
+                _buildVerificationCode(),
+                Divider(
+                  height: 1,
+                ),
+                _buildPassWord(
+                    _isSHowPassWord, this._setPassWordEyeState),
+                Divider(
+                  height: 1,
+                ),
+                _buildInvitationCode(),
+                Divider(
+                  height: 1,
+                ),
+                Row(
+                  children: <Widget>[
+                    Checkbox(
+                      value: _isChekAgreement,
+                      checkColor: Colors.white,
+                      activeColor: Colors.green,
+                      onChanged: (val) {
+                        setState(() {
+                          _isChekAgreement = val;
+                        });
+                      },
+                    ),
+                    RichText(
+                      text: TextSpan(children: <TextSpan>[
+                        TextSpan(
+                            text: "已阅读并同意",
+                            style: TextStyle(color: Colors.black)),
+                        TextSpan(
+                            text: "《注册协议》",
+                            style: TextStyle(color: Colors.blue))
+                      ]),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 250,
+                  height: 50,
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  child: RaisedButton(
+                    child: Text("注册"),
+                    onPressed: _onSubmit,
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25)),
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              top: -35,
+              child: Image.asset("assets/images/longmao_openeye.png"),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  _buildTitle(){
+    return  Row(
+      children: <Widget>[
+        Icon(
+          Icons.arrow_back_ios,
+          color: Colors.white70,
+          size: 20,
+        ),
+        SizedBox(width: 150),
+        Text(
+          "注册",
+          style: TextStyle(color: Colors.white70, fontSize: 18),
+        ),
+      ],
+    );
+  }
   void _onSubmit() {
 
     if (_name == null || _password == null) {

@@ -52,6 +52,8 @@ class _ScheduleWeekPageState extends State<ScheduleWeekPage>
 
   @override
   void initState() {
+
+
     _tabController = TabController(length: 8, vsync: this);
     _pageController = PageController(
         initialPage: Provider.of<ScheduleWeekPresenter>(context, listen: false)

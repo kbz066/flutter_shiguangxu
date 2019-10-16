@@ -8,5 +8,4 @@ class ColorUtils {
   static Color mainFontColor=Colors.white24;
   static Color mainBGColor=Color(0xffF5F5F5);
 
-
 }

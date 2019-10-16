@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:ffi';
+
+import 'package:flutter_calendar/utils/math_util.dart';
+import 'package:image/image.dart' as gimage;
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_shiguangxu/page/home_page/home_page.dart';
@@ -16,7 +21,6 @@ import 'page/user_info_page/presenter/UserInfoPresenter.dart';
 import 'utils/HttpUtils.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await _initDataBase();
   runApp(MultiProvider(
@@ -39,25 +43,27 @@ void main() async {
       ChangeNotifierProvider.value(
         value: UserInfoPresenter(),
       ),
-
     ],
+
     child: MyApp(),
   ));
 }
+
+
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
 
+
+
+    return MaterialApp(
         title: '时光序 ',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
-
-
           body: SafeArea(
             child: WelcomePage(),
           ),
@@ -66,5 +72,7 @@ class MyApp extends StatelessWidget {
 }
 
 void _initDataBase() async {
+
+
   await DBManager.getInstance().init(Constant.DB_VERSION, Constant.DB_NAME);
 }

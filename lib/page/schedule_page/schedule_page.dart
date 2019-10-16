@@ -167,6 +167,7 @@ class _SchedulePageState extends State<SchedulePage>
                       SizedBox(
                         height: 5,
                       ),
+
                       Text(
                         titles[index],
                         style: TextStyle(color: Colors.white),
@@ -192,6 +193,8 @@ class _SchedulePageState extends State<SchedulePage>
   }
 
   _buildTopWidget() {
+
+
     return Container(
       color: ColorUtils.mainColor,
       child: Column(

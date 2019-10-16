@@ -38,7 +38,7 @@ class _OtherManagePageState extends State<OtherManagePage> {
         actions: <Widget>[
           GestureDetector(
             onTapDown: (_) {
-              print("点击；了  ${isEdit}");
+
               setState(() {
                 this.isEdit = !isEdit;
                 this.showAdd = !this.showAdd;
