@@ -66,12 +66,15 @@ class _HomePageState extends State<HomePage> {
      ;
   }
 
+
+
   void onTap(int index) {
     _pageController.animateToPage(index,
         duration: Duration(milliseconds: 300), curve: Curves.linear);
   }
 
   void onPageChanged(int index) {
+
     setState(() {
       _currentIndex = index;
     });

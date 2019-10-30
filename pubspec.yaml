@@ -27,6 +27,7 @@ dependencies:
   flutter_screenutil: ^0.5.3
   event_bus: ^1.1.0
   flustars: ^0.2.6+1
+  flutter_ijkplayer: ^0.3.4
   image_picker:
   dio:
   flutter_spinkit:

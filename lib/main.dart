@@ -1,12 +1,11 @@
-import 'dart:convert';
-import 'dart:ffi';
 
-import 'package:flutter_calendar/utils/math_util.dart';
-import 'package:image/image.dart' as gimage;
-import 'package:flustars/flustars.dart';
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_shiguangxu/page/home_page/home_page.dart';
-import 'package:flutter_shiguangxu/page/login_page/login_page.dart';
+import 'package:flutter_calendar/utils/math_util.dart';
+
 import 'package:flutter_shiguangxu/page/other_custom_page/presenter/OtherPresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleDatePresenter.dart';
 import 'package:flutter_shiguangxu/page/schedule_page/presenter/ScheduleWeekPresenter.dart';
@@ -18,12 +17,13 @@ import 'common/Constant.dart';
 import 'page/quadrant_page/presenter/QuadrantPresenter.dart';
 import 'page/schedule_page/presenter/SchedulePresenter.dart';
 import 'page/user_info_page/presenter/UserInfoPresenter.dart';
-import 'utils/HttpUtils.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _initDataBase();
-  runApp(MultiProvider(
+  runApp(
+      MultiProvider(
     providers: [
       ChangeNotifierProvider.value(
         value: OtherPresenter(),
@@ -52,8 +52,10 @@ void main() async {
 
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
 
 
 
@@ -65,6 +67,7 @@ class MyApp extends StatelessWidget {
         ),
         home: Scaffold(
           body: SafeArea(
+              maintainBottomViewPadding: true,
             child: WelcomePage(),
           ),
         ));

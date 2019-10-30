@@ -97,6 +97,7 @@ class RegisterPageState extends State<RegisterPage> {
                         });
                       },
                     ),
+
                     RichText(
                       text: TextSpan(children: <TextSpan>[
                         TextSpan(
