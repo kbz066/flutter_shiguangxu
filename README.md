@@ -20,7 +20,8 @@
 
 
 ### 安装包
-[Android](https://www.pgyer.com/C9lo)
+[Android](https://www.pgyer.com/C9lo)      
+密码：1234
 
 # 项目地址：
  > [https://github.com/kbz066/flutter_shiguangxu](https://github.com/kbz066/flutter_shiguangxu)
